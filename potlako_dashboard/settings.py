@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'edc_action_item.apps.AppConfig',
+    'edc_locator.apps.AppConfig',
     'edc_navbar.apps.AppConfig',
     'potlako_dashboard.apps.AppConfig',
 ]
