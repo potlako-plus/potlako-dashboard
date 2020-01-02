@@ -1,2 +1,3 @@
 from .appointment_model_wrapper import AppointmentModelWrapper
 from .subject_consent_model_wrapper import SubjectConsentModelWrapper
+from .subject_screening_model_wrapper import SubjectScreeningModelWrapper

@@ -7,8 +7,10 @@ from django.conf import settings
 from django.urls.conf import path, include
 from edc_dashboard import UrlConfig
 
-from .patterns import subject_identifier
-from .views import SubjectListboardView, SubjectDashboardView
+from .patterns import subject_identifier, screening_identifier
+from .views import (
+    SubjectListboardView, SubjectDashboardView,
+    SubjectScreeningListboardView)
 
 app_name = 'potlako_dashboard'
 
@@ -19,6 +21,13 @@ subject_listboard_url_config = UrlConfig(
     identifier_label='subject_identifier',
     identifier_pattern=subject_identifier)
 
+screening_listboard_url_config = UrlConfig(
+    url_name='screening_listboard_url',
+    view_class=SubjectScreeningListboardView,
+    label='screening_listboard',
+    identifier_label='screening_identifier',
+    identifier_pattern=screening_identifier)
+
 subject_dashboard_url_config = UrlConfig(
     url_name='subject_dashboard_url',
     view_class=SubjectDashboardView,
@@ -28,6 +37,7 @@ subject_dashboard_url_config = UrlConfig(
 
 urlpatterns = []
 urlpatterns += subject_listboard_url_config.listboard_urls
+urlpatterns += screening_listboard_url_config.listboard_urls
 urlpatterns += subject_dashboard_url_config.listboard_urls
 
 if settings.APP_NAME == 'potlako_dashboard':
