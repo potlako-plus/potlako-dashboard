@@ -28,7 +28,9 @@
     <td style="white-space: nowrap">
     <div class="btn-group">
     {% screening_button result %}
-    {% eligibility_button result %}
+    {% if not result.eligible %}
+    	{% eligibility_button result %}
+    {% endif %}
     {% if result.eligible %}
         {% if result.consent %}
             {% dashboard_button result %}
