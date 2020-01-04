@@ -17,12 +17,11 @@ def eligibility_button(subject_screening_model_wrapper):
     comment = []
     obj = subject_screening_model_wrapper.object
     tooltip = None
-    if not obj.is_eligible:
-        comment = obj.ineligibility.split(',')
+    if not obj.eligible:
+        comment = obj.reasons_ineligible.split(',')
     comment = list(set(comment))
     comment.sort()
-    return dict(eligible=obj.is_eligible, comment=comment,
-                tooltip=tooltip, obj=obj)
+    return dict(eligible=obj.eligible, comment=comment, tooltip=tooltip)
 
 
 @register.inclusion_tag('potlako_dashboard/buttons/consent_button.html')

@@ -28,6 +28,10 @@ class SubjectScreeningModelWrapper(
         return options
 
     @property
+    def consent_version(self):
+        return '1'
+
+    @property
     def consent_options(self):
         return dict(screening_identifier=self.object.screening_identifier)
 
