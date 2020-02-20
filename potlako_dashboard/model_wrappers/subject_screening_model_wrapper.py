@@ -1,9 +1,9 @@
 from django.apps import apps as django_apps
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from edc_model_wrapper import ModelWrapper
-
+from edc_base.utils import formatted_age
 from edc_consent import ConsentModelWrapperMixin
+from edc_model_wrapper import ModelWrapper
 
 from .subject_consent_model_wrapper import SubjectConsentModelWrapper
 
@@ -11,7 +11,7 @@ from .subject_consent_model_wrapper import SubjectConsentModelWrapper
 class SubjectScreeningModelWrapper(
         ConsentModelWrapperMixin,
         ModelWrapper):
-    
+
     consent_model_wrapper_cls = SubjectConsentModelWrapper
     model = 'potlako_subject.subjectscreening'
     next_url_attrs = ['screening_identifier']
@@ -43,3 +43,10 @@ class SubjectScreeningModelWrapper(
             return consent_model_cls.objects.get(**self.consent_options)
         except ObjectDoesNotExist:
             return None
+
+    @property
+    def age_in_years(self):
+
+        if self.consent_model_obj:
+            return formatted_age(self.consent_model_obj.dob)
+        return None

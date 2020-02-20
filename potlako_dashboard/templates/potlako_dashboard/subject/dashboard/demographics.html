@@ -1,0 +1,37 @@
+{% load edc_base_extras %}
+
+<div class="list-group" >
+<a class="list-group-item"><i class="fa fa-birthday-cake fa-fw"></i>
+{{ dob|date:"Y-m-d" }}
+{% age_in_years dob %} yrs 
+ {% if hiv_status == 'POS' %}
+ 	<span data-toggle="tooltip" data-placement="right" title="Enrollement HIV Status" > <i class="fa  fa-plus-circle  fa-fw"></i> </span>
+ {% else %}
+ 	{% if enrollment_hiv_status == 'NEG' %}
+ 		<span data-toggle="tooltip" data-placement="right" title="Enrollement HIV Status"> <i  class="fa  fa-minus-circle  fa-fw"></i> </span>
+	 	{% else %}
+	 		<span data-toggle="tooltip" data-placement="right" title="Enrollement HIV Status" > <i class="fa  fa-question-circle  fa-fw"></i> </span>
+	 	{% endif %}
+ {% endif %}
+</a>
+<a class="list-group-item"><i class="far fa-address-card fa-fw"></i>
+{{ identity|default:'?? identity' }} <span data-toggle="tooltip" data-placement="right" title="{{ firstname }} {{ lastname }}" class="text text-default">{{ initials }}<sup><i class="fa fa-asterisk fa-fw"></i></sup></span>
+</a>
+{% if rando_status %}
+<a class="list-group-item">
+ 
+  <i class="fa fa-random"></i>  {{ rando_status }}  
+ 	
+</a>
+{% endif %}
+
+<a class="list-group-item">
+	<i  class="fa fa-heartbeat fa-fw"></i>
+ 		<span data-toggle="tooltip" data-placement="right" title="Current HIV Status" class="text text-default"> {{ hiv_status }} </span>
+	{% if maternal_ga %}
+		&nbsp |  &nbsp
+		<i class="fa fa-hourglass-half fa-fw"></i>
+		 <span data-toggle="tooltip" data-placement="right" title="Gestational Age" class="text text-default"> {{ maternal_ga }} WEEKS </span>
+	{% endif %}
+</a>
+</div>

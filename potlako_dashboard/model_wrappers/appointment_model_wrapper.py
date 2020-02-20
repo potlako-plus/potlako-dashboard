@@ -3,11 +3,12 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from edc_subject_dashboard import (
     AppointmentModelWrapper as BaseAppointmentModelWrapper)
+from .subject_visit_model_wrapper import SubjectVisitModelWrapper
 
 
 class AppointmentModelWrapper(BaseAppointmentModelWrapper):
-    pass
-#     visit_model_wrapper_cls = SubjectVisitModelWrapper
+
+    visit_model_wrapper_cls = SubjectVisitModelWrapper
 
 #     @property
 #     def wrapped_visit(self):
