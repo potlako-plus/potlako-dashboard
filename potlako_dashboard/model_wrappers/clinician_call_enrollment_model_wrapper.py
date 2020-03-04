@@ -72,4 +72,4 @@ class ClinicianCallEnrollmentModelWrapper(SubjectScreeningModelWrapperMixin,
         return options
 
     def is_eligible(self):
-        return self.subject_screening_model_obj.is_eligible
+        return self.subject_screening_model_obj.eligible
