@@ -4,9 +4,9 @@
 {% load potlako_dashboard_extras %}
              
 {% block listboard_panel %}
-    <a id="subjectscreening_add" title="add screening" class="btn btn-sm btn-default" role="button" 
-        href="{{ subject_screening_add_url }}?next={{ screening_listboard_url }}">
-            <i class="fa fa-plus fa-sm"></i> Add Subject Screening
+    <a id="cliniciancallenrollment_add" title="add screening" class="btn btn-sm btn-default" role="button" 
+        href="{{ clinician_call_enrollment_add_url }}?next={{ screening_listboard_url }}">
+            <i class="fa fa-plus fa-sm"></i> Add Clinician Call Enrollment
     </a>
 {% endblock listboard_panel %}
 
@@ -27,17 +27,17 @@
 {% block listboard_table_button_column %}
     <td style="white-space: nowrap">
     <div class="btn-group">
-    {% screening_button result %}
-    {% if not result.eligible %}
+    {% clinician_call_enrollment_button result %}
+	{% screening_button result %}
+	{% if not result.is_eligible %}
     	{% eligibility_button result %}
-    {% endif %}
-    {% if result.eligible %}
-        {% if result.consent %}
-            {% dashboard_button result %}
+       {% else %}
+    	{% if not result.consent_model_obj %}
+        	{% consent_button result %}
         {% else %}
-            {% consent_button result %}
+        	{% dashboard_button result %}
         {% endif %}
-    {% endif %}
+       {% endif %}
     </div>
     </td>
 {% endblock listboard_table_button_column %}		
@@ -46,7 +46,7 @@
 {% block listboard_table_columns %}
 
     <td>{{ result.screening_identifier }} </td>
-    <td nowrap>{{ result.object.subject_identifier }}</td>
+    <td nowrap>{{ result.subject_identifier }}</td>
     <td nowrap>{{ result.age_in_years }} yrs</td>
     <td nowrap>{{ result.user_created }}</td>
     <td nowrap>{{ result.object.modified|date:"SHORT_DATETIME_FORMAT" }}</td>  

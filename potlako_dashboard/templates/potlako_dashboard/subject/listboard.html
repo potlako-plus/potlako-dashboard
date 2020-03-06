@@ -7,7 +7,6 @@
     <!-- begin results header -->
     <th>#</th>
     <th></th>
-    <th>Consent Version form</th>
     <th>Identifier</th>
     <th>Subject</th>
     <th>Age / Born</th>
@@ -44,20 +43,22 @@
     </div>
 	</td>
 
-	<td>
-	</td>
 {% endblock listboard_table_button_column %}
 
 {% block listboard_table_columns %}
-    <td>
-    	
+    <td>{{ result.subject_identifier }}
     </td>
     <td>
-       
+       {% if result.gender == MALE %}
+           <i class="fa fa-male fa-lg"></i>
+       {% else %}
+           <i class="fa fa-female fa-lg"></i>
+       {% endif %}
+       {{ result.first_name }} {{ result.initials }}
     </td>
-    <td></td>
-    <td></td>  
-    <td></td>
-    <td></td>
+    <td>{% age_in_years result.object.dob %}yrs {{ result.object.dob|date:"SHORT_DATE_FORMAT" }}</td>
+    <td>{{ result.object.consent_datetime|date:"SHORT_DATE_FORMAT" }}</td>  
+    <td>{{ result.object.modified|date:"SHORT_DATETIME_FORMAT" }}</td>
+    <td>{{ result.hostname_created }}</td>
 
 {% endblock listboard_table_columns %}

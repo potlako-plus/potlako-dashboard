@@ -1,15 +1,14 @@
 import re
-
+# from django.apps import apps as django_apps
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.utils.decorators import method_decorator
-
 from edc_base.view_mixins import EdcBaseViewMixin
 from edc_dashboard.view_mixins import ListboardFilterViewMixin, SearchFormViewMixin
 from edc_dashboard.views import ListboardView
 from edc_navbar import NavbarViewMixin
 
-from ...model_wrappers import SubjectScreeningModelWrapper
+from ...model_wrappers import ClinicianCallEnrollmentModelWrapper
 from .filters import ListboardViewFilters
 
 
@@ -22,8 +21,8 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
     listboard_fa_icon = "fa-user-plus"
 
     listboard_view_filters = ListboardViewFilters()
-    model = 'potlako_subject.subjectscreening'
-    model_wrapper_cls = SubjectScreeningModelWrapper
+    model = 'potlako_subject.cliniciancallenrollment'
+    model_wrapper_cls = ClinicianCallEnrollmentModelWrapper
     navbar_name = 'potlako_dashboard'
     navbar_selected_item = 'eligible_subject'
     ordering = '-modified'
@@ -37,7 +36,7 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(
-            subject_screening_add_url=self.model_cls().get_absolute_url())
+            clinician_call_enrollment_add_url=self.model_cls().get_absolute_url())
         return context
 
     def get_queryset_filter_options(self, request, *args, **kwargs):
