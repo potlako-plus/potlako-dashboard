@@ -38,7 +38,7 @@ subject_dashboard_url_config = UrlConfig(
 urlpatterns = []
 urlpatterns += subject_listboard_url_config.listboard_urls
 urlpatterns += screening_listboard_url_config.listboard_urls
-urlpatterns += subject_dashboard_url_config.listboard_urls
+urlpatterns += subject_dashboard_url_config.dashboard_urls
 
 if settings.APP_NAME == 'potlako_dashboard':
 

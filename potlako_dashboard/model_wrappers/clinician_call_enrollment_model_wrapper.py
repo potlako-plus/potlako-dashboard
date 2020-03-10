@@ -10,10 +10,12 @@ from edc_model_wrapper import ModelWrapper
 
 from .subject_consent_model_wrapper import SubjectConsentModelWrapper
 from .subject_screening_model_wrapper_mixin import SubjectScreeningModelWrapperMixin
+from .subject_locator_wrapper_mixin import SubjectLocatorModelWrapperMixin
 
 
 class ClinicianCallEnrollmentModelWrapper(SubjectScreeningModelWrapperMixin,
                                           ConsentModelWrapperMixin,
+                                          SubjectLocatorModelWrapperMixin,
                                           ModelWrapper):
 
     consent_model_wrapper_cls = SubjectConsentModelWrapper
