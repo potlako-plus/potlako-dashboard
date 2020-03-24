@@ -26,7 +26,7 @@ def eligibility_button(model_wrapper):
     comment = []
     obj = model_wrapper.subject_screening_model_obj
     tooltip = None
-    if not obj.is_eligible:
+    if not obj.is_eligible and obj.ineligibility:
         comment = obj.ineligibility.strip('[').strip(']').split(',')
     comment = list(set(comment))
     comment.sort()
