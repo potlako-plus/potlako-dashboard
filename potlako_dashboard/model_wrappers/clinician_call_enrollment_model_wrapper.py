@@ -9,7 +9,7 @@ from edc_consent.model_wrappers import ConsentModelWrapperMixin
 from edc_model_wrapper import ModelWrapper
 
 from .subject_consent_model_wrapper import SubjectConsentModelWrapper
-from .subject_locator_wrapper_mixin import SubjectLocatorModelWrapperMixin
+from .subject_locator_model_wrapper_mixin import SubjectLocatorModelWrapperMixin
 from .subject_screening_model_wrapper_mixin import SubjectScreeningModelWrapperMixin
 
 

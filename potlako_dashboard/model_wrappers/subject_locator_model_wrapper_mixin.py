@@ -13,7 +13,8 @@ class SubjectLocatorModelWrapperMixin:
         """Returns a subject locator model instance or None.
         """
         try:
-            return self.subject_locator_cls.objects.get(**self.subject_locator_options)
+            return self.subject_locator_cls.objects.get(
+                **self.subject_locator_options)
         except ObjectDoesNotExist:
             return None
 
@@ -35,7 +36,7 @@ class SubjectLocatorModelWrapperMixin:
         unpersisted subject locator model instance.
         """
         options = dict(
-            subject_identifier=self.object.subject_identifier)
+            subject_identifier=self.subject_identifier)
         return options
 
     @property
@@ -44,5 +45,5 @@ class SubjectLocatorModelWrapperMixin:
         subject locator instance.
         """
         options = dict(
-            subject_identifier=self.object.subject_identifier)
+            subject_identifier=self.subject_identifier)
         return options

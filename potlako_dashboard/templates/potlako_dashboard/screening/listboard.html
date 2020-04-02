@@ -14,6 +14,7 @@
     <!-- begin results header -->
     <th>#</th>
     <th></th>
+    <th></th>
     <th>Screening Identifier</th>
     <th>Subject Identifier</th>
     <th>Age</th>
@@ -25,7 +26,7 @@
 
 
 {% block listboard_table_button_column %}
-    <td style="white-space: nowrap">
+    <td style="white-space: nowrap;">
     <div class="btn-group">
     {% clinician_call_enrollment_button result %}
 	{% screening_button result %}
@@ -35,7 +36,10 @@
     	{% if not result.consent_model_obj %}
         	{% consent_button result %}
         {% else %}
-        	{% dashboard_button result %}
+        	{% subject_locator_button result %}
+        	{% if result.subject_locator %}
+        		{% dashboard_button result %}
+        	{% endif %}
         {% endif %}
        {% endif %}
     </div>
