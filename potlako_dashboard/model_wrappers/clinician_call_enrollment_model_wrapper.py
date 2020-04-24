@@ -3,7 +3,6 @@ from builtins import property
 from django.apps import apps as django_apps
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from edc_base.utils import formatted_age
 from edc_base.utils import get_uuid
 from edc_consent.model_wrappers import ConsentModelWrapperMixin
 from edc_model_wrapper import ModelWrapper
@@ -23,11 +22,6 @@ class ClinicianCallEnrollmentModelWrapper(SubjectScreeningModelWrapperMixin,
     next_url_attrs = ['screening_identifier']
     querystring_attrs = ['screening_identifier']
     next_url_name = settings.DASHBOARD_URL_NAMES.get('screening_listboard_url')
-
-    @property
-    def age_in_years(self):
-
-        return formatted_age(self.object.dob)
 
     @property
     def consent_version(self):
