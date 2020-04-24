@@ -35,9 +35,9 @@ def eligibility_button(model_wrapper):
 
 @register.inclusion_tag('potlako_dashboard/buttons/subject_locator_button.html')
 def subject_locator_button(model_wrapper):
-    title = ['Edit Locator.']
+    title = ['Add subject Locator.']
     return dict(
-        subject_identifier=model_wrapper.subject_locator.subject_identifier,
+        subject_identifier=model_wrapper.subject_identifier,
         add_subject_locator_href=model_wrapper.subject_locator.href,
         subject_locator_model_obj=model_wrapper.subject_locator_model_obj,
         title=' '.join(title))
