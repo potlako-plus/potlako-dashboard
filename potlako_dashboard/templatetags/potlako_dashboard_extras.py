@@ -62,3 +62,13 @@ def dashboard_button(model_wrapper):
     return dict(
         subject_dashboard_url=subject_dashboard_url,
         subject_identifier=model_wrapper.subject_identifier)
+
+
+@register.inclusion_tag('potlako_dashboard/buttons/under_age_button.html')
+def under_age_button(model_wrapper):
+    comment = ['Participant is under age.']
+    age_in_years = model_wrapper.age_in_years
+    is_under_age = int(age_in_years) < 30
+    tooltip = None
+    comment.sort()
+    return dict(is_under_age=is_under_age, comment=comment, tooltip=tooltip)

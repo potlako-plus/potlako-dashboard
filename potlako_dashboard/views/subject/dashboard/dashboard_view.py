@@ -109,7 +109,7 @@ class DashboardView(AddSubjectScreening, EdcBaseViewMixin, SubjectDashboardViewM
     def get_subject_locator_or_message(self):
         obj = self.get_locator_info()
         subject_identifier = self.kwargs.get('subject_identifier')
-        
+
         if not obj:
             action_cls = site_action_items.get(
                 self.subject_locator_model_cls.action_name)
