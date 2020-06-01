@@ -29,7 +29,7 @@
     <td style="white-space: nowrap;">
     <div class="btn-group">
     {% clinician_call_enrollment_button result %}
-    {% if result.age_in_years|add:0 >= 30 %}
+    {% if result.eligible_at_enrol %}
 		{% screening_button result %}
 		{% if not result.is_eligible %}
 	    	{% eligibility_button result %}
@@ -43,9 +43,9 @@
 	        	{% endif %}
 	        {% endif %}
 	       {% endif %}
-	 {% else %}
-	 	{% under_age_button result %}
-	 {% endif %}
+	{% else %}
+		{% eligibility_button result %}
+	{% endif %}
     </div>
     </td>
 {% endblock listboard_table_button_column %}		
