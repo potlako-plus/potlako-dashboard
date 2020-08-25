@@ -28,6 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ETC_DIR = '/etc/'
+
+SITE_ID = 40
+
 
 # Application definition
 
@@ -39,9 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django_crypto_fields.apps.AppConfig',
     'edc_action_item.apps.AppConfig',
+    'edc_data_manager.apps.AppConfig',
     'edc_locator.apps.AppConfig',
     'edc_navbar.apps.AppConfig',
+    'edc_protocol.apps.AppConfig',
     'potlako_dashboard.apps.AppConfig',
 ]
 
@@ -122,11 +129,13 @@ DASHBOARD_URL_NAMES = {
     'subject_listboard_url': 'potlako_dashboard:subject_listboard_url',
     'screening_listboard_url': 'potlako_dashboard:screening_listboard_url',
     'subject_dashboard_url': 'potlako_dashboard:subject_dashboard_url',
+    'data_manager_listboard_url': 'edc_data_manager:data_manager_listboard_url',
 }
 
 DASHBOARD_BASE_TEMPLATES = {
     'listboard_base_template': 'potlako/base.html',
     'dashboard_base_template': 'potlako/base.html',
+    'data_manager_listboard_template': 'edc_data_manager/listboard.html',
     'screening_listboard_template': 'potlako_dashboard/screening/listboard.html',
     'subject_listboard_template': 'potlako_dashboard/subject/listboard.html',
     'subject_dashboard_template': 'potlako_dashboard/subject/dashboard.html',

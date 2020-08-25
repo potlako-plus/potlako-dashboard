@@ -46,11 +46,10 @@ if settings.APP_NAME == 'potlako_dashboard':
     from edc_base.auth.views import LoginView, LogoutView
 
     urlpatterns += [
+        path('accounts/', include('edc_base.auth.urls')),
+        path('edc_data_manager/', include('edc_data_manager.urls')),
         path('edc_device/', include('edc_device.urls')),
         path('edc_protocol/', include('edc_protocol.urls')),
         path('admininistration/', RedirectView.as_view(url='admin/'),
              name='administration_url'),
-        path('login', LoginView.as_view(), name='login_url'),
-        path('logout', LogoutView.as_view(
-            pattern_name='login_url'), name='logout_url'),
         path(r'', RedirectView.as_view(url='admin/'), name='home_url')]
