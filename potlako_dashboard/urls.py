@@ -43,7 +43,6 @@ urlpatterns += subject_dashboard_url_config.dashboard_urls
 if settings.APP_NAME == 'potlako_dashboard':
 
     from django.views.generic.base import RedirectView
-    from edc_base.auth.views import LoginView, LogoutView
 
     urlpatterns += [
         path('accounts/', include('edc_base.auth.urls')),
