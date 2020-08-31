@@ -1,12 +1,12 @@
 from django.apps import apps as django_apps
 from django.core.exceptions import ObjectDoesNotExist
 
-from .subject_locator_model_wrapper import SubjectLocatorModelWrapper
+from .special_forms_model_wrapper import SpecialFormsModelWrapper
 
 
 class SubjectLocatorModelWrapperMixin:
 
-    subject_locator_model_wrapper_cls = SubjectLocatorModelWrapper
+    subject_locator_model_wrapper_cls = SpecialFormsModelWrapper
 
     @property
     def subject_locator_model_obj(self):
