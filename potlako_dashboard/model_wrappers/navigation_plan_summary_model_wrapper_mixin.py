@@ -4,34 +4,34 @@ from django.core.exceptions import ObjectDoesNotExist
 from .special_forms_model_wrapper import SpecialFormsModelWrapper
 
 
-class BaselineClinicalSummaryModelWrapperMixin:
+class NavigationPlanSummaryModelWrapperMixin:
 
-    baseline_summary_model_wrapper_cls = SpecialFormsModelWrapper
+    navigation_plan_summary_model_wrapper_cls = SpecialFormsModelWrapper
 
     @property
-    def baseline_summary_model_obj(self):
-        """Returns a baseline clinical summary model instance or None.
+    def navigation_plan_summary_model_obj(self):
+        """Returns a navigation summary and plan model instance or None.
         """
         try:
-            return self.baseline_summary_cls.objects.get(
-                **self.baseline_summary_options)
+            return self.navigation_plan_summary_cls.objects.get(
+                **self.navigation_plan_summary_options)
         except ObjectDoesNotExist:
             return None
 
     @property
-    def baseline_summary(self):
+    def navigation_plan_summary(self):
         """Returns a wrapped saved or unsaved baseline clinical summary .
         """
-        model_obj = self.baseline_summary_model_obj or self.baseline_summary_cls(
-            **self.create_baseline_summary_options)
-        return self.baseline_summary_model_wrapper_cls(model_obj=model_obj)
+        model_obj = self.navigation_plan_summary_model_obj or self.navigation_plan_summary_cls(
+            **self.create_navigation_plan_summary_options)
+        return self.navigation_plan_summary_model_wrapper_cls(model_obj=model_obj)
 
     @property
-    def baseline_summary_cls(self):
-        return django_apps.get_model('potlako_subject.baselineclinicalsummary')
+    def navigation_plan_summary_cls(self):
+        return django_apps.get_model('potlako_subject.navigationsummaryandplan')
 
     @property
-    def create_baseline_summary_options(self):
+    def create_navigation_plan_summary_options(self):
         """Returns a dictionary of options to create a new
         unpersisted baseline clinical summary  model instance.
         """
@@ -40,7 +40,7 @@ class BaselineClinicalSummaryModelWrapperMixin:
         return options
 
     @property
-    def baseline_summary_options(self):
+    def navigation_plan_summary_options(self):
         """Returns a dictionary of options to get an existing
         baseline clinical summary  instance.
         """

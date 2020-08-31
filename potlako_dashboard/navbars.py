@@ -25,4 +25,13 @@ potlako_dashboard.append_item(
         url_name=settings.DASHBOARD_URL_NAMES['subject_listboard_url'],
         no_url_namespace=no_url_namespace))
 
+potlako_dashboard.append_item(
+    NavbarItem(
+        name='endpoint_recordings',
+        title='Endpoint Recordings',
+        label='endpoint recordings',
+        fa_icon='far fa-user-circle',
+        url_name=settings.DASHBOARD_URL_NAMES['endpoint_listboard_url'],
+        no_url_namespace=no_url_namespace))
+
 site_navbars.register(potlako_dashboard)
