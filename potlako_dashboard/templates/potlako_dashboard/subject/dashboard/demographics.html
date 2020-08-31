@@ -26,12 +26,9 @@
 {% endif %}
 
 <a class="list-group-item">
-	<i  class="fa fa-heartbeat fa-fw"></i>
- 		<span data-toggle="tooltip" data-placement="right" title="Current HIV Status" class="text text-default"> {{ hiv_status }} </span>
-	{% if maternal_ga %}
-		&nbsp |  &nbsp
-		<i class="fa fa-hourglass-half fa-fw"></i>
-		 <span data-toggle="tooltip" data-placement="right" title="Gestational Age" class="text text-default"> {{ maternal_ga }} WEEKS </span>
+	{% if community_arm %}
+		<i class="fa fa-code-branch fa-fw"></i>
+		 <span data-toggle="tooltip" data-placement="right" title="Gestational Age" class="text text-default"> {{ community_arm }} </span>
 	{% endif %}
 </a>
 </div>

@@ -12,7 +12,12 @@
 
 
 {% block side_bar %}
-	{{ block.super }}
+	
+	{% block demographics %}   
+	
+   		{% include 'potlako_dashboard/subject/dashboard/sidebar.html' %}
+
+	{% endblock demographics %}
 	
 	{% if locator_obj %}
     <div class="panel panel-default">

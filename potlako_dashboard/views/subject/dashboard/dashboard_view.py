@@ -92,8 +92,10 @@ class DashboardView(AddSubjectScreening, EdcBaseViewMixin, SubjectDashboardViewM
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         locator_obj = self.get_locator_info()
+        community_arm = self.community_arm
         context.update(
-            locator_obj=locator_obj)
+            locator_obj=locator_obj,
+            community_arm=community_arm)
         return context
 
     def get_locator_info(self):
@@ -135,3 +137,16 @@ class DashboardView(AddSubjectScreening, EdcBaseViewMixin, SubjectDashboardViewM
         except ObjectDoesNotExist:
             action_cls(
                 subject_identifier=subject_identifier)
+
+    @property
+    def community_arm(self):
+        onschedule_model_cls = django_apps.get_model(
+            'potlako_subject.onschedule')
+        subject_identifier = self.kwargs.get('subject_identifier')
+        try:
+            onschedule_obj = onschedule_model_cls.objects.get(
+                subject_identifier=subject_identifier)
+        except ObjectDoesNotExist:
+            return None
+        else:
+            return onschedule_obj.community_arm
