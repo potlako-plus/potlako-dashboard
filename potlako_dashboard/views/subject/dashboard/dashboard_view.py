@@ -12,6 +12,10 @@ from potlako_subject.action_items import SUBJECT_LOCATOR_ACTION
 from ....model_wrappers import (
     AppointmentModelWrapper, SubjectConsentModelWrapper,
     SpecialFormsModelWrapper, SubjectVisitModelWrapper)
+from edc_constants.constants import NOT_DONE
+from edc_base.utils import get_utcnow
+from dateutil.relativedelta import relativedelta
+from reportlab.lib.colors import orange
 
 
 class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
@@ -44,11 +48,39 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         locator_obj = self.get_locator_info()
+        import pdb; pdb.set_trace()
         context.update(
             locator_obj=locator_obj,
             community_arm=self.community_arm,
-            subject_consent=self.consent_wrapped)
+            subject_consent=self.consent_wrapped,
+            nav_flag=self.get_navigation_status)
         return context
+    
+    @property
+    def get_navigation_status(self):
+        keysteps_form = django_apps.get_model('potlako_subject.evaluationtimeline')
+        
+        key_steps = keysteps_form.objects.filter(
+            navigation_plan__subject_identifier = self.kwargs.get('subject_identifier'),
+            key_step_status=NOT_DONE)
+        flags = []
+        
+        for key_step in key_steps:
+            today = get_utcnow().date()
+            target_date = key_step.target_date
+            
+            if(today - target_date).days > 7:
+                flags.append('red') #"\'#FA9E9E;\'")
+            elif (target_date - today).days > 7:
+                flags.append('green') #\'#B4F38E;\'")
+            else:
+                flags.append('orange')#"\"#FCBE6B;\"")
+                    
+        flags = list(set(flags))
+#         return max(flags) if flags else "\'#6CC2FA;\'"
+        return 'blue' #"\"#FA9E9E;\""
+        
+            
 
     def get_locator_info(self):
 
