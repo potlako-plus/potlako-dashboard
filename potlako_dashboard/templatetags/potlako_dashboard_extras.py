@@ -70,6 +70,15 @@ def cancer_diagnosis_endpoint_button(model_wrapper):
         cancer_diagnosis_endpoint_model_obj=model_wrapper.cancer_diagnosis_endpoint_model_obj,
         title=' '.join(title))
 
+@register.inclusion_tag('potlako_dashboard/buttons/care_seeking_endpoint_button.html')
+def care_seeking_endpoint_button(model_wrapper):
+    title = ['Add symptoms and care seeking endpoint recording.']
+    return dict(
+        subject_identifier=model_wrapper.subject_identifier,
+        add_care_seeking_endpoint_href=model_wrapper.care_seeking_endpoint.href,
+        care_seeking_endpoint_model_obj=model_wrapper.care_seeking_endpoint_model_obj,
+        title=' '.join(title))
+
 @register.inclusion_tag('potlako_dashboard/buttons/consent_button.html')
 def consent_button(model_wrapper):
     title = ['Consent subject to participate.']

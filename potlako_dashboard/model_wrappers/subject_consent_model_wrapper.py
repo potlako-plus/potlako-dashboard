@@ -4,12 +4,15 @@ from .subject_locator_model_wrapper_mixin import SubjectLocatorModelWrapperMixin
 from .baseline_summary_model_wrapper_mixin import BaselineClinicalSummaryModelWrapperMixin
 from .navigation_plan_summary_model_wrapper_mixin import NavigationPlanSummaryModelWrapperMixin
 from .cancer_diagnosis_endpoint_model_wrapper_mixin import CancerDiagnosisEndpointModelWrapperMixin
+from .care_seeking_endpoint_model_wrapper_mixin import CareSeekingEndpointModelWrapperMixin
+
 
 class SubjectConsentModelWrapper(
         SubjectLocatorModelWrapperMixin,
         BaselineClinicalSummaryModelWrapperMixin,
         NavigationPlanSummaryModelWrapperMixin,
         CancerDiagnosisEndpointModelWrapperMixin,
+        CareSeekingEndpointModelWrapperMixin,
         ModelWrapper):
 
     model = 'potlako_subject.subjectconsent'
