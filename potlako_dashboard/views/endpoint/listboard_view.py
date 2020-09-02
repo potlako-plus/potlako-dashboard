@@ -7,9 +7,8 @@ from edc_dashboard.view_mixins import ListboardFilterViewMixin, SearchFormViewMi
 from edc_dashboard.views import ListboardView as BaseListboardView
 from edc_navbar import NavbarViewMixin
 
-from ...model_wrappers import SpecialFormsModelWrapper
+from ...model_wrappers import SubjectConsentModelWrapper
 from .filters import ListboardViewFilters
-
 
 class ListBoardView(BaseListboardView, NavbarViewMixin, EdcBaseViewMixin,
                     ListboardFilterViewMixin, SearchFormViewMixin):
@@ -20,8 +19,8 @@ class ListBoardView(BaseListboardView, NavbarViewMixin, EdcBaseViewMixin,
     listboard_fa_icon = "fa-user-plus"
 
     listboard_view_filters = ListboardViewFilters()
-    model = 'potlako_subject.cancerdiagnosisandtreatmentendpoint'
-    model_wrapper_cls = SpecialFormsModelWrapper
+    model = 'potlako_subject.subjectconsent'
+    model_wrapper_cls = SubjectConsentModelWrapper
     navbar_name = 'potlako_dashboard'
     navbar_selected_item = 'endpoint_recordings'
     ordering = '-modified'

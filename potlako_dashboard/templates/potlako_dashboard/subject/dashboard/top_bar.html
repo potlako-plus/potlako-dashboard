@@ -3,16 +3,15 @@
     <div class="panel {{nav_flag}}" id="top_bar">
        <div class="panel-heading">
   
-        {% if navbar_name == 'anonymous' %}
-            <span class="text text-danger"><i class="fa fa-user-secret fa-2x fa-fw"></i></span>
-        {% else %}
-            <i class="far fa-user-circle fa-2x fa-fw"></i> 
+        
+            <i class="fas fa-map-marked-alt fa-2x fa-fw"></i> </i>
+            <!-- " "fas fa-random fa-2x fa-fw">{{community_arm}} </i>  --> 
+            
   	        <span class="pull-right">
   	          <a {% block close_url %}href="{% url subject_listboard_url %}?q={{ subject_identifier }}"{% endblock close_url %}
   	            role="button" class="btn btn-sm btn-primary">
   	                <i class="fa fa-reply fa-1x fa-fw" aria-hidden="true"></i></a>
   	        </span>
-        {% endif %}
 
       </div>
    </div>

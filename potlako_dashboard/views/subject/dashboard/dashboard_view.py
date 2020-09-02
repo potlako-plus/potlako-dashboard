@@ -11,11 +11,9 @@ from potlako_subject.action_items import SUBJECT_LOCATOR_ACTION
 
 from ....model_wrappers import (
     AppointmentModelWrapper, SubjectConsentModelWrapper,
-    SpecialFormsModelWrapper, SubjectVisitModelWrapper)
+    SpecialFormsModelWrapper, SubjectVisitModelWrapper,)
 from edc_constants.constants import NOT_DONE
 from edc_base.utils import get_utcnow
-from dateutil.relativedelta import relativedelta
-from reportlab.lib.colors import orange
 
 
 class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
@@ -48,7 +46,6 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         locator_obj = self.get_locator_info()
-        import pdb; pdb.set_trace()
         context.update(
             locator_obj=locator_obj,
             community_arm=self.community_arm,
