@@ -70,18 +70,16 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
             target_date = key_step.target_date
             
             if(today - target_date).days > 7:
-                flags.append('red') #"\'#FA9E9E;\'")
+                flags.append('past')
             elif (target_date - today).days > 7:
-                flags.append('green') #\'#B4F38E;\'")
+                flags.append('early')
             else:
-                flags.append('orange')#"\"#FCBE6B;\"")
+                flags.append('on_time')
                     
         flags = list(set(flags))
-#         return max(flags) if flags else "\'#6CC2FA;\'"
-        return 'blue' #"\"#FA9E9E;\""
+        return max(flags) if flags else 'default'
         
             
-
     def get_locator_info(self):
 
         subject_identifier = self.kwargs.get('subject_identifier')

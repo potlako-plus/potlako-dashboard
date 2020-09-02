@@ -2,6 +2,13 @@
 
 {% load static %}
 
+{% block extra-css %}
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'potlako_dashboard/css/potlako_dashboard.css' %}">
+
+{% endblock extra-css %}
+
 {% block locator_information %}{% endblock locator_information %}
 
 {% block top_bar %}
