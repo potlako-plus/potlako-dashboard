@@ -1,2 +1,3 @@
 include AUTHORS CHANGES README.md LICENCE
 recursive-include potlako_dashboard/templates *
+recursive-include potlako_dashboard/static *
