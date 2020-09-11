@@ -61,13 +61,13 @@ def navigation_plan_summary_button(model_wrapper):
         navigation_plan_summary_model_obj=model_wrapper.navigation_plan_summary_model_obj,
         title=' '.join(title))
 
-@register.inclusion_tag('potlako_dashboard/buttons/cancer_diagnosis_endpoint_button.html')
-def cancer_diagnosis_endpoint_button(model_wrapper):
+@register.inclusion_tag('potlako_dashboard/buttons/cancer_dx_endpoint_button.html')
+def cancer_dx_endpoint_button(model_wrapper):
     title = ['Add cancer diagnosis and treatment endpoint recording.']
     return dict(
         subject_identifier=model_wrapper.subject_identifier,
-        add_cancer_diagnosis_endpoint_href=model_wrapper.cancer_diagnosis_endpoint.href,
-        cancer_diagnosis_endpoint_model_obj=model_wrapper.cancer_diagnosis_endpoint_model_obj,
+        add_cancer_dx_endpoint_href=model_wrapper.cancer_x_endpoint.href,
+        cancer_dx_endpoint_model_obj=model_wrapper.cancer_dx_endpoint_model_obj,
         title=' '.join(title))
 
 @register.inclusion_tag('potlako_dashboard/buttons/care_seeking_endpoint_button.html')
