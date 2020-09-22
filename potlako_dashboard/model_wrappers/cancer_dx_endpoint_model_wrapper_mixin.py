@@ -29,7 +29,7 @@ class CancerDxEndpointModelWrapperMixin:
 
     @property
     def cancer_dx_endpoint_cls(self):
-        return django_apps.get_model('potlako_subject.cancerdxandtreatmentendpoint')
+        return django_apps.get_model('potlako_subject.cancerdxandtxendpoint')
 
     @property
     def create_cancer_dx_endpoint_options(self):

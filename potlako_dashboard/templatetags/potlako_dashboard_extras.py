@@ -66,7 +66,7 @@ def cancer_dx_endpoint_button(model_wrapper):
     title = ['Add cancer diagnosis and treatment endpoint recording.']
     return dict(
         subject_identifier=model_wrapper.subject_identifier,
-        add_cancer_dx_endpoint_href=model_wrapper.cancer_x_endpoint.href,
+        add_cancer_dx_endpoint_href=model_wrapper.cancer_dx_endpoint.href,
         cancer_dx_endpoint_model_obj=model_wrapper.cancer_dx_endpoint_model_obj,
         title=' '.join(title))
 
