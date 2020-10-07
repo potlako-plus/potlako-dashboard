@@ -50,8 +50,28 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
             locator_obj=locator_obj,
             community_arm=self.community_arm,
             subject_consent=self.consent_wrapped,
-            nav_flag=self.get_navigation_status)
+            nav_flag=self.get_navigation_status,
+            hiv_status=self.get_hiv_status)
         return context
+    
+    @property
+    def get_hiv_status(self):
+        patient_initial = django_apps.get_model('potlako_subject.patientcallinitial')
+        
+        try:
+            patient_initial_obj = patient_initial.objects.get(
+                subject_visit__subject_identifier=self.kwargs.get('subject_identifier'))
+        except patient_initial.DoesNotExist:
+            enrolmment_model = django_apps.get_model('potlako_subject.cliniciancallenrollment')
+            try:
+                enrolmment_model_obj = enrolmment_model.objects.get(
+                    screening_identifier=self.consent_wrapped.screening_identifier)
+            except enrolmment_model.DoesNotExist:
+                return None
+            else:
+                return enrolmment_model_obj.last_hiv_result
+        else:
+            return patient_initial_obj.hiv_status
     
     @property
     def get_navigation_status(self):

@@ -5,12 +5,12 @@
 {{ dob|date:"Y-m-d" }}
 {% age_in_years dob %} yrs 
  {% if hiv_status == 'POS' %}
- 	<span data-toggle="tooltip" data-placement="right" title="Enrollement HIV Status" > <i class="fa  fa-plus-circle  fa-fw"></i> </span>
+ 	<span data-toggle="tooltip" data-placement="right" title="HIV Status" > <i class="fa  fa-plus-circle  fa-fw"></i> </span>
  {% else %}
- 	{% if enrollment_hiv_status == 'NEG' %}
- 		<span data-toggle="tooltip" data-placement="right" title="Enrollement HIV Status"> <i  class="fa  fa-minus-circle  fa-fw"></i> </span>
+ 	{% if hiv_status == 'NEG' %}
+ 		<span data-toggle="tooltip" data-placement="right" title="HIV Status"> <i  class="fa  fa-minus-circle  fa-fw"></i> </span>
 	 	{% else %}
-	 		<span data-toggle="tooltip" data-placement="right" title="Enrollement HIV Status" > <i class="fa  fa-question-circle  fa-fw"></i> </span>
+	 		<span data-toggle="tooltip" data-placement="right" title="HIV Status" > <i class="fa  fa-question-circle  fa-fw"></i> </span>
 	 	{% endif %}
  {% endif %}
 </a>
