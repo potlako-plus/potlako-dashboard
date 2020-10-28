@@ -55,10 +55,10 @@
 					 
 					 <strong>Aa no duma ku nginilila mu study?</strong> <br> <br>
 					 
-					 <input type="checkbox" id="yes" name="yes" value="yes">
-					 <label for="agree"> Ee:  Lakidza dumilano ya nlomo (oral consent) u be u dwilila ne ndebeleko ye ku nginililia.  </label><br>
-					 <input type="checkbox" id="no" name="no" value="no">
-					 <label for="disagree"> Aa:  Bokela nthu tjibaka tja a pu pa itjo. </label><br><br>
+					 <input type="radio" id="yes" name="consented" value="yes">
+					 <label for="agree"> Ee:  Lakidza dumilano ya nlomo (oral consent) u be u dwilila ne ndebeleko ye ku nginililia. </label><br>
+					 <input type="radio" id="no" name="consented" value="no">
+					 <label for="disagree"> Aa:  Bokela nthu tjibaka tja a pu pa itjo.. </label><br><br>
 						
 					 <label for="participant_name">Zina le nthu uno nginilila mu shakisiso:</label>
 					 <input type="text" id="participant_name" name="participant_name"><br>	
@@ -84,11 +84,10 @@
             <tr class="item">
                 <td>
 					{{ user.first_name }} &nbsp;&nbsp; {{ user.last_name }} &nbsp;&nbsp;
-					<input type="text" id="designation" name="designation"><br><br>
                 </td>
                 
                 <td>
-                <input type="text" id="title" name="title"><br><br>
+                	<input type="text" id="designation" name="designation"><br><br>
                 </td>
 
             </tr>

@@ -87,7 +87,7 @@
                 </td>
                 
                 <td>
-                <input type="text" id="designation" name="designation"><br><br>
+                	<input type="text" id="designation" name="designation"><br><br>
                 </td>
 
             </tr>
@@ -117,17 +117,5 @@
         <input class="btn btn-primary" type="submit" value="Save">
         </form>
     </div>
-    <script>
-		$("input:checkbox").on('click', function() {
-			var $box = $(this);
-			if ($box.is(":checked")) {
-				var group = "input:checkbox[name='" + $box.prop("name") + "']";
-				$(group).prop("checked", false);
-				$box.prop("checked", true);
-			} else {
-				$box.prop("checked", false);
-			}
-		});
-    </script>
 </body>
 </html> 
