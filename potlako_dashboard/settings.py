@@ -131,6 +131,7 @@ DASHBOARD_URL_NAMES = {
     'endpoint_listboard_url': 'potlako_dashboard:endpoint_listboard_url',
     'subject_dashboard_url': 'potlako_dashboard:subject_dashboard_url',
     'data_manager_listboard_url': 'edc_data_manager:data_manager_listboard_url',
+    'verbal_consent_url': 'potlako_dashboard:verbal_consent_url'
 }
 
 DASHBOARD_BASE_TEMPLATES = {

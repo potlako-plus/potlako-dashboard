@@ -33,7 +33,7 @@ class SubjectScreeningModelWrapperMixin:
     @property
     def subject_screening_options(self):
         """Returns a dictionary of options to get an existing
-        specimen consent model instance.
+        verbal consent model instance.
         """
         options = dict(
             screening_identifier=self.object.screening_identifier)

@@ -1,5 +1,4 @@
 import re
-# from django.apps import apps as django_apps
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.utils.decorators import method_decorator
@@ -36,14 +35,16 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(
-            clinician_call_enrollment_add_url=self.model_cls().get_absolute_url())
+            clinician_call_enrollment_add_url=self.model_cls().get_absolute_url(),
+        )
         return context
 
     def get_queryset_filter_options(self, request, *args, **kwargs):
         options = super().get_queryset_filter_options(request, *args, **kwargs)
         if kwargs.get('screening_identifier'):
             options.update(
-                {'screening_identifier': kwargs.get('screening_identifier')})
+                {'screening_identifier': kwargs.get('screening_identifier')},
+                )
         return options
 
     def extra_search_options(self, search_term):

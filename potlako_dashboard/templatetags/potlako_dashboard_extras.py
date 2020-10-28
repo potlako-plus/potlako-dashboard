@@ -1,5 +1,6 @@
 from django import template
 from django.conf import settings
+from edc_base.utils import get_utcnow
 
 register = template.Library()
 
@@ -10,6 +11,14 @@ def screening_button(model_wrapper):
         add_screening_href=model_wrapper.subject_screening.href,
         screening_identifier=model_wrapper.object.screening_identifier,
         subject_screening_obj=model_wrapper.subject_screening_model_obj)
+    
+@register.inclusion_tag('potlako_dashboard/buttons/verbal_script_button.html')
+def verbal_script_button(model_wrapper):
+    return dict(
+        add_screening_href=model_wrapper.subject_screening.href,
+        screening_identifier=model_wrapper.object.screening_identifier,
+        subject_screening_obj=model_wrapper.subject_screening_model_obj,
+        verbal_consent_url=settings.DASHBOARD_URL_NAMES.get('verbal_consent_url'))
 
 
 @register.inclusion_tag('potlako_dashboard/buttons/clinician_call_enrollment_button.html')

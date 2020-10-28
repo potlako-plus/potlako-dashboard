@@ -26,13 +26,16 @@
 
 {% block listboard_table_button_column %}
     <td style="white-space: nowrap;">
-    <div class="btn-group">
+    <div class="btn-group ">
     {% clinician_call_enrollment_button result %}
     {% if result.eligible_at_enrol %}
 		{% screening_button result %}
 		{% if not result.is_eligible %}
 	    	{% eligibility_button result %}
 	       {% else %}
+	       {% if not result.verbal_script_obj %}
+	        	{% verbal_script_button result %}
+	        {% else %}
 	    	{% if not result.consent_model_obj %}
 	        	{% consent_button result %}
 	        {% else %}
@@ -40,6 +43,7 @@
 	        	{% if result.subject_locator %}
 	        		{% dashboard_button result %}
 	        	{% endif %}
+	        {% endif %}
 	        {% endif %}
 	       {% endif %}
 	{% else %}

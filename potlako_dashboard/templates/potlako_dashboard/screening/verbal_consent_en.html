@@ -1,0 +1,124 @@
+{% load static %}
+
+<!doctype html>
+<html>
+<head>
+   <meta charset="utf-8">
+    <title>Verbal Script</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'potlako_dashboard/css/verbal_consent.css' %}">
+    
+    <link rel="shortcut icon" href="{% static 'potlako_dashboard/images/favicon.png' %}" type="image/png">
+    <link rel="icon" href="{% static 'potlako_dashboard/images/favicon.png' %}" type="image/png" >
+</head>
+
+<body>
+    <div class="order-box">
+    	<div>
+    		<img src="{% static 'potlako_dashboard/images/potlako_logo_small.png' %}"> 
+       		<span> Potlako+ oral consent script, v1.0, 5 June 2019, English </span>
+    	</div>
+    	<form method = 'POST' id = "new_post" action = "{% url 'potlako_dashboard:verbal_consent_url'  screening_identifier  %}">
+    	{% csrf_token %}
+        <table cellpadding="0" cellspacing="0">
+            
+            <tr class="information">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                           	<td>
+                           		<span>
+								   Protocol Title: Potlako+, an intervention to improve timely cancer diagnosis and care <br>
+								   Principal Investigators:  Scott Dryden-Peterson, MD MSc and Neo Tapela, MD MPH <br>
+								   Tlhaloso ya batsayakarolo ba tshekatsheko: Balwetsi ba ba ka tswang ba na le kankere <br>
+								   Version Date: 5 June 2019 
+                           		</span>
+                           	</td>
+
+                            <td style="border:none"></td>
+                            
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            
+			
+            <tr class="details">
+                <td>
+                    <!-- HTML Content -->
+				     {% block verbal_consent_body %}
+				
+				       {% include 'potlako_dashboard/screening/verbal_consent_body_en.html' %}
+				
+					 {% endblock verbal_consent_body %}
+					 
+
+					 <strong>Do you agree to participate in this study?</strong> <br> <br>
+					 
+					 <input type="checkbox" id="yes" name="yes" value="yes">
+					 <label for="agree"> Yes:  Document oral consent below and continue with enrollment interview. </label><br>
+					 <input type="checkbox" id="no" name="no" value="no">
+					 <label for="disagree"> No:  Thank them for their time.  </label><br><br>
+						
+					 <label for="participant_name">Name of Subject: </label>
+					 <input type="text" id="participant_name" name="participant_name"><br>	
+				      <br>
+				
+					 <strong> Person Obtaining Consent </strong>
+					 I have read this form to the subject.  An explanation of the research was given and questions 
+					 from the subject were solicited and answered to the subject’s satisfaction.  In my judgment, 
+					 the subject has demonstrated comprehension of the information.  The subject has provided oral 
+					 consent to participate in this study. <br> 
+							   
+                </td>
+            </tr>
+
+            <tr class="heading">
+                <td>
+                    Name and Title 
+                </td>
+                <td>
+                    Title 
+                </td>
+
+            </tr>
+
+            <tr class="item">
+                <td>
+					{{ user.first_name }} &nbsp;&nbsp; {{ user.last_name }} &nbsp;&nbsp;
+					<input type="text" id="designation" name="designation"><br><br>
+                </td>
+                
+                <td>
+                <input type="text" id="title" name="title"><br><br>
+                </td>
+
+            </tr>
+            <tr class="heading">
+                <td>
+                    Signature of Person Obtaining Consent
+                </td>
+                
+                <td>
+                    Date
+                </td>
+
+            </tr>
+
+            <tr class="item">
+            	<td>
+                <input type="text" id="signature" name="signature"><br><br>
+                </td>
+                
+
+                <td>
+                    {{ verbal_consent_datetime|date:"SHORT_DATETIME_FORMAT" }}
+                </td>
+            </tr>
+            
+        </table>
+        <input class="btn btn-primary" type="submit" value="Save">
+        </form>
+    </div>
+</body>
+</html> 

@@ -10,6 +10,7 @@ from edc_navbar import NavbarViewMixin
 from ...model_wrappers import SubjectConsentModelWrapper
 from .filters import ListboardViewFilters
 
+
 class ListBoardView(BaseListboardView, NavbarViewMixin, EdcBaseViewMixin,
                     ListboardFilterViewMixin, SearchFormViewMixin):
 
