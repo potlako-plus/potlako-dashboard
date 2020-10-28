@@ -1,0 +1,35 @@
+body {
+	font-size: 16px;
+	text-align: justify;
+	font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    color: #555;
+}
+
+
+.information{
+	padding: 10px;
+    border: 1px solid black;
+    border-radius: 25px;
+}
+
+@page {
+    size: a4 portrait;
+    
+    @frame header_frame {           /* Static Frame */
+        -pdf-frame-content: header_content;
+        left: 50pt; 
+        width: 500pt; 
+        top: 0pt; 
+        height: 100pt;
+        -pdf-frame-border:1;
+        
+    }
+    @frame content_frame {          /* Content Frame */
+        left: 50pt; width: 500pt; top: 90pt; height: 662pt;
+    }
+    @frame footer_frame {           /* Another static Frame */
+        -pdf-frame-content: footer_content;
+        left: 50pt; width: 100pt; top: 782pt; height: 20pt;
+        
+    }
+}
