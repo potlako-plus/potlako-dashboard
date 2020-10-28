@@ -107,4 +107,13 @@
 
 .rtl table tr td:nth-child(2) {
     text-align: left;
-} 
+}
+
+input[type=text], select {
+  padding: 5px 2px;
+  margin: 2px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}

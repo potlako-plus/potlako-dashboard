@@ -19,17 +19,29 @@ body {
         -pdf-frame-content: header_content;
         left: 50pt; 
         width: 500pt; 
-        top: 0pt; 
-        height: 100pt;
+        top: 2pt; 
+        height: 60pt;
         -pdf-frame-border:1;
         
     }
     @frame content_frame {          /* Content Frame */
-        left: 50pt; width: 500pt; top: 90pt; height: 662pt;
+        left: 50pt; width: 500pt; top: 60pt; height: 682pt;
     }
     @frame footer_frame {           /* Another static Frame */
         -pdf-frame-content: footer_content;
         left: 50pt; width: 100pt; top: 782pt; height: 20pt;
         
     }
+}
+
+table tr td p {
+	line-height: 60%;
+}
+
+.check {
+	border: 1.2px solid #6c6c6c;
+	text-align:center;
+	color: #919191;
+	font-weight: 300;
+	font-family: sans-serif, "Helvetica Neue", "Lucida Grande", Arial;
 }
