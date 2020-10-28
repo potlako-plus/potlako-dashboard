@@ -17,15 +17,23 @@ body {
     
     @frame header_frame {           /* Static Frame */
         -pdf-frame-content: header_content;
+        left: 280pt; 
+        width: 350pt; 
+        top: 10pt; 
+        height: 20pt;
+        
+    }
+    @frame logo_content {           /* Static Frame */
         left: 50pt; 
-        width: 500pt; 
-        top: 0pt; 
+        width: 150pt; 
+        top: 10pt; 
         height: 100pt;
-        -pdf-frame-border:1;
+        /* -pdf-frame-border:1; */
         
     }
     @frame content_frame {          /* Content Frame */
         left: 50pt; width: 500pt; top: 90pt; height: 662pt;
+        -pdf-frame-border:1;
     }
     @frame footer_frame {           /* Another static Frame */
         -pdf-frame-content: footer_content;
@@ -33,3 +41,4 @@ body {
         
     }
 }
+

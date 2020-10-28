@@ -34,6 +34,7 @@
            href="{{ result.href }}">
         <i class="fa fa-pencil-alt fa-sm"></i>
     </a>
+    {% verbal_consent_pdf_button result %}
     {% if result.id and result.subject_locator %}
 
          <a id="btn-subject-dashboard-{{result.subject_identifier}}" class="btn btn-primary btn-sm" role="button"   

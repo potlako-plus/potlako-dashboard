@@ -1,4 +1,6 @@
+from django.apps import apps as django_apps
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from edc_model_wrapper import ModelWrapper
 from .subject_locator_model_wrapper_mixin import SubjectLocatorModelWrapperMixin
 from .baseline_summary_model_wrapper_mixin import BaselineClinicalSummaryModelWrapperMixin
@@ -19,3 +21,19 @@ class SubjectConsentModelWrapper(
     next_url_name = settings.DASHBOARD_URL_NAMES.get('screening_listboard_url')
     next_url_attrs = ['screening_identifier']
     querystring_attrs = ['screening_identifier', 'subject_identifier']
+
+    @property
+    def verbal_consent_obj(self):
+        verbal_consent_cls = django_apps.get_model('potlako_subject.verbalconsent')
+        try:
+            return verbal_consent_cls.objects.get(
+                screening_identifier=self.screening_identifier,
+                version='1')
+        except ObjectDoesNotExist:
+            return None
+        
+    @property
+    def verbal_consent_pdf_url(self):
+        if self.verbal_consent_obj:
+            return self.verbal_consent_obj.file.url
+        return None

@@ -9,7 +9,7 @@ from edc_navbar import NavbarViewMixin
 from django.contrib import messages
 
 from .pdf_response_mixin import PdfResponseMixin
-from ...model_wrappers import VerbalConsentModelWrapper, SubjectConsentModelWrapper
+from ...model_wrappers import SubjectConsentModelWrapper
 from potlako_subject.forms import VerbalConsentForm
 from django.http.response import HttpResponseRedirect
 
@@ -24,7 +24,6 @@ class VerbalConsentView(
     pdf_name = 'verbal_consent'
     navbar_name = 'potlako_dashboard'
     navbar_selected_item = 'eligible_subjects'
-    verbal_script_model_wrapper_cls = VerbalConsentModelWrapper
     form_class = VerbalConsentForm
     subject_consent_model_wrapper_cls = SubjectConsentModelWrapper
 
@@ -65,7 +64,7 @@ class VerbalConsentView(
                 signature=request.POST['signature'])
             
             
-#             f_name, lname = request.POST['participant_name'].split(" ")
+            f_name, lname = request.POST['participant_name'].split(" ")
             
             self.handle_uploaded_file(context, model_obj=verbal_consent_model, **kwargs)
                 

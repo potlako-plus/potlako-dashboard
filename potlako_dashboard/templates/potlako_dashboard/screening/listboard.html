@@ -33,8 +33,8 @@
 		{% if not result.is_eligible %}
 	    	{% eligibility_button result %}
 	       {% else %}
-	       {% if not result.verbal_script_obj %}
-	        	{% verbal_script_button result %}
+	       {% if not result.verbal_consent_obj %}
+	        	{% verbal_consent_button result %}
 	        {% else %}
 	    	{% if not result.consent_model_obj %}
 	        	{% consent_button result %}

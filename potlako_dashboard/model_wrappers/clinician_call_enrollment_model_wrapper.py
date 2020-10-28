@@ -22,7 +22,17 @@ class ClinicianCallEnrollmentModelWrapper(SubjectScreeningModelWrapperMixin,
     next_url_attrs = ['screening_identifier']
     querystring_attrs = ['screening_identifier']
     next_url_name = settings.DASHBOARD_URL_NAMES.get('screening_listboard_url')
-
+    
+    @property
+    def verbal_consent_obj(self):
+        verbal_consent_cls = django_apps.get_model('potlako_subject.verbalconsent')
+        try:
+            return verbal_consent_cls.objects.get(
+                screening_identifier=self.screening_identifier,
+                version=self.consent_version)
+        except ObjectDoesNotExist:
+            return None
+        
     @property
     def consent_version(self):
         return '1'
@@ -41,6 +51,8 @@ class ClinicianCallEnrollmentModelWrapper(SubjectScreeningModelWrapperMixin,
             return self.subject_consent_cls.objects.get(**self.consent_options)
         except ObjectDoesNotExist:
             return None
+        
+    
 
     @property
     def subject_consent_cls(self):

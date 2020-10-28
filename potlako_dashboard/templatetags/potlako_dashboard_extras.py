@@ -12,13 +12,19 @@ def screening_button(model_wrapper):
         screening_identifier=model_wrapper.object.screening_identifier,
         subject_screening_obj=model_wrapper.subject_screening_model_obj)
     
-@register.inclusion_tag('potlako_dashboard/buttons/verbal_script_button.html')
-def verbal_script_button(model_wrapper):
+@register.inclusion_tag('potlako_dashboard/buttons/verbal_consent_button.html')
+def verbal_consent_button(model_wrapper):
     return dict(
         add_screening_href=model_wrapper.subject_screening.href,
         screening_identifier=model_wrapper.object.screening_identifier,
         subject_screening_obj=model_wrapper.subject_screening_model_obj,
         verbal_consent_url=settings.DASHBOARD_URL_NAMES.get('verbal_consent_url'))
+    
+@register.inclusion_tag('potlako_dashboard/buttons/verbal_consent_pdf_button.html')
+def verbal_consent_pdf_button(model_wrapper):
+    return dict(
+        screening_identifier=model_wrapper.object.screening_identifier,
+        verbal_consent_pdf_url=model_wrapper.verbal_consent_pdf_url)
 
 
 @register.inclusion_tag('potlako_dashboard/buttons/clinician_call_enrollment_button.html')

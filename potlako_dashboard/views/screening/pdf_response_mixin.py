@@ -43,7 +43,7 @@ class PdfResponseMixin(object, ):
         
         if model_obj:
             model_obj.file = f'{self.upload_to}{self.get_pdf_name()}.pdf'
-#             model_obj.save()
+            model_obj.save()
 
     def view_pdf(self, context,  **kwargs):
         template = self.pdf_template
