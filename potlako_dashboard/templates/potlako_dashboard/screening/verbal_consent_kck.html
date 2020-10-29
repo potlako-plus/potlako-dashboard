@@ -58,7 +58,7 @@
 					 <input type="radio" id="yes" name="consented" value="yes">
 					 <label for="agree"> Ee:  Lakidza dumilano ya nlomo (oral consent) u be u dwilila ne ndebeleko ye ku nginililia. </label><br>
 					 <input type="radio" id="no" name="consented" value="no">
-					 <label for="disagree"> Aa:  Bokela nthu tjibaka tja a pu pa itjo.. </label><br><br>
+					 <label for="disagree"> Aa:  Bokela nthu tjibaka tja a pu pa itjo. </label><br><br>
 						
 					 <label for="participant_name">Zina le nthu uno nginilila mu shakisiso:</label>
 					 <input type="text" id="participant_name" name="participant_name"><br>	
@@ -111,6 +111,7 @@
                 <td>
                     {{ verbal_consent_datetime|date:"SHORT_DATETIME_FORMAT" }}
                 </td>
+                <input type="hidden" id="language" name="language" value={{ language }}><br><br>
             </tr>
             
         </table>

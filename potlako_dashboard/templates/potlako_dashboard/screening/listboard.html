@@ -33,17 +33,19 @@
 		{% if not result.is_eligible %}
 	    	{% eligibility_button result %}
 	       {% else %}
-	       {% if not result.verbal_consent_obj %}
-	        	{% verbal_consent_button result %}
-	        {% else %}
+	      
 	    	{% if not result.consent_model_obj %}
-	        	{% consent_button result %}
+	    		 {% if not result.verbal_consent_obj %}
+		        	{% verbal_consent_button result %}
+		        	{% else %}
+		        	{% consent_button result %}
+		        	{% endif %}
 	        {% else %}
 	        	{% subject_locator_button result %}
 	        	{% if result.subject_locator %}
 	        		{% dashboard_button result %}
 	        	{% endif %}
-	        {% endif %}
+	        
 	        {% endif %}
 	       {% endif %}
 	{% else %}

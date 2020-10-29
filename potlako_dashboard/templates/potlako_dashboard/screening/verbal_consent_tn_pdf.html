@@ -1,0 +1,104 @@
+{% load static %}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Verbal Script</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'potlako_dashboard/css/verbal_consent_pdf.css' %}">
+    
+    <link rel="shortcut icon" href="{% static 'potlako_dashboard/images/favicon.png' %}" type="image/png">
+    <link rel="icon" href="{% static 'potlako_dashboard/images/favicon.png' %}" type="image/png" >
+    
+   
+</head>
+
+<body>
+   <!-- Content for Static Frame 'header_frame' -->
+   
+    <div id="header_content">
+       <span class='heading'> Potlako+ oral consent script, v1.0, 5 June 2019, English </span>
+    </div>
+    
+    <div id="logo_content">
+      <img src="{% static 'potlako_dashboard/images/potlako_logo_small.png' %}">
+    </div>
+
+    <!-- Content for Static Frame 'footer_frame' -->
+    <div id="footer_content">(c) - page <pdf:pagenumber>
+        of <pdf:pagecount>
+    </div>
+
+    <!-- HTML Content -->
+	<div class='information'>
+	   Protocol Title: Potlako+, an intervention to improve timely cancer diagnosis and care <br>
+	   Principal Investigators:  Scott Dryden-Peterson, MD MSc and Neo Tapela, MD MPH <br>
+	   Tlhaloso ya batsayakarolo ba tshekatsheko: Balwetsi ba ba ka tswang ba na le kankere <br>
+	   Version Date: 5 June 2019
+	</div> <br>
+		
+	<!-- switch page templates -->
+    <pdf:nexttemplate name="regular_template" />
+     {% block verbal_consent_body %}
+
+       {% include 'potlako_dashboard/screening/verbal_consent_body_tn.html' %}
+
+	 {% endblock verbal_consent_body %}
+
+	 <strong>A o dumela go tsaya karolo mo tshekatshekong e?</strong> <br>
+	 <table>
+	 	<tr>
+	 		<td width='14'>
+	 			{% if consented == 'yes' %}
+	 				<p class="check">x</p>
+	 			{% else %}
+	 				<p class="check">&nbsp;</p>
+	 			{% endif %}
+	 		</td>
+	 		<td width='5' class="spacing"></td>
+	 		<td><p class="agree">Ee:  Kwala mokwalo wa tetla, o bo o tswelela ka potsolotso ya go tsenelela tshekatsheko </p></td>
+	 	</tr>
+	 	<tr></tr>
+	 	<tr>
+	 		<td width='14'>
+	 			{% if consented == 'no' %}
+	 				<p class="check">x</p>
+	 			{% else %}
+	 				<p class="check">&nbsp;</p>
+	 			{% endif %}
+	 		</td>
+	 		<td width='5' class="spacing"></td>
+	 		<td><p class="no">Nnyaa:  Mo lebogele nako ya gagwe.</p></td>
+	 	</tr>
+	 </table>
+	<br/>
+	 Leina la motsayakarolo: {{ participant_name }} 	
+    <br/>
+	 <p><strong> Yo o tsayang mokwalo wa tetla </strong>
+	 Ke baletse motsayakarolo mokwalo o wa tetla. Ke file tlhaloso ya tshekatsheko, ke boditse motsayakarolo dipotso, a 
+	 bo ka araba motsayakarolo ka mo go kgotsofatsang. Ka tshwetso yame, motsayakarolo o supile gore o tlhalogantse kitso e.</p>
+	 <p>Motsayakarolo o file tetla ya go tsaya karolo ka molomo.</p>
+	 <table>
+	 	<tr>
+	 		<td width='120' style='border-bottom:1px solid black;'>{{ user_uploaded }}</td>
+	 		<td width='80' style='border-bottom:1px solid black;'>{{ designation }}</td>
+	 	</tr>
+	 	<tr style="padding-top:2px;">
+	 		<td width='200' >Leina le seemo(Title)</td>
+	 		<td></td>
+	 	</tr>
+	 </table>
+	 <table>
+	 	<tr style="padding-top:10px;">
+	 		<td width='300' style='border-bottom:1px solid black;'>{{ signature }}</td>
+	 		<td width='50'>&nbsp;</td>
+	 		<td width='200' style='border-bottom:1px solid black;'>{{ verbal_consent_datetime|date:"SHORT_DATETIME_FORMAT" }}</td>
+	 	</tr>
+	 	<tr style="padding-top:2px;">
+	 		<td width='300'>Monwana wa yo o tsayang mokwalo wa tetla</td>
+	 		<td></td>
+	 		<td>Letsatsi</td>
+	 	</tr>
+	 </table>
+</body>
+</html>

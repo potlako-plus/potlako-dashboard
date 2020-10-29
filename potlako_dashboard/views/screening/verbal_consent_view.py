@@ -12,6 +12,7 @@ from .pdf_response_mixin import PdfResponseMixin
 from ...model_wrappers import SubjectConsentModelWrapper
 from potlako_subject.forms import VerbalConsentForm
 from django.http.response import HttpResponseRedirect
+from django.templatetags.i18n import language
 
 
 class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
@@ -34,7 +35,10 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
     @property
     def subject_consent_model_cls(self):
         return django_apps.get_model('potlako_subject.subjectconsent')
-
+    
+    
+            
+    
     def post(self, request, *args, **kwargs):
         # if this is a POST request we need to process the form data
         if request.method == 'POST':
@@ -42,15 +46,17 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
             # create a form instance and populate it with data from the request:
 
 
-            # form = VerbalConsentForm(request.POST)
+            
+            
             context = self.get_context_data(**kwargs)
 
             options = {
                 'screening_identifier': context.get('screening_identifier'),
                 'user_uploaded': request.user.first_name + " " + self.request.user.last_name,
-                'language': context.get('language'),
+                'language': request.POST['language'],
                 'datetime_captured': get_utcnow(),
                 'version': '1'}
+            
             verbal_consent_model = self.model_cls(
                 **options,
                 user_created=request.user.username,
@@ -64,17 +70,17 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
                 consented=request.POST['consented'])
 
 
-#             f_name, lname = request.POST['participant_name'].split(" ")
+            f_name, l_name = request.POST['participant_name'].split(" ")
 
             self.handle_uploaded_file(context, model_obj=verbal_consent_model, **kwargs)
 
                 # process the data in form.cleaned_data as required
                 # ...
                 # redirect to a new URL:
-            return self.view_pdf(context)
+#             return self.view_pdf(context)
 
-#                 return HttpResponseRedirect(
-#                     self.add_consent_href(fname=f_name, lname=l_name))
+            return HttpResponseRedirect(
+                self.add_consent_href(fname=f_name, lname=l_name))
 
     def add_consent_href(self, fname=None, lname=None):
         """Returns a wrapped saved or unsaved subject screening.
@@ -97,7 +103,7 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
         context.update(
             verbal_consent_datetime=get_utcnow(),
             screening_identifier=screening_identifier,
-            language=self.request.GET.get('language', 'en'),
+            language=self.request.GET.get('language'),
             verbal_consent_href=self.model_cls().get_absolute_url(),
             add_consent_href=self.add_consent_href, )
         return context
@@ -116,6 +122,6 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
 
     @property
     def pdf_template(self):
-#         language=self.context.get('language', 'en')
-#         return f'potlako_dashboard/screening/verbal_consent_{language}_pdf.html'
-        return f'potlako_dashboard/screening/verbal_consent_pdf.html'
+        language = self.request.POST['language']
+        
+        return f'potlako_dashboard/screening/verbal_consent_{language}_pdf.html'
