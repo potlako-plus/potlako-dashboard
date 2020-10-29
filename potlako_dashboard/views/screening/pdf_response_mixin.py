@@ -15,32 +15,32 @@ class UnsupportedMediaPathException(Exception):
 
 
 class PdfResponseMixin(object, ):
-    
+
     pdf_name = None
     pdf_template = None
 
     def get_pdf_name(self):
         return self.pdf_name
-    
+
     def check_upload_dir_exists(self, upload_dir):
         file_path = 'media/%(upload_dir)s' % {'upload_dir': upload_dir}
 
         if not os.path.exists(file_path):
             os.makedirs(file_path)
         return file_path
-    
+
     def handle_uploaded_file(self, context, model_obj=None, **kwargs):
-        
+
         template = self.pdf_template
-        
+
         self.upload_to = self.model_cls.file.field.upload_to
-   
+
         upload_dir = self.check_upload_dir_exists(self.upload_to)
-  
+
         output_filename = f'{upload_dir}{self.get_pdf_name()}.pdf'
         self.pdf = self.generate_pdf(
             template, output_filename=output_filename, context_dict=context)
-        
+
         if model_obj:
             model_obj.file = f'{self.upload_to}{self.get_pdf_name()}.pdf'
             model_obj.save()
@@ -59,17 +59,17 @@ class PdfResponseMixin(object, ):
         @param uri: is the href attribute from the html link element.
         @param rel: gives a relative path, but it's not used here.
         """
-    
+
         if uri.startswith("http://") or uri.startswith("https://"):
             return uri
-    
+
         if settings.DEBUG:
             newpath = uri.replace(settings.STATIC_URL, "").replace(settings.MEDIA_URL, "")
             normalized_path = posixpath.normpath(newpath).lstrip('/')
             absolute_path = finders.find(normalized_path)
             if absolute_path:
                 return absolute_path
-    
+
         if settings.MEDIA_URL and uri.startswith(settings.MEDIA_URL):
             path = os.path.join(settings.MEDIA_ROOT,
                                 uri.replace(settings.MEDIA_URL, ""))
@@ -86,7 +86,7 @@ class PdfResponseMixin(object, ):
                                     'media urls must start with %s or %s' % (
                                     settings.MEDIA_URL, settings.STATIC_URL))
         return path
-        
+
     def generate_pdf(self, template_src, file_object=None, output_filename=None, context_dict=None):
         """
             Uses the xhtml2pdf library to render a PDF to the passed file_object,
@@ -98,21 +98,21 @@ class PdfResponseMixin(object, ):
         result_file = open(output_filename, "w+b")
         if not context_dict:
             context_dict = {}
-    
+
         template = get_template(template_src)
-     
+
         source_html = template.render(context_dict)
         # convert HTML to PDF
         pisa_status = pisa.CreatePDF(
                 BytesIO(source_html.encode("UTF-8")),
                 dest=result_file,
                 link_callback=self.fetch_resources)
-     
+
         # close output file
         result_file.close()
-     
+
         return pisa_status.err
-    
+
     def display_pdf(self, template_src, file_object=None, output_filename=None, context_dict=None):
 
         if not file_object:
@@ -120,9 +120,9 @@ class PdfResponseMixin(object, ):
         if not context_dict:
             context_dict = {}
         template = get_template(template_src)
-      
+
         html = template.render(context_dict)
-      
+
         pdf = pisa.pisaDocument(
             BytesIO(html.encode("UTF-8")), file_object, link_callback=self.fetch_resources)
         if not pdf.err:

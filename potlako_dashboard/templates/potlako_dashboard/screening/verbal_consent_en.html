@@ -54,12 +54,11 @@
 					 
 
 					 <strong>Do you agree to participate in this study?</strong> <br> <br>
-					 
-					 <input type="checkbox" id="yes" name="yes" value="yes">
+					 <input type="radio" id="yes" name="consented" value="yes">
 					 <label for="agree"> Yes:  Document oral consent below and continue with enrollment interview. </label><br>
-					 <input type="checkbox" id="no" name="no" value="no">
+					 <input type="radio" id="no" name="consented" value="no">
 					 <label for="disagree"> No:  Thank them for their time.  </label><br><br>
-						
+					 
 					 <label for="participant_name">Name of Subject: </label>
 					 <input type="text" id="participant_name" name="participant_name"><br>	
 				      <br>
@@ -86,11 +85,10 @@
             <tr class="item">
                 <td>
 					{{ user.first_name }} &nbsp;&nbsp; {{ user.last_name }} &nbsp;&nbsp;
-					<input type="text" id="designation" name="designation"><br><br>
                 </td>
                 
                 <td>
-                <input type="text" id="title" name="title"><br><br>
+                	<input type="text" id="designation" name="designation"><br><br>
                 </td>
 
             </tr>
@@ -107,7 +105,7 @@
 
             <tr class="item">
             	<td>
-                <input type="text" id="signature" name="signature"><br><br>
+                	<input type="text" id="signature" name="signature"><br><br>
                 </td>
                 
 
