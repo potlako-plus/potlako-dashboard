@@ -17,7 +17,7 @@
     		<img src="{% static 'potlako_dashboard/images/potlako_logo_small.png' %}"> 
        		<span> Potlako+ oral consent script, v1.0, 5 June 2019, English </span>
     	</div>
-    	<form method = 'POST' id = "new_post" action = "{% url 'potlako_dashboard:verbal_consent_url'  screening_identifier  %}">
+    	<form method = 'POST' id = "new_post" action = "{% url 'potlako_dashboard:verbal_consent_url'  screening_identifier  %}?language={{ language }}">
     	{% csrf_token %}
         <table cellpadding="0" cellspacing="0">
             
@@ -54,14 +54,20 @@
 					  
 					 
 					 <strong>Aa no duma ku nginilila mu study?</strong> <br> <br>
+					 {% if consented_error %}
+					 <div style="color:red "> {{ consented_error }} </div>
+					 {% endif %}
 					 
 					 <input type="radio" id="yes" name="consented" value="yes">
 					 <label for="agree"> Ee:  Lakidza dumilano ya nlomo (oral consent) u be u dwilila ne ndebeleko ye ku nginililia. </label><br>
 					 <input type="radio" id="no" name="consented" value="no">
 					 <label for="disagree"> Aa:  Bokela nthu tjibaka tja a pu pa itjo. </label><br><br>
 						
+					{% if participant_name_error %}
+					<div style="color:red "> {{ participant_name_error }} </div> <br>
+					{% endif %} 
 					 <label for="participant_name">Zina le nthu uno nginilila mu shakisiso:</label>
-					 <input type="text" id="participant_name" name="participant_name"><br>	
+					 <input type="text" id="participant_name" name="participant_name" required><br>	
 				      <br>
 				
 					 <strong> Nthu u no yendisa tjidumano </strong>
@@ -87,7 +93,10 @@
                 </td>
                 
                 <td>
-                	<input type="text" id="designation" name="designation"><br><br>
+                	{% if designation_error %}
+                	<div style="color:red ">{{ designation_error }} </div> <br>
+                	{% endif %}
+                	<input type="text" id="designation" name="designation" required><br><br>
                 </td>
 
             </tr>
@@ -104,7 +113,10 @@
 
             <tr class="item">
             	<td>
-                <input type="text" id="signature" name="signature"><br><br>
+            	{% if signature_error %}
+            	 <div style="color:red "> {{ signature_error }} </div> 
+            	{% endif %}
+                <input type="text" id="signature" name="signature" required><br><br>
                 </td>
                 
 
