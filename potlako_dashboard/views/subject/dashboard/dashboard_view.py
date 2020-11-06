@@ -53,11 +53,11 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
             nav_flag=self.get_navigation_status,
             hiv_status=self.get_hiv_status)
         return context
-    
+
     @property
     def get_hiv_status(self):
         patient_initial = django_apps.get_model('potlako_subject.patientcallinitial')
-        
+
         try:
             patient_initial_obj = patient_initial.objects.get(
                 subject_visit__subject_identifier=self.kwargs.get('subject_identifier'))
@@ -72,31 +72,30 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
                 return enrolmment_model_obj.last_hiv_result
         else:
             return patient_initial_obj.hiv_status
-    
+
     @property
     def get_navigation_status(self):
         keysteps_form = django_apps.get_model('potlako_subject.evaluationtimeline')
-        
+
         key_steps = keysteps_form.objects.filter(
             navigation_plan__subject_identifier = self.kwargs.get('subject_identifier'),
             key_step_status=NOT_DONE)
         flags = []
-        
+
         for key_step in key_steps:
             today = get_utcnow().date()
             target_date = key_step.target_date
-            
+
             if(today - target_date).days > 7:
                 flags.append('past')
             elif (target_date - today).days > 7:
                 flags.append('early')
             else:
                 flags.append('on_time')
-                    
+
         flags = list(set(flags))
         return max(flags) if flags else 'default'
-        
-            
+
     def get_locator_info(self):
 
         subject_identifier = self.kwargs.get('subject_identifier')

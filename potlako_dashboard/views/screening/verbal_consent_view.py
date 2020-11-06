@@ -35,19 +35,13 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
     @property
     def subject_consent_model_cls(self):
         return django_apps.get_model('potlako_subject.subjectconsent')
-    
-    
-            
-    
+
     def post(self, request, *args, **kwargs):
         # if this is a POST request we need to process the form data
         if request.method == 'POST':
             self.upload_to = self.model_cls.file.field.upload_to
             # create a form instance and populate it with data from the request:
 
-
-            
-            
             context = self.get_context_data(**kwargs)
 
             options = {
@@ -56,7 +50,7 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
                 'language': request.POST['language'],
                 'datetime_captured': get_utcnow(),
                 'version': '1'}
-            
+
             verbal_consent_model = self.model_cls(
                 **options,
                 user_created=request.user.username,
@@ -68,7 +62,6 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
                 designation=request.POST['designation'],
                 signature=request.POST['signature'],
                 consented=request.POST['consented'])
-
 
             f_name, l_name = request.POST['participant_name'].split(" ")
 
