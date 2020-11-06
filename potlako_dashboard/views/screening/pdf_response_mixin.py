@@ -119,17 +119,26 @@ class PdfResponseMixin(object, ):
         return pisa_status.err
 
     def encrypt_pdf(self, file_path=None, password=None):
-        input_file = open(file_path, "rb")
-
-        input_pdf = PdfFileReader(input_file)
-
+        """
+        Encrypt pdf file, and override the pdf saved with password protected pdf.
+        @param file_path: dir and name of the pdf file to encrypt.
+        @param password: password to use for encryption.
+        """
         output_pdf = PdfFileWriter()
-        output_pdf.appendPagesFromReader(input_pdf)
+        input_pdf = PdfFileReader(file_path)
+
+        num = input_pdf.numPages
+
+        for idx in range(num):
+
+            page = input_pdf.getPage(idx)
+
+            output_pdf.addPage(page)
+
         output_pdf.encrypt(password)
 
-        with open(file_path, "wb") as output_file:
+        with open(file_path, "w+b") as output_file:
             output_pdf.write(output_file)
-        input_file.close()
 
     def display_pdf(self, template_src, file_object=None, output_filename=None, context_dict=None):
 
