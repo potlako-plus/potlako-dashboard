@@ -6,13 +6,11 @@ from edc_base.view_mixins import EdcBaseViewMixin
 from edc_dashboard.view_mixins import TemplateRequestContextMixin
 from edc_base.utils import get_utcnow
 from edc_navbar import NavbarViewMixin
-from django.contrib import messages
 
 from .pdf_response_mixin import PdfResponseMixin
 from ...model_wrappers import SubjectConsentModelWrapper
 from potlako_subject.forms import VerbalConsentForm
 from django.http.response import HttpResponseRedirect
-from django.templatetags.i18n import language
 
 
 class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
@@ -35,6 +33,10 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
     @property
     def subject_consent_model_cls(self):
         return django_apps.get_model('potlako_subject.subjectconsent')
+
+    @property
+    def clinician_call_model_cls(self):
+        return django_apps.get_model('potlako_subject.cliniciancallenrollment')
 
     def post(self, request, *args, **kwargs):
         # if this is a POST request we need to process the form data
@@ -62,7 +64,6 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
                 designation=request.POST['designation'],
                 signature=request.POST['signature'],
                 consented=request.POST['consented'])
-
             f_name, l_name = request.POST['participant_name'].split(" ")
 
             self.handle_uploaded_file(context, model_obj=verbal_consent_model, **kwargs)
@@ -97,6 +98,7 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
             verbal_consent_datetime=get_utcnow(),
             screening_identifier=screening_identifier,
             language=self.request.GET.get('language'),
+            national_identity=self.national_id(screening_identifier),
             verbal_consent_href=self.model_cls().get_absolute_url(),
             add_consent_href=self.add_consent_href, )
         return context
@@ -116,5 +118,9 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
     @property
     def pdf_template(self):
         language = self.request.POST['language']
-        
         return f'potlako_dashboard/screening/verbal_consent_{language}_pdf.html'
+
+    def national_id(self, screening_identifier):
+        model_obj = self.clinician_call_model_cls.objects.get(
+            screening_identifier=screening_identifier)
+        return model_obj.national_identity
