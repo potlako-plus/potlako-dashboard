@@ -9,15 +9,16 @@
     
     <link rel="shortcut icon" href="{% static 'potlako_dashboard/images/favicon.png' %}" type="image/png">
     <link rel="icon" href="{% static 'potlako_dashboard/images/favicon.png' %}" type="image/png" >
+    <script type="text/javascript" charset="utf8" src="{%static 'potlako_dashboard/js/verbal_consent.js' %}"></script>
 </head>
 
 <body>
     <div class="order-box">
     	<div>
-    		<img src="{% static 'potlako_dashboard/images/potlako_logo_small.png' %}"> 
+    		<!--  <img src="{% static 'potlako_dashboard/images/potlako_logo_small.png' %}"> -->
        		<span> Potlako+ oral consent script, v1.0, 5 June 2019, English </span>
     	</div>
-    	<form method = 'POST' id = "new_post" action = "{% url 'potlako_dashboard:verbal_consent_url'  screening_identifier  %}?language={{ language }}">
+    	<form method='POST' id="new_post" action="{% url 'potlako_dashboard:verbal_consent_url'  screening_identifier  %}?language={{ language }}" name="verbal_consent" onsubmit="return validateForm()">
     	{% csrf_token %}
         <table cellpadding="0" cellspacing="0">
             
@@ -67,7 +68,7 @@
 					<div style="color:red "> {{ participant_name_error }} </div> <br>
 					{% endif %} 
 					 <label for="participant_name">Zina le nthu uno nginilila mu shakisiso:</label>
-					 <input type="text" id="participant_name" name="participant_name" required><br>	
+					 <input type="text" id="participant_name" name="participant_name" value="{{full_name}}" required readonly><br>	
 				      <br>
 				
 					 <strong> Nthu u no yendisa tjidumano </strong>
@@ -116,7 +117,11 @@
             	{% if signature_error %}
             	 <div style="color:red "> {{ signature_error }} </div> 
             	{% endif %}
-                <input type="text" id="signature" name="signature" required><br><br>
+                <input type="hidden" id="initials" value="{{user.first_name|first}}{{user.last_name|first}}"/>
+               	<input type="text" id="signature" name="signature" minlength="2" required />
+               	<span class="error">
+               		<p style="font-size:12px;margin: 0px;color:red;display:block;" id="name_error"></p>
+               	</span>
                 </td>
                 
 

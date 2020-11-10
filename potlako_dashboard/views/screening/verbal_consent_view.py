@@ -1,5 +1,7 @@
 from django.apps import apps as django_apps
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
 from edc_base.view_mixins import EdcBaseViewMixin
@@ -53,11 +55,11 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
                 'datetime_captured': get_utcnow(),
                 'version': '1'}
 
+#             verbal_consent_form = self.form_class(options)
             verbal_consent_model = self.model_cls(
                 **options,
                 user_created=request.user.username,
                 created=get_utcnow())
-
             context.update(
                 **options,
                 participant_name=request.POST['participant_name'],
@@ -93,12 +95,16 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         screening_identifier = self.kwargs.get('screening_identifier', None)
-
+        f_name = self.clinician_call_field_value(screening_identifier, 'first_name')
+        l_name = self.clinician_call_field_value(screening_identifier, 'last_name')
+        full_name = f'{f_name} {l_name}'
         context.update(
             verbal_consent_datetime=get_utcnow(),
             screening_identifier=screening_identifier,
             language=self.request.GET.get('language'),
-            national_identity=self.national_id(screening_identifier),
+            national_identity=self.clinician_call_field_value(
+                screening_identifier, 'national_identity'),
+            full_name=full_name,
             verbal_consent_href=self.model_cls().get_absolute_url(),
             add_consent_href=self.add_consent_href, )
         return context
@@ -120,7 +126,12 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
         language = self.request.POST['language']
         return f'potlako_dashboard/screening/verbal_consent_{language}_pdf.html'
 
-    def national_id(self, screening_identifier):
-        model_obj = self.clinician_call_model_cls.objects.get(
-            screening_identifier=screening_identifier)
-        return model_obj.national_identity
+    def clinician_call_field_value(self, screening_identifier, field_name):
+        try:
+            model_obj = self.clinician_call_model_cls.objects.get(
+                screening_identifier=screening_identifier)
+        except self.clinician_call_model_cls.DoesNotExist:
+            raise ValidationError(
+                'Clinician Call Enrollment object does not exist.')
+        else:
+            return getattr(model_obj, field_name)
