@@ -1,5 +1,4 @@
 from django.apps import apps as django_apps
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.utils.decorators import method_decorator
@@ -22,11 +21,18 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
     report_template = 'verbal_consent_template'
     report_pdf_template = 'verbal_consent_template_pdf'
     model = 'potlako_subject.verbalconsent'
-    pdf_name = 'verbal_consent'
     navbar_name = 'potlako_dashboard'
     navbar_selected_item = 'eligible_subjects'
     form_class = VerbalConsentForm
     subject_consent_model_wrapper_cls = SubjectConsentModelWrapper
+
+    @property
+    def pdf_name(self):
+        screening_identifier = self.kwargs.get('screening_identifier')
+        last_name = self.clinician_call_field_value(screening_identifier, 'last_name')
+        identifier = self.clinician_call_field_value(
+            screening_identifier, 'national_identity')[5:]
+        return f'{last_name}{identifier}'
 
     @property
     def model_cls(self):

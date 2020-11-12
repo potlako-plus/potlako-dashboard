@@ -12,6 +12,15 @@ body {
     border-radius: 25px;
 }
 
+.stamp {
+	padding-left:500px;
+}
+
+.stamp img {
+	width: 200px;
+	height: 120px;
+}
+
 @page {
     size: a4 portrait;
     
@@ -23,15 +32,9 @@ body {
         height: 20pt;
         
     }
-    @frame logo_content {           /* Static Frame */
-        left: 50pt; 
-        width: 500pt; 
-        top: 2pt; 
-        height: 60pt;
-        
-    }
+
     @frame content_frame {          /* Content Frame */
-        left: 50pt; width: 500pt; top: 60pt; height: 702pt;
+        left: 50pt; width: 500pt; top: 40pt; height: 702pt;
     }
     @frame footer_frame {           /* Another static Frame */
         -pdf-frame-content: footer_content;

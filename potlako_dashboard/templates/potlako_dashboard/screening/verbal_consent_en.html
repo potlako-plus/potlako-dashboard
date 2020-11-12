@@ -15,7 +15,6 @@
 <body>
     <div class="order-box">
     	<div>
-    		<!-- <img src="{% static 'potlako_dashboard/images/potlako_logo_small.png' %}"> -->
        		<span> Potlako+ oral consent script, v1.0, 5 June 2019, English </span>
     	</div>
     	<form method='POST' id="new_post" action="{% url 'potlako_dashboard:verbal_consent_url'  screening_identifier  %}" name="verbal_consent" onsubmit="return validateForm()">

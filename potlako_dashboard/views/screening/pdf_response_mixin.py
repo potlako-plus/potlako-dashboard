@@ -8,6 +8,7 @@ from django.template.loader import get_template
 from io import BytesIO
 from xhtml2pdf import pisa
 
+from PIL import Image
 from PyPDF2 import PdfFileWriter, PdfFileReader
 
 
