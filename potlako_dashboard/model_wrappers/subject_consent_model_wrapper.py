@@ -20,7 +20,8 @@ class SubjectConsentModelWrapper(
     model = 'potlako_subject.subjectconsent'
     next_url_name = settings.DASHBOARD_URL_NAMES.get('screening_listboard_url')
     next_url_attrs = ['screening_identifier']
-    querystring_attrs = ['screening_identifier', 'subject_identifier']
+    querystring_attrs = ['screening_identifier', 'subject_identifier',
+                         'first_name', 'last_name', 'language']
 
     @property
     def verbal_consent_obj(self):

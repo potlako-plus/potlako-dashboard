@@ -64,7 +64,9 @@ class ClinicianCallEnrollmentModelWrapper(SubjectScreeningModelWrapperMixin,
         options = dict(
             screening_identifier=self.screening_identifier,
             consent_identifier=get_uuid(),
-            version=self.consent_version)
+            version=self.consent_version,
+            first_name=self.first_name,
+            last_name=self.last_name)
         return options
 
     @property

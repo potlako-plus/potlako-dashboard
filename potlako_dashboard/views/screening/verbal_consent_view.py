@@ -73,6 +73,7 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
                 signature=request.POST['signature'],
                 consented=request.POST['consented'])
             f_name, l_name = request.POST['participant_name'].split(" ")
+            language = request.POST['language']
 
             self.handle_uploaded_file(context, model_obj=verbal_consent_model, **kwargs)
 
@@ -82,16 +83,17 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
 #             return self.view_pdf(context)
 
             return HttpResponseRedirect(
-                self.add_consent_href(fname=f_name, lname=l_name))
+                self.add_consent_href(fname=f_name, lname=l_name, language=language))
 
-    def add_consent_href(self, fname=None, lname=None):
+    def add_consent_href(self, fname=None, lname=None, language=None):
         """Returns a wrapped saved or unsaved subject screening.
         """
         screening_identifier = self.kwargs.get('screening_identifier')
         model_obj = self.subject_consent_model_cls(
             screening_identifier=screening_identifier,
             first_name=fname,
-            last_name=lname)
+            last_name=lname,
+            language=language)
         return self.subject_consent_model_wrapper_cls(model_obj=model_obj).href
 
     @method_decorator(login_required)
