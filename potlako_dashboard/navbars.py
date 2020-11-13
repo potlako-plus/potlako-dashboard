@@ -34,4 +34,10 @@ potlako_dashboard.append_item(
         url_name=settings.DASHBOARD_URL_NAMES['endpoint_listboard_url'],
         no_url_namespace=no_url_namespace))
 
+potlako_dashboard.append_item(
+    NavbarItem(name='synchronization',
+               label='Data Synchronization',
+               fa_icon='fa-exchange',
+               url_name='edc_sync:home_url'))
+
 site_navbars.register(potlako_dashboard)
