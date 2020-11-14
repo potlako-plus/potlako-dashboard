@@ -77,11 +77,6 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
 
             self.handle_uploaded_file(context, model_obj=verbal_consent_model, **kwargs)
 
-                # process the data in form.cleaned_data as required
-                # ...
-                # redirect to a new URL:
-#             return self.view_pdf(context)
-
             return HttpResponseRedirect(
                 self.add_consent_href(fname=f_name, lname=l_name, language=language))
 
