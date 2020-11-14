@@ -1,0 +1,125 @@
+{% load static %}
+
+<!doctype html>
+<html>
+<head>
+   <meta charset="utf-8">
+    <title>Verbal Script</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'potlako_dashboard/css/verbal_consent.css' %}">
+    
+    <link rel="shortcut icon" href="{% static 'potlako_dashboard/images/favicon.png' %}" type="image/png">
+    <link rel="icon" href="{% static 'potlako_dashboard/images/favicon.png' %}" type="image/png" >
+    <script type="text/javascript" charset="utf8" src="{%static 'potlako_dashboard/js/verbal_consent.js' %}"></script>
+</head>
+
+<body>
+    <div class="order-box">
+    	<div>
+       		<span> Potlako+ oral consent script, v1.0, 5 June 2019, English </span>
+    	</div>
+    	<form method='POST' id="new_post" action="{% url 'potlako_dashboard:verbal_consent_url'  screening_identifier  %}" name="verbal_consent" onsubmit="return validateForm()">
+    	{% csrf_token %}
+        <table cellpadding="0" cellspacing="0">
+            <tr class="information">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                           	<td>
+                           		<span>
+								   Protocol Title: Potlako+, an intervention to improve timely cancer diagnosis and care <br>
+								   Principal Investigators:  Scott Dryden-Peterson, MD MSc and Neo Tapela, MD MPH <br>
+								   Description of Study Population: Patients with possible cancer <br>
+								   Version Date: 5 June 2019 
+                           		</span>
+                           	</td>
+
+                            <td style="border:none"></td>
+                            
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            
+			
+            <tr class="details">
+                <td>
+                    <!-- HTML Content -->
+				     {% block verbal_consent_body %}
+				
+				       {% include 'potlako_dashboard/screening/verbal_consent_body_en.html' %}
+				
+					 {% endblock verbal_consent_body %}
+					 
+
+					 <strong>Do you agree to participate in this study?</strong> <br> <br>
+					 <input type="radio" id="yes" name="consented" value="yes" required checked />
+					 <label for="agree"> Yes:  Document oral consent below and continue with enrollment interview. </label><br>
+					 <input type="radio" id="no" name="consented" value="no" disabled />
+					 <label for="disagree"> No:  Thank them for their time.  </label><br><br>
+					 
+					 <label for="participant_name">Name of Subject: </label>
+					 <input type="text" id="participant_name" name="participant_name" value="{{full_name}}" required readonly><br>	
+				      <br>
+				
+					 <strong> Person Obtaining Consent </strong>
+					 I have read this form to the subject.  An explanation of the research was given and questions 
+					 from the subject were solicited and answered to the subject’s satisfaction.  In my judgment, 
+					 the subject has demonstrated comprehension of the information.  The subject has provided oral 
+					 consent to participate in this study. <br> 
+							   
+                </td>
+            </tr>
+
+            <tr class="heading">
+                <td>
+                    Name and Title 
+                </td>
+                <td>
+                </td>
+
+            </tr>
+
+            <tr class="item">
+                <td>
+					{{ user.first_name }} &nbsp;&nbsp; {{ user.last_name }} &nbsp;&nbsp;
+                </td>
+                
+                <td>
+                	<input type="text" id="designation" name="designation" required><br><br>
+                </td>
+
+            </tr>
+            <tr class="heading">
+                <td>
+                    Signature of Person Obtaining Consent
+                </td>
+                
+                <td>
+                    Date
+                </td>
+
+            </tr>
+
+            <tr class="item">
+            	<td>
+            		<input type="hidden" id="initials" value="{{user.first_name|first}}{{user.last_name|first}}"/>
+                	<input type="text" id="signature" name="signature" minlength="2" required />
+                	<span class="error">
+                		<p style="font-size:12px;margin: 0px;color:red;display:block;" id="name_error"></p>
+                	</span>
+                </td>
+                
+
+                <td>
+                    {{ verbal_consent_datetime|date:"SHORT_DATETIME_FORMAT" }}
+                </td>
+                <input type="hidden" id="language" name="language" value={{ language }}><br><br>
+            </tr>
+            
+        </table>
+        <input class="btn btn-primary" type="submit" value="Save">
+        </form>
+    </div>
+</body>
+</html> 

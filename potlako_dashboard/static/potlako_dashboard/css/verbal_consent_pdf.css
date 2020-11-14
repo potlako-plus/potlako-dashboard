@@ -1,0 +1,77 @@
+body {
+	font-size: 16px;
+	text-align: justify;
+	font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    color: #555;
+}
+
+
+.information{
+	padding: 10px;
+    border: 1px solid black;
+    border-radius: 25px;
+}
+
+.stamp {
+	padding-left:400px;
+}
+
+.stamp img {
+	width: 210px;
+	height: 130px;
+}
+
+@page {
+    size: a4 portrait;
+    
+    @frame header_frame {           /* Static Frame */
+        -pdf-frame-content: header_content;
+        left: 280pt; 
+        width: 350pt; 
+        top: 10pt; 
+        height: 20pt;
+        
+    }
+
+    @frame content_frame {          /* Content Frame */
+        left: 50pt; width: 500pt; top: 25pt; height: 702pt;
+    }
+    @frame footer_frame {           /* Another static Frame */
+        -pdf-frame-content: footer_content;
+        left: 50pt; width: 100pt; top: 782pt; height: 20pt;
+        
+    }
+}
+
+@page regular_template{
+    size: a4 portrait;
+    @frame header_frame {           /* Static Frame */
+        -pdf-frame-content: header_content;
+        left: 280pt; 
+        width: 350pt; 
+        top: 10pt; 
+        height: 20pt;
+        
+    }
+    
+    @frame content_frame {          /* Content Frame */
+        left: 50pt; width: 500pt; top: 60pt; height: 702pt;
+    }
+    @frame footer_frame {           /* Another static Frame */
+        -pdf-frame-content: footer_content;
+        left: 50pt; width: 100pt; top: 782pt; height: 20pt;
+        
+    }
+}
+
+table tr td p {
+	line-height: 60%;
+}
+
+.check {
+	border: 1.2px solid #6c6c6c;
+	text-align:center;
+	color: #919191;
+	font-weight: 300;
+	font-family: sans-serif, "Helvetica Neue", "Lucida Grande", Arial;
+}

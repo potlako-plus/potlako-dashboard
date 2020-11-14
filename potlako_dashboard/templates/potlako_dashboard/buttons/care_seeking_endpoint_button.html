@@ -1,0 +1,13 @@
+<a id="symptomsandcareseekingendpoint_add_{{ subject_identifier }}" 
+ 	title="{{ title }}"
+ 	
+ 	{% if care_seeking_endpoint_model_obj %}
+       	class="btn btn-success btn-sm" 
+    {% else %}
+   		class="btn btn-warning btn-sm"       	
+    {% endif %}
+    
+    data-toggle="tooltip"  data-placement="right" href="{{ add_care_seeking_endpoint_href }}">
+    Care Seeking Endpoint
+     	
+ </a>

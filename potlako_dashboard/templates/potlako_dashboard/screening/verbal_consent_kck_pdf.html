@@ -1,0 +1,104 @@
+{% load static %}
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Verbal Script</title>
+    <link type="text/css" rel="stylesheet" href="{% static 'potlako_dashboard/css/verbal_consent_pdf.css' %}">
+    
+    <link rel="shortcut icon" href="{% static 'potlako_dashboard/images/favicon.png' %}" type="image/png">
+    <link rel="icon" href="{% static 'potlako_dashboard/images/favicon.png' %}" type="image/png" >
+    
+   
+</head>
+
+<body>
+   <!-- Content for Static Frame 'header_frame' -->
+   
+    <div id="header_content">
+       <span class='heading'> Potlako+ oral consent script, v1.0, 5 June 2019, English </span>
+    </div>
+   
+    <!-- Content for Static Frame 'footer_frame' -->
+    <div id="footer_content">(c) - page <pdf:pagenumber>
+        of <pdf:pagecount>
+    </div>
+
+    <!-- HTML Content -->
+    <div class="stamp">
+		<img src="{% static 'potlako_dashboard/images/stamp.png' %}">
+	</div>
+	<div class='information'>
+	   Protocol Title: Potlako+, Ku thama kuti Kankiri e bongwe tjinyolotjo u batshiwe <br>
+	   Principal Investigators:  Scott Dryden-Peterson, MD MSc and Neo Tapela, MD MPH <br>
+	   Description of Study Population: Patients with possible cancer <br>
+	   Version Date: 5 June 2019
+	</div> <br>
+		
+	<!-- switch page templates -->
+    <pdf:nexttemplate name="regular_template" />
+     {% block verbal_consent_body %}
+
+       {% include 'potlako_dashboard/screening/verbal_consent_body_kck.html' %}
+
+	 {% endblock verbal_consent_body %}
+
+	 <strong>Aa no duma ku nginilila mu study?</strong> <br>
+	 <table>
+	 	<tr>
+	 		<td width='14'>
+	 			{% if consented == 'yes' %}
+	 				<p class="check">x</p>
+	 			{% else %}
+	 				<p class="check">&nbsp;</p>
+	 			{% endif %}
+	 		</td>
+	 		<td width='5' class="spacing"></td>
+	 		<td><p class="agree">Ee:  Lakidza dumilano ya nlomo (oral consent) u be u dwilila ne ndebeleko ye ku nginililia. </p></td>
+	 	</tr>
+	 	<tr></tr>
+	 	<tr>
+	 		<td width='14'>
+	 			{% if consented == 'no' %}
+	 				<p class="check">x</p>
+	 			{% else %}
+	 				<p class="check">&nbsp;</p>
+	 			{% endif %}
+	 		</td>
+	 		<td width='5' class="spacing"></td>
+	 		<td><p class="no">Aa:  Bokela nthu tjibaka tja a pu pa itjo.</p></td>
+	 	</tr>
+	 </table>
+	<br/>
+	 Zina le nthu uno nginilila mu shakisiso: {{ participant_name }} 	
+    <br/>
+	 <p><strong> Nthu u no yendisa tjidumano </strong>
+	 Nda balila nthu u no nginilila shakisiso fomo iyeyi. Nda nlondolodzela ne kwe shakisiso iyeyi ndi ka mpa 
+	 tjibaka tje ku buzwa buzo ndi be ndi dzi dabila ku no u ngadza moyo. Ku yenda ne kwangu nthu iwoyo wa wisisa 
+	 tjimwe ne tjimwe. </p>
+	 <p> Wa duma ne nlomo ku nginilila mu shakisiso iyeyi.</p>
+	 <table>
+	 	<tr>
+	 		<td width='120' style='border-bottom:1px solid black;'>{{ user_uploaded }}</td>
+	 		<td width='80' style='border-bottom:1px solid black;'>{{ designation }}</td>
+	 	</tr>
+	 	<tr style="padding-top:2px;">
+	 		<td width='200' >Zina ne kuti u no shinga uli ini</td>
+	 		<td></td>
+	 	</tr>
+	 </table>
+	 <table>
+	 	<tr style="padding-top:10px;">
+	 		<td width='300' style='border-bottom:1px solid black;'>{{ signature }}</td>
+	 		<td width='50'>&nbsp;</td>
+	 		<td width='200' style='border-bottom:1px solid black;'>{{ verbal_consent_datetime|date:"SHORT_DATETIME_FORMAT" }}</td>
+	 	</tr>
+	 	<tr style="padding-top:2px;">
+	 		<td width='300'>Tjinyala tje nthu u no yendisa tjidumano(Signature)</td>
+	 		<td></td>
+	 		<td>Date</td>
+	 	</tr>
+	 </table>
+</body>
+</html>

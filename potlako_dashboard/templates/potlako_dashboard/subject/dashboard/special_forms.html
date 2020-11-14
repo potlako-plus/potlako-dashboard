@@ -1,0 +1,20 @@
+{% load potlako_dashboard_extras %}
+<table class="table table-condensed">
+    <thead></thead>
+    <tbody>
+      	<tr>
+		<td>
+			{% subject_locator_button subject_consent %}
+		</td>
+		</tr>
+		<td>
+			{% baseline_clinical_summary_button subject_consent %}
+		</td>
+      	</tr>
+      	</tr>
+		<td>
+			{% navigation_plan_summary_button subject_consent %}
+		</td>
+      	</tr>
+    </tbody>
+</table>

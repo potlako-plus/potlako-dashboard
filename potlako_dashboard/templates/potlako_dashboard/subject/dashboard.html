@@ -1,0 +1,41 @@
+{% extends 'edc_subject_dashboard/dashboard.html' %}
+
+{% load static %}
+
+{% block extra-css %}
+
+  <!-- <link rel="stylesheet" type="text/css" href="{% static 'potlako_dashboard/css/fontawesome_5.15.1/css/fontawesome.min.css' %}"> -->
+  <link rel="stylesheet" type="text/css" href="{% static 'potlako_dashboard/css/potlako_dashboard.css' %}">
+
+{% endblock extra-css %}
+
+{% block locator_information %}{% endblock locator_information %}
+
+{% block top_bar %}
+
+    {% include "potlako_dashboard/subject/dashboard/top_bar.html" %}
+
+{% endblock top_bar %}
+
+
+{% block side_bar %}
+	
+	{% block demographics %}   
+	
+   		{% include 'potlako_dashboard/subject/dashboard/sidebar.html' %}
+
+	{% endblock demographics %}
+	
+	{% if locator_obj %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+          <h6 class="panel-title">
+              <i class="fa fa-info-circle fa-lg fa-fw"></i> Locator Info
+          </h6>
+      </div>
+      
+        {% include "potlako_dashboard/subject/dashboard/locator_info.html" %}   
+  	</div>
+  	{% endif %}
+	
+{% endblock side_bar %}

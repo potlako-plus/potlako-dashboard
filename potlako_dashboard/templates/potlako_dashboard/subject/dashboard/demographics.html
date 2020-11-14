@@ -1,0 +1,34 @@
+{% load edc_base_extras %}
+
+<div class="list-group" >
+<a class="list-group-item"><i class="fa fa-birthday-cake fa-fw"></i>
+{{ dob|date:"Y-m-d" }}
+{% age_in_years dob %} yrs 
+ {% if hiv_status == 'POS' %}
+ 	<span data-toggle="tooltip" data-placement="right" title="HIV Status" > <i class="fa  fa-plus-circle  fa-fw"></i> </span>
+ {% else %}
+ 	{% if hiv_status == 'NEG' %}
+ 		<span data-toggle="tooltip" data-placement="right" title="HIV Status"> <i  class="fa  fa-minus-circle  fa-fw"></i> </span>
+	 	{% else %}
+	 		<span data-toggle="tooltip" data-placement="right" title="HIV Status" > <i class="fa  fa-question-circle  fa-fw"></i> </span>
+	 	{% endif %}
+ {% endif %}
+</a>
+<a class="list-group-item"><i class="far fa-address-card fa-fw"></i>
+{{ identity|default:'?? identity' }} <span data-toggle="tooltip" data-placement="right" title="{{ firstname }} {{ lastname }}" class="text text-default">{{ initials }}<sup><i class="fa fa-asterisk fa-fw"></i></sup></span>
+</a>
+{% if rando_status %}
+<a class="list-group-item">
+ 
+  <i class="fa fa-random"></i>  {{ rando_status }}  
+ 	
+</a>
+{% endif %}
+
+<a class="list-group-item">
+	{% if community_arm %}
+		<i class="fa fa-code-branch fa-fw"></i>
+		 <span data-toggle="tooltip" data-placement="right" title="Community Arm" class="text text-default"> {{ community_arm|title }} </span>
+	{% endif %}
+</a>
+</div>
