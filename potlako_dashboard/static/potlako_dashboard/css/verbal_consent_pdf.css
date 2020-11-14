@@ -13,12 +13,12 @@ body {
 }
 
 .stamp {
-	padding-left:500px;
+	padding-left:400px;
 }
 
 .stamp img {
-	width: 200px;
-	height: 120px;
+	width: 210px;
+	height: 130px;
 }
 
 @page {
@@ -34,7 +34,7 @@ body {
     }
 
     @frame content_frame {          /* Content Frame */
-        left: 50pt; width: 500pt; top: 40pt; height: 702pt;
+        left: 50pt; width: 500pt; top: 25pt; height: 702pt;
     }
     @frame footer_frame {           /* Another static Frame */
         -pdf-frame-content: footer_content;
