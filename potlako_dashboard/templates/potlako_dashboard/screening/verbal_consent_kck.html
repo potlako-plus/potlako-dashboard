@@ -59,9 +59,9 @@
 					 <div style="color:red "> {{ consented_error }} </div>
 					 {% endif %}
 					 
-					 <input type="radio" id="yes" name="consented" value="yes" required>
+					 <input type="radio" id="yes" name="consented" value="yes" required checked />
 					 <label for="agree"> Ee:  Lakidza dumilano ya nlomo (oral consent) u be u dwilila ne ndebeleko ye ku nginililia. </label><br>
-					 <input type="radio" id="no" name="consented" value="no" required>
+					 <input type="radio" id="no" name="consented" value="no" required disabled />
 					 <label for="disagree"> Aa:  Bokela nthu tjibaka tja a pu pa itjo. </label><br><br>
 						
 					{% if participant_name_error %}
