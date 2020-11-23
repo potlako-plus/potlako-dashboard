@@ -29,7 +29,7 @@ class CareSeekingEndpointModelWrapperMixin:
 
     @property
     def care_seeking_endpoint_cls(self):
-        return django_apps.get_model('potlako_subject.symptomsandcareseekingendpointrecording')
+        return django_apps.get_model('potlako_subject.symptomsandcareseekingendpoint')
 
     @property
     def create_care_seeking_endpoint_options(self):

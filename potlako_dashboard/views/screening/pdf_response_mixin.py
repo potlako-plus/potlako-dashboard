@@ -1,13 +1,15 @@
 import os
+import posixpath
+from django.apps import apps as django_apps
+from django.contrib.staticfiles import finders
 from django.conf import settings
 from django.http import HttpResponse
-from django.apps import apps as django_apps
 from django.template.loader import get_template
-from xhtml2pdf import pisa
 from io import BytesIO
-from django.contrib.staticfiles import finders
-import posixpath
-from edc_base.utils import get_utcnow
+from xhtml2pdf import pisa
+
+from PIL import Image
+from PyPDF2 import PdfFileWriter, PdfFileReader
 
 
 class UnsupportedMediaPathException(Exception):
@@ -83,8 +85,8 @@ class PdfResponseMixin(object, ):
                         break
         else:
             raise UnsupportedMediaPathException(
-                                    'media urls must start with %s or %s' % (
-                                    settings.MEDIA_URL, settings.STATIC_URL))
+                'media urls must start with %s or %s' % (
+                    settings.MEDIA_URL, settings.STATIC_URL))
         return path
 
     def generate_pdf(self, template_src, file_object=None, output_filename=None, context_dict=None):
@@ -94,7 +96,7 @@ class PdfResponseMixin(object, ):
             @return: passed-in file object, filled with the actual PDF data.
             In case the passed in file object is none, it will return a BytesIO instance.
         """
-        #open output file for writing (truncated binary)
+        # open output file for writing (truncated binary)
         result_file = open(output_filename, "w+b")
         if not context_dict:
             context_dict = {}
@@ -111,7 +113,33 @@ class PdfResponseMixin(object, ):
         # close output file
         result_file.close()
 
+        password = context_dict.get('national_identity')
+        # encrypt pdf file
+        self.encrypt_pdf(file_path=output_filename, password=password)
+
         return pisa_status.err
+
+    def encrypt_pdf(self, file_path=None, password=None):
+        """
+        Encrypt pdf file, and override the pdf saved with password protected pdf.
+        @param file_path: dir and name of the pdf file to encrypt.
+        @param password: password to use for encryption.
+        """
+        output_pdf = PdfFileWriter()
+        input_pdf = PdfFileReader(file_path)
+
+        num = input_pdf.numPages
+
+        for idx in range(num):
+
+            page = input_pdf.getPage(idx)
+
+            output_pdf.addPage(page)
+
+        output_pdf.encrypt(password)
+
+        with open(file_path, "w+b") as output_file:
+            output_pdf.write(output_file)
 
     def display_pdf(self, template_src, file_object=None, output_filename=None, context_dict=None):
 
