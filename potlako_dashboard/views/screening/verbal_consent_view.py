@@ -32,7 +32,7 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
         last_name = self.clinician_call_field_value(screening_identifier, 'last_name')
         identifier = self.clinician_call_field_value(
             screening_identifier, 'national_identity')[5:]
-        return f'{last_name}{identifier}'
+        return f'{last_name}{screening_identifier}'
 
     @property
     def model_cls(self):
