@@ -28,6 +28,11 @@
     <td style="white-space: nowrap;">
     <div class="btn-group ">
     {% clinician_call_enrollment_button result %}
+
+      {% with history_objects=result.log_entries title="Patient Availability logs" history_object=result.log_entry  %}
+	    {% include "potlako_dashboard/screening/patient_availability_log_entries.html" %}
+	  {% endwith %}
+
     {% if result.eligible_at_enrol %}
 		{% screening_button result %}
 		{% if not result.is_eligible %}
