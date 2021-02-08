@@ -1,3 +1,4 @@
+from edc_constants.constants import OTHER
 from edc_dashboard.listboard_filter import ListboardFilter, ListboardViewFilters
 
 
@@ -8,24 +9,38 @@ class ListboardViewFilters(ListboardViewFilters):
         label='All',
         lookup={})
 
-    eligible = ListboardFilter(
-        label='Eligible',
+    # Cancer Evaluation
+    complete = ListboardFilter(
+        label='Cancer Evaluation Complete',
         position=10,
-        lookup={'is_eligible': True})
+        lookup={'cancerdxandtxendpoint.cancer_evaluation': 'complete'})
 
-    not_eligible = ListboardFilter(
-        label='Not Eligible',
+    unable_to_complete = ListboardFilter(
+        label='Cancer Evaluation Incomplete',
         position=11,
-        lookup={'is_eligible': False})
+        lookup={'cancerdxandtxendpoint.cancer_evaluation':
+                'unable_to_complete'})
 
-    consented = ListboardFilter(
-        label='Consented',
-        position=20,
-        lookup={'is_eligible': True,
-                'is_consented': True})
+    incomplete_ongoing_evaluation = ListboardFilter(
+        label='Incomplete, ongoing evaluation',
+        position=12,
+        lookup={'cancerdxandtxendpoint.cancer_evaluation':
+                'incomplete_ongoing_evaluation'})
 
-    not_consented = ListboardFilter(
-        label='Not consented',
-        position=21,
-        lookup={'is_eligible': True,
-                'is_consented': False})
+    incomplete_12_months = ListboardFilter(
+        label='Incomplete, 12 month visit',
+        position=13,
+        lookup={'cancerdxandtxendpoint.cancer_evaluation':
+                'incomplete_12_months'})
+
+    final_cancer_diagnosis = ListboardFilter(
+        label='Final Cancer Diagnosis',
+        position=14,
+        lookup={'cancerdxandtxendpoint.final_cancer_diagnosis__isnull':
+                False})
+
+    non_cancer_diagnosis = ListboardFilter(
+        label='Final Non-Cancer diagnosis',
+        position=15,
+        lookup={'cancerdxandtxendpoint.non_cancer_diagnosis__isnull':
+                False})
