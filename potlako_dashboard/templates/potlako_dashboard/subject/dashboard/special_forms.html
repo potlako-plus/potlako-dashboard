@@ -7,14 +7,17 @@
 			{% subject_locator_button subject_consent %}
 		</td>
 		</tr>
-		<td>
-			{% baseline_clinical_summary_button subject_consent %}
-		</td>
-      	</tr>
-      	</tr>
-		<td>
-			{% navigation_plan_summary_button subject_consent %}
-		</td>
-      	</tr>
+		{%  if community_arm == 'Intervention' %}
+		  <tr>
+		    <td>
+			  {% baseline_clinical_summary_button subject_consent %}
+		    </td>
+      	  </tr>
+      	  <tr>
+		    <td>
+			  {% navigation_plan_summary_button subject_consent %}
+		    </td>
+      	  </tr>
+      	{% endif %}
     </tbody>
 </table>

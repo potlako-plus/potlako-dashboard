@@ -1,5 +1,6 @@
 import re
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from edc_base.view_mixins import EdcBaseViewMixin
@@ -11,13 +12,15 @@ from ...model_wrappers import SubjectConsentModelWrapper
 from .filters import ListboardViewFilters
 
 
-class ListBoardView(BaseListboardView, NavbarViewMixin, EdcBaseViewMixin,
-                    ListboardFilterViewMixin, SearchFormViewMixin):
+class ListBoardView(BaseListboardView, NavbarViewMixin,
+# PermissionRequiredMixin,
+                    EdcBaseViewMixin, ListboardFilterViewMixin, SearchFormViewMixin):
 
     listboard_template = 'endpoint_listboard_template'
     listboard_url = 'endpoint_listboard_url'
     listboard_panel_style = 'info'
     listboard_fa_icon = "fa-user-plus"
+#     permission_required = 'potlako_subject.delete_cancerdxandtxendpoint'
 
     listboard_view_filters = ListboardViewFilters()
     model = 'potlako_subject.subjectconsent'
@@ -31,7 +34,7 @@ class ListBoardView(BaseListboardView, NavbarViewMixin, EdcBaseViewMixin,
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
-    
+
 
     def get_context_data(self, **kwargs):
         print()
