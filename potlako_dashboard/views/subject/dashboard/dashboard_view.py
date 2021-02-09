@@ -50,6 +50,7 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
             locator_obj=locator_obj,
             community_arm=self.community_arm,
             subject_consent=self.consent_wrapped,
+            groups=[g.name for g in self.request.user.groups.all()],
             nav_flag=self.get_navigation_status,
             hiv_status=self.get_hiv_status)
         return context
@@ -78,7 +79,7 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
         keysteps_form = django_apps.get_model('potlako_subject.evaluationtimeline')
 
         key_steps = keysteps_form.objects.filter(
-            navigation_plan__subject_identifier = self.kwargs.get('subject_identifier'),
+            navigation_plan__subject_identifier=self.kwargs.get('subject_identifier'),
             key_step_status=NOT_DONE)
         flags = []
 

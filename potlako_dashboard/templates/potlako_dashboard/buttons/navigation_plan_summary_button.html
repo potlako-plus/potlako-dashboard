@@ -1,13 +1,10 @@
-<a id="navigationsummaryandplan_add_{{ subject_identifier }}" 
- 	title="{{ title }}"
- 	
- 	{% if navigation_plan_summary_model_obj %}
-       	class="btn btn-success btn-sm" 
-    {% else %}
-   		class="btn btn-warning btn-sm"       	
-    {% endif %}
-    
-    data-toggle="tooltip"  data-placement="right" href="{{ add_navigation_plan_summary_href }}">
-    Navigation Summary And Plan
-     	
- </a>
+{% if navigation_plan_summary_model_obj %}
+	<a id="navigationsummaryandplan_add_{{ subject_identifier }}" title="{{ title }}"
+  	class="btn btn-success btn-sm" data-toggle="tooltip"  data-placement="right" 
+  	href="{{ add_navigation_plan_summary_href }}{% if readonly%}edc_readonly='1'{% endif %}">Navigation Summary And Plan </a>
+  	 
+{% elif not navigation_plan_summary_model_obj and not readonly%}
+	<a id="navigationsummaryandplan_add_{{ subject_identifier }}" title="{{ title }}"
+   	class="btn btn-warning btn-sm" data-toggle="tooltip"  data-placement="right" 
+   	href="{{ add_navigation_plan_summary_href }}">Navigation Summary And Plan </a>   	
+{% endif %}
