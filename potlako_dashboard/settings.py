@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'crispy_forms',
     'django_crypto_fields.apps.AppConfig',
     'edc_action_item.apps.AppConfig',
     'edc_data_manager.apps.AppConfig',
@@ -131,6 +132,7 @@ DASHBOARD_URL_NAMES = {
     'endpoint_listboard_url': 'potlako_dashboard:endpoint_listboard_url',
     'subject_dashboard_url': 'potlako_dashboard:subject_dashboard_url',
     'data_manager_listboard_url': 'edc_data_manager:data_manager_listboard_url',
+    'potlako_worklist_url': 'potlako_dashboard:potlako_worklist_url',
     'verbal_consent_url': 'potlako_dashboard:verbal_consent_url'
 }
 
@@ -141,6 +143,7 @@ DASHBOARD_BASE_TEMPLATES = {
     'screening_listboard_template': 'potlako_dashboard/screening/listboard.html',
     'endpoint_listboard_template': 'potlako_dashboard/endpoint/listboard.html',
     'subject_listboard_template': 'potlako_dashboard/subject/listboard.html',
+    'potlako_worklist_template': 'potlako_dashboard/worklist/worklist_listboard.html',
     'subject_dashboard_template': 'potlako_dashboard/subject/dashboard.html',
 }
 

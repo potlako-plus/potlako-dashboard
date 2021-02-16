@@ -1,6 +1,7 @@
 from django.apps import apps as django_apps
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from edc_base.utils import age, get_utcnow
 from edc_model_wrapper import ModelWrapper
 from .subject_locator_model_wrapper_mixin import SubjectLocatorModelWrapperMixin
 from .baseline_summary_model_wrapper_mixin import BaselineClinicalSummaryModelWrapperMixin
@@ -38,3 +39,63 @@ class SubjectConsentModelWrapper(
         if self.verbal_consent_obj:
             return self.verbal_consent_obj.file.url
         return None
+
+    @property
+    def last_appointment_date(self):
+        patient_initial_cls = django_apps.get_model('potlako_subject.patientcallinitial')
+        patient_fu_cls = django_apps.get_model('potlako_subject.patientcallfollowup')
+        clinician_enrollment_cls = django_apps.get_model('potlako_subject.cliniciancallenrollment')
+
+        patient_call_obj = patient_fu_cls.objects.filter(
+                                        subject_visit__subject_identifier=self.object.subject_identifier).order_by('-created')
+        if not patient_call_obj:
+            patient_call_obj = patient_initial_cls.objects.filter(
+                                        subject_visit__subject_identifier=self.object.subject_identifier).order_by('-created')
+        try:
+            clinician_enrollment_obj = clinician_enrollment_cls.objects.get(
+                                        screening_identifier=self.object.screening_identifier)
+        except clinician_enrollment_cls.DoesNotExist:
+            raise
+        else:
+            return clinician_enrollment_obj.referral_date
+
+        if patient_call_obj:
+            return patient_call_obj[0].next_appointment_date
+        return None
+
+    @property
+    def worklist_ready(self):
+        return self.last_appointment_date < get_utcnow().date()
+
+    @property
+    def cancer_probability(self):
+        baseline_cls = django_apps.get_model('potlako_subject.baselineclinicalsummary')
+
+        try:
+            baseline_obj = baseline_cls.objects.get(subject_identifier=self.object.subject_identifier)
+        except baseline_cls.DoesNotExist:
+            return None
+        else:
+            return baseline_obj.cancer_concern or baseline_obj.cancer_concern_other
+
+    @property
+    def age_in_years(self):
+        return age(self.object.dob, get_utcnow()).years
+
+    @property
+    def contacts(self):
+        subject_locator_cls = django_apps.get_model('potlako_subject.subjectlocator')
+        try:
+            subject_locator_obj = subject_locator_cls.objects.get(
+                subject_identifier=self.object.subject_identifier)
+        except ObjectDoesNotExist:
+            return None
+        else:
+            contacts = ('' + subject_locator_obj.subject_cell + '' +
+                        subject_locator_obj.subject_cell_alt + '' +
+                        subject_locator_obj.subject_phone + '' +
+                        subject_locator_obj.subject_phone_alt)
+            return contacts
+
+
+
