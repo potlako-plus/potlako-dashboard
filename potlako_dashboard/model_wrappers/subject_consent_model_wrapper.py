@@ -47,17 +47,20 @@ class SubjectConsentModelWrapper(
         clinician_enrollment_cls = django_apps.get_model('potlako_subject.cliniciancallenrollment')
 
         patient_call_obj = patient_fu_cls.objects.filter(
-                                        subject_visit__subject_identifier=self.object.subject_identifier).order_by('-created')
+                                     subject_visit__subject_identifier=self.object.subject_identifier).order_by('-created')
+
         if not patient_call_obj:
-            patient_call_obj = patient_initial_cls.objects.filter(
-                                        subject_visit__subject_identifier=self.object.subject_identifier).order_by('-created')
-        try:
-            clinician_enrollment_obj = clinician_enrollment_cls.objects.get(
+            try:
+                patient_call_obj = patient_initial_cls.objects.filter(
+                                            subject_visit__subject_identifier=self.object.subject_identifier).order_by('-created')
+            except patient_initial_cls.DoesNotExist:
+                try:
+                    clinician_enrollment_obj = clinician_enrollment_cls.objects.get(
                                         screening_identifier=self.object.screening_identifier)
-        except clinician_enrollment_cls.DoesNotExist:
-            raise
-        else:
-            return clinician_enrollment_obj.referral_date
+                except clinician_enrollment_cls.DoesNotExist:
+                    raise
+                else:
+                    return clinician_enrollment_obj.referral_date
 
         if patient_call_obj:
             return patient_call_obj[0].next_appointment_date
@@ -65,7 +68,9 @@ class SubjectConsentModelWrapper(
 
     @property
     def worklist_ready(self):
-        return self.last_appointment_date < get_utcnow().date()
+        if self.last_appointment_date:
+            return self.last_appointment_date < get_utcnow().date()
+        return False
 
     @property
     def cancer_probability(self):
