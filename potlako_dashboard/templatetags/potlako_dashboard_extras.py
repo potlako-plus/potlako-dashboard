@@ -68,6 +68,16 @@ def baseline_clinical_summary_button(model_wrapper, groups):
         title=' '.join(title))
 
 
+@register.inclusion_tag('potlako_dashboard/buttons/baseline_clinical_summary_button.html')
+def baseline_clinical_summary_btn(model_wrapper):
+    title = ['Add baseline clinical summary.']
+    return dict(
+        subject_identifier=model_wrapper.subject_identifier,
+        add_baseline_summary_href=model_wrapper.baseline_summary.href,
+        baseline_summary_model_obj=model_wrapper.baseline_summary_model_obj,
+        title=' '.join(title))
+
+
 @register.inclusion_tag('potlako_dashboard/buttons/navigation_plan_summary_button.html')
 def navigation_plan_summary_button(model_wrapper, groups):
     title = ['Add navigation summary and plan.']
@@ -76,6 +86,16 @@ def navigation_plan_summary_button(model_wrapper, groups):
         add_navigation_plan_summary_href=model_wrapper.navigation_plan_summary.href,
         navigation_plan_summary_model_obj=model_wrapper.navigation_plan_summary_model_obj,
         readonly='RA' in groups,
+        title=' '.join(title))
+
+
+@register.inclusion_tag('potlako_dashboard/buttons/navigation_plan_summary_button.html')
+def navigation_plan_summary_btn(model_wrapper):
+    title = ['Add navigation summary and plan.']
+    return dict(
+        subject_identifier=model_wrapper.subject_identifier,
+        add_navigation_plan_summary_href=model_wrapper.navigation_plan_summary.href,
+        navigation_plan_summary_model_obj=model_wrapper.navigation_plan_summary_model_obj,
         title=' '.join(title))
 
 @register.inclusion_tag('potlako_dashboard/buttons/cancer_dx_endpoint_button.html')
