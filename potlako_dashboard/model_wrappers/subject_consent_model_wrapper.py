@@ -2,6 +2,8 @@ from django.apps import apps as django_apps
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from edc_base.utils import age, get_utcnow
+
+from edc_appointment.constants import COMPLETE_APPT
 from edc_model_wrapper import ModelWrapper
 from .subject_locator_model_wrapper_mixin import SubjectLocatorModelWrapperMixin
 from .baseline_summary_model_wrapper_mixin import BaselineClinicalSummaryModelWrapperMixin
@@ -64,6 +66,17 @@ class SubjectConsentModelWrapper(
 
         if patient_call_obj:
             return patient_call_obj[0].next_appointment_date
+        return None
+
+    @property
+    def initial_visit_complete(self):
+        subject_visit_cls = django_apps.get_model('potlako_subject.subjectvisit')
+
+        initial_visit_obj = subject_visit_cls.objects.filter(
+            appointment__visit_code=1000).filter(appointment__appt_status=COMPLETE_APPT)
+
+        if initial_visit_obj:
+            return initial_visit_obj
         return None
 
     @property
