@@ -44,10 +44,17 @@ class ListboardView(NavbarViewMixin, EdcBaseViewMixin,
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+    @property
+    def user_group(self):
+        if self.request.user.groups.filter(name='Physician').exists():
+            return True
+        return False
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-#         context.update(
-#             total_results=self.get_queryset().count(),)
+        context.update(
+            user_group=self.user_group,
+            total_results=self.get_queryset().count(),)
         return context
 
     def get_queryset_filter_options(self, request, *args, **kwargs):

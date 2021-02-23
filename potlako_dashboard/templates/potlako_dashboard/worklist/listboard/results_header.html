@@ -3,13 +3,23 @@
 
 
 	<th>#</th>
+	{% if user_group %}
+		<th></th>
+	{% else %}
+	{% endif %}
     <th>Subject</th>
-	<th>Last appointment date</th>
-	<th>Call log</th>
+	{% if user_group %}
+	{% else %}
+		<th>Last appointment date</th>
+		<th>Call log</th>
+	{% endif %}
 	<th>Cancer Probability</th>
 	<th>Age</th>
 	<th>Sex</th>
-	<th>Called</th>
-	<th>Visited</th>
-    <th>Contacts</th>
+	{% if user_group %}
+	{% else %}
+		<th>Called</th>
+		<th>Visited</th>
+		<th>Contacts</th>
+	{% endif %}
 <!-- end results header -->

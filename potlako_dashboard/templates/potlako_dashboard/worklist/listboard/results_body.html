@@ -1,48 +1,70 @@
+{% load potlako_dashboard_extras %}
 
 <!-- begin results body -->
 
 {% for result in results %}
-	{% if result.worklist_ready %}
-    <tr> 
-   
-    <!--  begin columns  -->
-    	<td>{{ forloop.counter }}</td>
-		<td>
-	    {% if result.gender == MALE %}
-	        <i class="fa fa-male fa-lg"></i>
-	    {% else %}
-	        <i class="fa fa-female fa-lg"></i>
-	    {% endif %}
-	    {{ result.subject_identifier }}
-	    {{ result.first_name }}
-	    {{ result.last_name }}
-		</td>
-	    <td>{{ result.last_appointment_date }}</td>
-	    <td>
-	    	 {% include 'potlako_dashboard/screening/patient_availability_log_entries.html' %}
-	    </td>
-	    <td> {{ result.cancer_probability }}</td>
-	    <td>{{ result.age_in_years }}yrs </td>
-	    <td>{{ result.gender }}</td>
-	    <td>
-		    {% if result.is_called %}
-		      <span class="text text-success"><i class="fa fa-check-circle fa-lg" title="Called"></i></span>
-		    {% else %}
-		      <span class="text text-danger"><i class="fa fa-times-circle fa-lg" title="Not called"></i></span>
-		    {% endif %}
-	    </td>
-	    <td>
-		    {% if result.visited %}
-		      <span class="text text-success"><i class="fa fa-check-circle fa-lg" title="Visited"></i></span>
-		    {% else %}
-		      <span class="text text-danger"><i class="fa fa-times-circle fa-lg" title="Not visited"></i></span>
-		    {% endif %}
-	    </td>  
-	    <td>{{ result.contacts }}</td>  
-	<!--  end columns  -->
 
-    </tr>  
-    {% endif %}                   
+		{% if result.initial_visit_complete %}
+		<tr>
+
+		<!--  begin columns  -->
+			<td>{{ forloop.counter }}</td>
+			{% if user_group %}
+
+			{% block listboard_table_button_column %}
+				<td style="white-space: nowrap;">
+				<div class="btn-group">
+
+				 {% baseline_clinical_summary_btn result %}
+				 {% navigation_plan_summary_btn result %}
+
+				</div>
+				</td>
+			{% endblock listboard_table_button_column %}
+			{% else %}
+			{% endif %}
+			<td>
+			{% if result.gender == MALE %}
+				<i class="fa fa-male fa-lg"></i>
+			{% else %}
+				<i class="fa fa-female fa-lg"></i>
+			{% endif %}
+			{{ result.subject_identifier }}
+			{{ result.first_name }}
+			{{ result.last_name }}
+			</td>
+			{% if user_group %}
+			{% else %}
+				<td>{{ result.last_appointment_date }}</td>
+			<td>
+				 {% include 'potlako_dashboard/screening/patient_availability_log_entries.html' %}
+			</td>
+			{% endif %}
+			<td> {{ result.cancer_probability }}</td>
+			<td>{{ result.age_in_years }}yrs </td>
+			<td>{{ result.gender }}</td>
+			{% if user_group %}
+			{% else %}
+				<td>
+					{% if result.is_called %}
+					  <span class="text text-success"><i class="fa fa-check-circle fa-lg" title="Called"></i></span>
+					{% else %}
+					  <span class="text text-danger"><i class="fa fa-times-circle fa-lg" title="Not called"></i></span>
+					{% endif %}
+				</td>
+				<td>
+					{% if result.visited %}
+					  <span class="text text-success"><i class="fa fa-check-circle fa-lg" title="Visited"></i></span>
+					{% else %}
+					  <span class="text text-danger"><i class="fa fa-times-circle fa-lg" title="Not visited"></i></span>
+					{% endif %}
+				</td>
+				<td>{{ result.contacts }}</td>
+			{% endif %}
+		<!--  end columns  -->
+
+		</tr>
+	{% endif %}
 
 {% endfor %}
 
