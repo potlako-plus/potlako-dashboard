@@ -10,7 +10,7 @@ from edc_dashboard import UrlConfig
 from .patterns import subject_identifier, screening_identifier
 from .views import SubjectListboardView, SubjectDashboardView
 from .views import SubjectScreeningListboardView, EndpointListBoardView
-from .views import VerbalConsentView, WorklistListboardView
+from .views import VerbalConsentView
 
 
 app_name = 'potlako_dashboard'
