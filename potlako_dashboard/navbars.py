@@ -35,15 +35,6 @@ potlako_dashboard.append_item(
         no_url_namespace=no_url_namespace))
 
 potlako_dashboard.append_item(
-    NavbarItem(
-        name='potlako_worklist',
-        title='Worklist',
-        label='worklist',
-        fa_icon='far fa-list-alt',
-        url_name=settings.DASHBOARD_URL_NAMES['potlako_worklist_url'],
-        no_url_namespace=no_url_namespace))
-
-potlako_dashboard.append_item(
     NavbarItem(name='synchronization',
                label='Data Synchronization',
                fa_icon='fas fa-sync',

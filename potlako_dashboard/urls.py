@@ -43,13 +43,6 @@ endpoint_listboard_url_config = UrlConfig(
     identifier_label='subject_identifier',
     identifier_pattern=subject_identifier)
 
-potlako_worklist_url_config = UrlConfig(
-    url_name='potlako_worklist_url',
-    view_class=WorklistListboardView,
-    label='potlako_worklist',
-    identifier_label='subject_identifier',
-    identifier_pattern=subject_identifier)
-
 subject_dashboard_url_config = UrlConfig(
     url_name='subject_dashboard_url',
     view_class=SubjectDashboardView,
@@ -62,7 +55,6 @@ urlpatterns += subject_listboard_url_config.listboard_urls
 urlpatterns += screening_listboard_url_config.listboard_urls
 urlpatterns += verbal_consent_url_config.listboard_urls
 urlpatterns += endpoint_listboard_url_config.listboard_urls
-urlpatterns += potlako_worklist_url_config.listboard_urls
 urlpatterns += subject_dashboard_url_config.dashboard_urls
 
 if settings.APP_NAME == 'potlako_dashboard':
