@@ -2,7 +2,7 @@
 {% load admin_urls %}
 {% load edc_base_extras %}
 {% load potlako_dashboard_extras %}
-             
+
 {% block listboard_panel %}
     <a id="cliniciancallenrollment_add" title="add screening" class="btn btn-sm btn-default" role="button" 
         href="{{ clinician_call_enrollment_add_url }}?next={{ screening_listboard_url }}">
@@ -38,11 +38,12 @@
 		{% if not result.is_eligible %}
 	    	{% eligibility_button result %}
 	       {% else %}
-	      
+
 	    	{% if not result.consent_model_obj %}
-	    		 {% if not result.verbal_consent_obj %}
+	    		 {% if not result.verbal_consent_obj or result.verbal_consent_obj.consented == 'No' %}
+
 		        	{% verbal_consent_button result %}
-		        	{% else %}
+		        	{% elif result.verbal_consent_obj %}
 		        	{% consent_button result %}
 		        	{% endif %}
 	        {% else %}
@@ -50,7 +51,7 @@
 	        	{% if result.subject_locator %}
 	        		{% dashboard_button result %}
 	        	{% endif %}
-	        
+
 	        {% endif %}
 	       {% endif %}
 	{% else %}

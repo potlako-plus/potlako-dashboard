@@ -34,40 +34,38 @@
                            	</td>
 
                             <td style="border:none"></td>
-                            
+
                         </tr>
                     </table>
                 </td>
             </tr>
 
-            
-			
             <tr class="details">
                 <td>
                     <!-- HTML Content -->
 				     {% block verbal_consent_body %}
-				
 				       {% include 'potlako_dashboard/screening/verbal_consent_body_en.html' %}
-				
+
 					 {% endblock verbal_consent_body %}
-					 
+
 
 					 <strong>Do you agree to participate in this study?</strong> <br> <br>
-					 <input type="radio" id="yes" name="consented" value="yes" required checked />
+
+					 <input type="radio" id="yes" name="consented" value="Yes" {% if verbal_consent_obj.consented != 'No' %} checked="checked" {% endif %}/>
 					 <label for="agree"> Yes:  Document oral consent below and continue with enrollment interview. </label><br>
-					 <input type="radio" id="no" name="consented" value="no" disabled />
+					 <input type="radio" id="no" name="consented" value="No" {% if verbal_consent_obj.consented == 'No' %} checked="checked" {% endif %}/>
 					 <label for="disagree"> No:  Thank them for their time.  </label><br><br>
-					 
+
 					 <label for="participant_name">Name of Subject: </label>
 					 <input type="text" id="participant_name" name="participant_name" value="{{full_name}}" required readonly><br>	
 				      <br>
-				
+
 					 <strong> Person Obtaining Consent </strong>
 					 I have read this form to the subject.  An explanation of the research was given and questions 
 					 from the subject were solicited and answered to the subject’s satisfaction.  In my judgment, 
 					 the subject has demonstrated comprehension of the information.  The subject has provided oral 
 					 consent to participate in this study. <br> 
-							   
+
                 </td>
             </tr>
 
@@ -84,9 +82,9 @@
                 <td>
 					{{ user.first_name }} &nbsp;&nbsp; {{ user.last_name }} &nbsp;&nbsp;
                 </td>
-                
+
                 <td>
-                	<input type="text" id="designation" name="designation" required><br><br>
+                	<input type="text" id="designation" name="designation" value="{{verbal_consent_obj.designation}}" required><br><br>
                 </td>
 
             </tr>
@@ -94,7 +92,7 @@
                 <td>
                     Signature of Person Obtaining Consent
                 </td>
-                
+
                 <td>
                     Date
                 </td>
@@ -103,20 +101,24 @@
 
             <tr class="item">
             	<td>
-            		<input type="hidden" id="initials" value="{{user.first_name|first}}{{user.last_name|first}}"/>
-                	<input type="text" id="signature" name="signature" minlength="2" required />
+            		<input type="hidden" id="initials" value={% if user_uploaded_initials %} "{{user_uploaded_initials}}" {%else%} "{{user.first_name|first}}{{user.last_name|first}}" {%endif%}"/>
+                	<input type="text" id="signature" name="signature" value="{{verbal_consent_obj.signature}}" minlength="2" required />
                 	<span class="error">
                 		<p style="font-size:12px;margin: 0px;color:red;display:block;" id="name_error"></p>
                 	</span>
                 </td>
-                
+
 
                 <td>
-                    {{ verbal_consent_datetime|date:"SHORT_DATETIME_FORMAT" }}
+                    {% if verbal_consent_obj.datetime_captured %}
+                      {{ verbal_consent_obj.datetime_captured|date:"SHORT_DATETIME_FORMAT" }}
+                     {% else %}
+                      {{verbal_consent_datetime|date:"SHORT_DATETIME_FORMAT" }}
+                     {% endif %}
                 </td>
                 <input type="hidden" id="language" name="language" value={{ language }}><br><br>
             </tr>
-            
+
         </table>
         <input class="btn btn-primary" type="submit" value="Save">
         </form>

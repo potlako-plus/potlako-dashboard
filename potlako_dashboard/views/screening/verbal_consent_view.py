@@ -1,6 +1,7 @@
 from django.apps import apps as django_apps
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
+from django.urls.base import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
 from edc_base.view_mixins import EdcBaseViewMixin
@@ -17,7 +18,6 @@ from django.http.response import HttpResponseRedirect
 class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
                         TemplateRequestContextMixin, TemplateView):
 
-    template_name = 'procurement_dashboard/purchase_order/dashboard.html'
     report_template = 'verbal_consent_template'
     report_pdf_template = 'verbal_consent_template_pdf'
     model = 'potlako_subject.verbalconsent'
@@ -30,8 +30,6 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
     def pdf_name(self):
         screening_identifier = self.kwargs.get('screening_identifier')
         last_name = self.clinician_call_field_value(screening_identifier, 'last_name')
-        identifier = self.clinician_call_field_value(
-            screening_identifier, 'national_identity')[5:]
         return f'{last_name}{screening_identifier}'
 
     @property
@@ -58,27 +56,41 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
                 'screening_identifier': context.get('screening_identifier'),
                 'user_uploaded': request.user.first_name + " " + self.request.user.last_name,
                 'language': request.POST['language'],
+                'consented': request.POST['consented'],
                 'datetime_captured': get_utcnow(),
-                'version': '1'}
+                'version': '1',
+                'designation': request.POST['designation'],
+                'signature': request.POST['signature']}
 
 #             verbal_consent_form = self.form_class(options)
-            verbal_consent_model = self.model_cls(
-                **options,
-                user_created=request.user.username,
-                created=get_utcnow())
-            context.update(
-                **options,
-                participant_name=request.POST['participant_name'],
-                designation=request.POST['designation'],
-                signature=request.POST['signature'],
-                consented=request.POST['consented'])
+            if self.verbal_consent_obj:
+                verbal_consent_obj = self.verbal_consent_obj
+                if verbal_consent_obj.consented != request.POST['consented']:
+                    verbal_consent_obj.user_uploaded = options.get('user_uploaded')
+                    verbal_consent_obj.consented = options.get('consented')
+                    verbal_consent_obj.datetime_captured
+                    verbal_consent_obj.save()
+                    verbal_consent_model = self.verbal_consent_obj
+                else:
+                    return HttpResponseRedirect(reverse('potlako_dashboard:screening_listboard_url',
+                                                kwargs=dict(screening_identifier=self.kwargs.get('screening_identifier'),)))
+            else:
+                verbal_consent_model = self.model_cls(
+                    **options,
+                    user_created=request.user.username,
+                    created=get_utcnow())
+                context.update(
+                    **options,
+                    participant_name=request.POST['participant_name'],)
             f_name, l_name = request.POST['participant_name'].split(" ")
             language = request.POST['language']
 
             self.handle_uploaded_file(context, model_obj=verbal_consent_model, **kwargs)
-
-            return HttpResponseRedirect(
-                self.add_consent_href(fname=f_name, lname=l_name, language=language))
+            if request.POST['consented'] == 'Yes':
+                return HttpResponseRedirect(
+                    self.add_consent_href(fname=f_name, lname=l_name, language=language))
+            return HttpResponseRedirect(reverse('potlako_dashboard:screening_listboard_url',
+                                        kwargs=dict(screening_identifier=self.kwargs.get('screening_identifier'),)))
 
     def add_consent_href(self, fname=None, lname=None, language=None):
         """Returns a wrapped saved or unsaved subject screening.
@@ -101,6 +113,10 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
         f_name = self.clinician_call_field_value(screening_identifier, 'first_name')
         l_name = self.clinician_call_field_value(screening_identifier, 'last_name')
         full_name = f'{f_name} {l_name}'
+        initials = None
+        if self.verbal_consent_obj:
+            initials = self.get_intiails(full_name=self.verbal_consent_obj.user_uploaded)
+
         context.update(
             verbal_consent_datetime=get_utcnow(),
             screening_identifier=screening_identifier,
@@ -108,9 +124,16 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
             national_identity=self.clinician_call_field_value(
                 screening_identifier, 'national_identity'),
             full_name=full_name,
-            verbal_consent_href=self.model_cls().get_absolute_url(),
-            add_consent_href=self.add_consent_href, )
+            user_uploaded_initials=initials,
+            verbal_consent_obj=self.verbal_consent_obj,
+            add_consent_href=self.add_consent_href,)
         return context
+
+    def get_intiails(self, full_name=None):
+        if full_name:
+            first_name, last_name = full_name.split(' ')
+            return first_name.upper()[0] + last_name.upper()[0]
+        return None
 
     def filter_options(self, **kwargs):
         options = super().filter_options(**kwargs)
@@ -123,6 +146,13 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
         language = self.request.GET.get('language', 'en')
 
         return f'potlako_dashboard/screening/verbal_consent_{language}.html'
+
+    @property
+    def verbal_consent_obj(self):
+        try:
+            return self.model_cls.objects.get(screening_identifier=self.kwargs.get('screening_identifier'))
+        except self.model_cls.DoesNotExist:
+            return None
 
     @property
     def pdf_template(self):
