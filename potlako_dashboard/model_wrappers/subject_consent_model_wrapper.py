@@ -37,6 +37,11 @@ class SubjectConsentModelWrapper(
             return None
 
     @property
+    def language(self):
+        if self.verbal_consent_obj:
+            return self.verbal_consent_obj.language
+
+    @property
     def verbal_consent_pdf_url(self):
         if self.verbal_consent_obj:
             return self.verbal_consent_obj.file.url
