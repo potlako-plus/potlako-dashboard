@@ -1,9 +1,7 @@
 from django.apps import apps as django_apps
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from edc_base.utils import age, get_utcnow
 
-from edc_appointment.constants import COMPLETE_APPT
 from edc_model_wrapper import ModelWrapper
 from .subject_locator_model_wrapper_mixin import SubjectLocatorModelWrapperMixin
 from .baseline_summary_model_wrapper_mixin import BaselineClinicalSummaryModelWrapperMixin
