@@ -6,7 +6,7 @@
    <meta charset="utf-8">
     <title>Verbal Script</title>
     <link type="text/css" rel="stylesheet" href="{% static 'potlako_dashboard/css/verbal_consent.css' %}">
-    
+ 
     <link rel="shortcut icon" href="{% static 'potlako_dashboard/images/favicon.png' %}" type="image/png">
     <link rel="icon" href="{% static 'potlako_dashboard/images/favicon.png' %}" type="image/png" >
     <script type="text/javascript" charset="utf8" src="{%static 'potlako_dashboard/js/verbal_consent.js' %}"></script>
@@ -21,7 +21,7 @@
     	<form method='POST' id="new_post" action="{% url 'potlako_dashboard:verbal_consent_url'  screening_identifier  %}" name="verbal_consent" onsubmit="return validateForm()">
     	{% csrf_token %}
         <table cellpadding="0" cellspacing="0">
-            
+
             <tr class="information">
                 <td colspan="2">
                     <table>
@@ -36,39 +36,43 @@
                            	</td>
 
                             <td style="border:none"></td>
-                            
+
                         </tr>
                     </table>
                 </td>
             </tr>
 
-            
-			
             <tr class="details">
                 <td>
                     <!-- HTML Content -->
 				     {% block verbal_consent_body %}
-				
+
 				       {% include 'potlako_dashboard/screening/verbal_consent_body_tn.html' %}
-				
+
 					 {% endblock verbal_consent_body %}
-					  
+
 					 <strong>A o dumela go tsaya karolo mo tshekatshekong e?</strong> <br> <br>
-					 
-					 <input type="radio" id="yes" name="consented" value="yes" required checked />
+					 {% if consented_error %}
+					   <div style="color:red "> {{ consented_error }} </div>
+					 {% endif %}
+
+					 <input type="radio" id="yes" name="consented" value="Yes" {% if verbal_consent_obj.consented != 'No' %} checked="checked" {% endif %}/>
 					 <label for="agree"> Ee:  Kwala mokwalo wa tetla, o bo o tswelela ka potsolotso ya go tsenelela tshekatsheko </label><br>
-					 <input type="radio" id="no" name="consented" value="no" required disabled />
+					 <input type="radio" id="no" name="consented" value="No" {% if verbal_consent_obj.consented == 'No' %} checked="checked" {% endif %}/>
 					 <label for="disagree"> Nnyaa:  Mo lebogele nako ya gagwe. </label><br><br>
-						
+
+					{% if participant_name_error %}
+					  <div style="color:red "> {{ participant_name_error }} </div> <br>
+					{% endif %}
 					 <label for="participant_name">Leina la motsayakarolo:</label>
 					 <input type="text" id="participant_name" name="participant_name" value="{{full_name}}" required readonly><br>	
 				      <br>
-				
+
 					 <strong> Yo o tsayang mokwalo wa tetla </strong>
 					 Ke baletse motsayakarolo mokwalo o wa tetla. Ke file tlhaloso ya tshekatsheko, ke boditse motsayakarolo dipotso, a 
 					 bo ka araba motsayakarolo ka mo go kgotsofatsang. Ka tshwetso yame, motsayakarolo o supile gore o tlhalogantse kitso e. 
 					 Motsayakarolo o file tetla ya go tsaya karolo ka molomo. <br> 
-							   
+
                 </td>
             </tr>
 
@@ -77,7 +81,7 @@
                     Leina le seemo(Title)  
                 </td>
                 <td>
-                     
+
                 </td>
 
             </tr>
@@ -86,9 +90,12 @@
                 <td>
 					{{ user.first_name }} &nbsp;&nbsp; {{ user.last_name }} &nbsp;&nbsp;
                 </td>
-                
+
                 <td>
-                	<input type="text" id="designation" name="designation" required><br><br>
+                    {% if designation_error %}
+                	   <div style="color:red ">{{ designation_error }} </div> <br>
+                	{% endif %}
+                	<input type="text" id="designation" name="designation" value="{{verbal_consent_obj.designation}}" required><br><br>
                 </td>
 
             </tr>
@@ -96,7 +103,7 @@
                 <td>
                     Monwana wa yo o tsayang mokwalo wa tetla
                 </td>
-                
+
                 <td>
                     Letsatsi
                 </td>
@@ -105,20 +112,26 @@
 
             <tr class="item">
             	<td>
-            		<input type="hidden" id="initials" value="{{user.first_name|first}}{{user.last_name|first}}"/>
-                	<input type="text" id="signature" name="signature" minlength="2" required />
+            		{% if signature_error %}
+	            	 <div style="color:red "> {{ signature_error }} </div> 
+	            	{% endif %}
+            		<input type="hidden" id="initials" value={% if user_uploaded_initials %} "{{user_uploaded_initials}}" {%else%} "{{user.first_name|first}}{{user.last_name|first}}" {%endif%}"/>
+                	<input type="text" id="signature" name="signature" value="{{verbal_consent_obj.signature}}" minlength="2" required />
                 	<span class="error">
                 		<p style="font-size:12px;margin: 0px;color:red;display:block;" id="name_error"></p>
                 	</span>
                 </td>
-                
 
                 <td>
-                    {{ verbal_consent_datetime|date:"SHORT_DATETIME_FORMAT" }}
+                    {% if verbal_consent_obj.datetime_captured %}
+                      {{ verbal_consent_obj.datetime_captured|date:"SHORT_DATETIME_FORMAT" }}
+                     {% else %}
+                      {{verbal_consent_datetime|date:"SHORT_DATETIME_FORMAT" }}
+                     {% endif %}
                 </td>
                 <input type="hidden" id="language" name="language" value={{ language }}><br><br>
             </tr>
-            
+
         </table>
         <input class="btn btn-primary" type="submit" value="Save">
         </form>

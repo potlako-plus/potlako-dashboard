@@ -62,7 +62,6 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
                 'designation': request.POST['designation'],
                 'signature': request.POST['signature']}
 
-#             verbal_consent_form = self.form_class(options)
             if self.verbal_consent_obj:
                 verbal_consent_obj = self.verbal_consent_obj
                 if verbal_consent_obj.consented != request.POST['consented']:
@@ -72,16 +71,20 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
                     verbal_consent_obj.save()
                     verbal_consent_model = self.verbal_consent_obj
                 else:
-                    return HttpResponseRedirect(reverse('potlako_dashboard:screening_listboard_url',
-                                                kwargs=dict(screening_identifier=self.kwargs.get('screening_identifier'),)))
+                    return HttpResponseRedirect(
+                        reverse('potlako_dashboard:screening_listboard_url',
+                                kwargs=dict(screening_identifier=self.kwargs.get(
+                                    'screening_identifier'),)))
             else:
                 verbal_consent_model = self.model_cls(
                     **options,
                     user_created=request.user.username,
                     created=get_utcnow())
-                context.update(
+
+            context.update(
                     **options,
                     participant_name=request.POST['participant_name'],)
+
             f_name, l_name = request.POST['participant_name'].split(" ")
             language = request.POST['language']
 
@@ -90,7 +93,8 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
                 return HttpResponseRedirect(
                     self.add_consent_href(fname=f_name, lname=l_name, language=language))
             return HttpResponseRedirect(reverse('potlako_dashboard:screening_listboard_url',
-                                        kwargs=dict(screening_identifier=self.kwargs.get('screening_identifier'),)))
+                                        kwargs=dict(screening_identifier=self.kwargs.get(
+                                            'screening_identifier'),)))
 
     def add_consent_href(self, fname=None, lname=None, language=None):
         """Returns a wrapped saved or unsaved subject screening.
@@ -150,7 +154,8 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
     @property
     def verbal_consent_obj(self):
         try:
-            return self.model_cls.objects.get(screening_identifier=self.kwargs.get('screening_identifier'))
+            return self.model_cls.objects.get(screening_identifier=self.kwargs.get(
+                'screening_identifier'))
         except self.model_cls.DoesNotExist:
             return None
 

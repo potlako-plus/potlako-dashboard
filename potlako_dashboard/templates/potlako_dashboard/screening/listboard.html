@@ -43,9 +43,9 @@
 	    		 {% if not result.verbal_consent_obj or result.verbal_consent_obj.consented == 'No' %}
 
 		        	{% verbal_consent_button result %}
-		        	{% elif result.verbal_consent_obj %}
+		        {% elif result.verbal_consent_obj %}
 		        	{% consent_button result %}
-		        	{% endif %}
+		        {% endif %}
 	        {% else %}
 	        	{% subject_locator_button result %}
 	        	{% if result.subject_locator %}

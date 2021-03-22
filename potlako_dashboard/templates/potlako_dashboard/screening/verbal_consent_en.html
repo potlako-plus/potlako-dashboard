@@ -6,7 +6,7 @@
    <meta charset="utf-8">
     <title>Verbal Script</title>
     <link type="text/css" rel="stylesheet" href="{% static 'potlako_dashboard/css/verbal_consent.css' %}">
-    
+   
     <link rel="shortcut icon" href="{% static 'potlako_dashboard/images/favicon.png' %}" type="image/png">
     <link rel="icon" href="{% static 'potlako_dashboard/images/favicon.png' %}" type="image/png" >
     <script type="text/javascript" charset="utf8" src="{%static 'potlako_dashboard/js/verbal_consent.js' %}"></script>
@@ -50,12 +50,18 @@
 
 
 					 <strong>Do you agree to participate in this study?</strong> <br> <br>
+					 {% if consented_error %}
+					   <div style="color:red "> {{ consented_error }} </div>
+					 {% endif %}
 
 					 <input type="radio" id="yes" name="consented" value="Yes" {% if verbal_consent_obj.consented != 'No' %} checked="checked" {% endif %}/>
 					 <label for="agree"> Yes:  Document oral consent below and continue with enrollment interview. </label><br>
 					 <input type="radio" id="no" name="consented" value="No" {% if verbal_consent_obj.consented == 'No' %} checked="checked" {% endif %}/>
 					 <label for="disagree"> No:  Thank them for their time.  </label><br><br>
 
+					{% if participant_name_error %}
+					  <div style="color:red "> {{ participant_name_error }} </div> <br>
+					{% endif %} 
 					 <label for="participant_name">Name of Subject: </label>
 					 <input type="text" id="participant_name" name="participant_name" value="{{full_name}}" required readonly><br>	
 				      <br>
@@ -84,6 +90,9 @@
                 </td>
 
                 <td>
+                    {% if designation_error %}
+                	   <div style="color:red ">{{ designation_error }} </div> <br>
+                	{% endif %}
                 	<input type="text" id="designation" name="designation" value="{{verbal_consent_obj.designation}}" required><br><br>
                 </td>
 
@@ -101,7 +110,10 @@
 
             <tr class="item">
             	<td>
-            		<input type="hidden" id="initials" value={% if user_uploaded_initials %} "{{user_uploaded_initials}}" {%else%} "{{user.first_name|first}}{{user.last_name|first}}" {%endif%}"/>
+            		{% if signature_error %}
+	            	 <div style="color:red "> {{ signature_error }} </div> 
+	            	{% endif %}
+            		<input type="hidden" id="initials" {% if user_uploaded_initials %} value="{{user_uploaded_initials}}" {%else%} value="{{user.first_name|first}}{{user.last_name|first}}" {%endif%}/>
                 	<input type="text" id="signature" name="signature" value="{{verbal_consent_obj.signature}}" minlength="2" required />
                 	<span class="error">
                 		<p style="font-size:12px;margin: 0px;color:red;display:block;" id="name_error"></p>
