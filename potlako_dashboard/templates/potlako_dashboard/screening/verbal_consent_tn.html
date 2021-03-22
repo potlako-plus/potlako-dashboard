@@ -115,7 +115,7 @@
             		{% if signature_error %}
 	            	 <div style="color:red "> {{ signature_error }} </div> 
 	            	{% endif %}
-            		<input type="hidden" id="initials" value={% if user_uploaded_initials %} "{{user_uploaded_initials}}" {%else%} "{{user.first_name|first}}{{user.last_name|first}}" {%endif%}"/>
+            		<input type="hidden" id="initials" {% if user_uploaded_initials %} value="{{user_uploaded_initials}}" {%else%} value="{{user.first_name|first}}{{user.last_name|first}}" {%endif%}/>
                 	<input type="text" id="signature" name="signature" value="{{verbal_consent_obj.signature}}" minlength="2" required />
                 	<span class="error">
                 		<p style="font-size:12px;margin: 0px;color:red;display:block;" id="name_error"></p>
