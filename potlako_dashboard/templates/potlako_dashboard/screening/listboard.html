@@ -43,6 +43,9 @@
 	    		 {% if not result.verbal_consent_obj or result.verbal_consent_obj.consented == 'No' %}
 
 		        	{% verbal_consent_button result %}
+		        	{% if not result.verbal_consent_obj.is_eligible %}
+			    		{% eligibility_button result %}
+			       {% endif %}
 		        {% elif result.verbal_consent_obj %}
 		        	{% consent_button result %}
 		        {% endif %}

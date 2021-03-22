@@ -40,7 +40,9 @@ def clinician_call_enrollment_button(model_wrapper):
 @register.inclusion_tag('potlako_dashboard/buttons/eligibility_button.html')
 def eligibility_button(model_wrapper):
     comment = []
-    obj = model_wrapper.subject_screening_model_obj or model_wrapper.object
+    obj = (model_wrapper.verbal_consent_obj or
+           model_wrapper.subject_screening_model_obj or
+           model_wrapper.object)
     tooltip = None
     if not obj.is_eligible and obj.ineligibility:
         comment = obj.ineligibility.strip('[').strip(']').split(',')
