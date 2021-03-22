@@ -67,6 +67,7 @@ class VerbalConsentView(PdfResponseMixin, NavbarViewMixin, EdcBaseViewMixin,
                 if verbal_consent_obj.consented != request.POST['consented']:
                     verbal_consent_obj.user_uploaded = options.get('user_uploaded')
                     verbal_consent_obj.consented = options.get('consented')
+                    verbal_consent_obj.signature = options.get('signature')
                     verbal_consent_obj.datetime_captured
                     verbal_consent_obj.save()
                     verbal_consent_model = self.verbal_consent_obj
