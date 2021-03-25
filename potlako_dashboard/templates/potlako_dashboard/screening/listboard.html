@@ -35,28 +35,28 @@
 
     {% if result.eligible_at_enrol %}
 		{% screening_button result %}
-		{% if not result.is_eligible %}
-	    	{% eligibility_button result %}
-	       {% else %}
+		{{subject_screening_model_obj }}
+		{% if subject_screening_model_obj and subject_screening_model_obj.is_eligible == False %}
+	       {% eligibility_button result %}
+	    {% else %}
 
-	    	{% if not result.consent_model_obj %}
-	    		 {% if not result.verbal_consent_obj or result.verbal_consent_obj.consented == 'No' %}
+	       {% if not result.consent_model_obj %}
+	    	 {% if not result.verbal_consent_obj or result.verbal_consent_obj.consented == 'No' %}
 
-		        	{% verbal_consent_button result %}
-		        	{% if not result.verbal_consent_obj.is_eligible %}
-			    		{% eligibility_button result %}
-			       {% endif %}
-		        {% elif result.verbal_consent_obj %}
-		        	{% consent_button result %}
-		        {% endif %}
-	        {% else %}
-	        	{% subject_locator_button result %}
-	        	{% if result.subject_locator %}
-	        		{% dashboard_button result %}
-	        	{% endif %}
-
-	        {% endif %}
-	       {% endif %}
+		        {% verbal_consent_button result %}
+		        {% if result.verbal_consent_obj and not result.verbal_consent_obj.is_eligible %}
+			      {% eligibility_button result %}
+			    {% endif %}
+		     {% elif result.verbal_consent_obj %}
+		       {% consent_button result %}
+		     {% endif %}
+	      {% else %}
+	         {% subject_locator_button result %}
+	         {% if result.subject_locator %}
+	           {% dashboard_button result %}
+	         {% endif %}
+         {% endif %}
+	  {% endif %}
 	{% else %}
 		{% eligibility_button result %}
 	{% endif %}

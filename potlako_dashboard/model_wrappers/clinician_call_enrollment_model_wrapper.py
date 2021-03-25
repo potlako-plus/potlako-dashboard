@@ -111,8 +111,5 @@ class ClinicianCallEnrollmentModelWrapper(SubjectScreeningModelWrapperMixin,
             version=self.consent_version)
         return options
 
-    def is_eligible(self):
-        return self.subject_screening_model_obj.is_eligible
-
     def eligible_at_enrol(self):
         return self.object.is_eligible

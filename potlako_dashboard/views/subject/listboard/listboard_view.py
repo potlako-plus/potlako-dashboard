@@ -44,19 +44,23 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
             usr_groups = [g.name for g in self.request.user.groups.all()]
 
             if 'HR' in usr_groups and self.request.GET.get('p_role') == 'HR':
-                queryset = queryset.filter(employee__department__dept_name=self.request.GET.get('dept'))
+                queryset = queryset.filter(
+                    employee__department__dept_name=self.request.GET.get('dept'))
 
         if self.request.GET.get('f') == 'navigation':
             queryset = queryset.filter(
-                Q(subject_identifier__in=navigation_identifiers) & Q(subject_identifier__in=intervention_identifiers))
+                Q(subject_identifier__in=navigation_identifiers) & Q(
+                    subject_identifier__in=intervention_identifiers))
         elif self.request.GET.get('f') == 'no_navigation':
             queryset = queryset.exclude(
-                Q(subject_identifier__in=navigation_identifiers) & Q(subject_identifier__in=intervention_identifiers))
+                Q(subject_identifier__in=navigation_identifiers) & Q(
+                    subject_identifier__in=intervention_identifiers))
         elif self.request.GET.get('f') == 'intervention':
             queryset = queryset.filter(subject_identifier__in=intervention_identifiers)
         elif self.request.GET.get('f') == 'soc':
             queryset = queryset.exclude(
-                Q(subject_identifier__in=navigation_identifiers) | Q(subject_identifier__in=intervention_identifiers))
+                Q(subject_identifier__in=navigation_identifiers) | Q(
+                    subject_identifier__in=intervention_identifiers))
         return queryset
 
     def get_queryset_filter_options(self, request, *args, **kwargs):
@@ -68,7 +72,6 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
     def get_community_queryset(self, community_name):
         onschedule_cls = django_apps.get_model('potlako_subject.onschedule')
         return onschedule_cls.objects.filter(community_arm=community_name).values_list('subject_identifier')
-
 
     def extra_search_options(self, search_term):
         q = Q()
