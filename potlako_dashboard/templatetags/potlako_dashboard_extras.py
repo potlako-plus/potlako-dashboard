@@ -68,7 +68,6 @@ def baseline_clinical_summary_button(model_wrapper, groups):
         subject_identifier=model_wrapper.subject_identifier,
         add_baseline_summary_href=model_wrapper.baseline_summary.href,
         baseline_summary_model_obj=model_wrapper.baseline_summary_model_obj,
-        readonly='RA' in groups,
         title=' '.join(title))
 
 
@@ -89,7 +88,6 @@ def navigation_plan_summary_button(model_wrapper, groups):
         subject_identifier=model_wrapper.subject_identifier,
         add_navigation_plan_summary_href=model_wrapper.navigation_plan_summary.href,
         navigation_plan_summary_model_obj=model_wrapper.navigation_plan_summary_model_obj,
-        readonly='RA' in groups,
         title=' '.join(title))
 
 

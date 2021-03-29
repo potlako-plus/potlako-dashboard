@@ -1,9 +1,8 @@
-{% if baseline_summary_model_obj%}
-  	<a id="baselineclinicalsummary_add_{{ subject_identifier }}" title="{{ title }}"
-  	class="btn btn-success btn-sm" data-toggle="tooltip"  data-placement="right" 
-  	href="{{ add_baseline_summary_href }}{% if readonly%}edc_readonly='1'{% endif %}">Baseline Clinical Summary </a>
-{% elif not baseline_summary_model_obj and not readonly%}
-	<a id="baselineclinicalsummary_add_{{ subject_identifier }}" title="{{ title }}"
-   	class="btn btn-warning btn-sm" data-toggle="tooltip"  data-placement="right" 
-   	href="{{ add_baseline_summary_href }}">Baseline Clinical Summary </a>   	
-{% endif %}
+<a id="baselineclinicalsummary_add_{{ subject_identifier }}" title="{{ title }}"
+  {% if baseline_summary_model_obj%}
+  	class="btn btn-success btn-sm"
+  {% else %}
+  	class="btn btn-warning btn-sm"
+  {% endif %}
+data-toggle="tooltip"  data-placement="right" 
+href="{{ add_baseline_summary_href }}  ">Baseline Clinical Summary </a>
