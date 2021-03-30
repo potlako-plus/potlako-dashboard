@@ -1,5 +1,7 @@
 from django.apps import apps as django_apps
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.messages import get_messages
+from django.contrib import messages
 
 from edc_action_item.site_action_items import site_action_items
 from edc_base.view_mixins import EdcBaseViewMixin
@@ -46,13 +48,30 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         locator_obj = self.get_locator_info()
+        edc_readonly = None
+
+        if self.request.GET.get('edc_readonly'):
+            edc_readonly = self.request.GET.get('edc_readonly') == '1'
+
+        # Ignore error messages if readonly view
+        if edc_readonly:
+            storage = get_messages(self.request)
+            storage.used = True
+
         context.update(
             locator_obj=locator_obj,
             community_arm=self.community_arm,
             subject_consent=self.consent_wrapped,
+            groups=[g.name for g in self.request.user.groups.all()],
             nav_flag=self.get_navigation_status,
+            edc_readonly=edc_readonly,
             hiv_status=self.get_hiv_status)
         return context
+
+    def message_user(self, message=None):
+        if (not self.request.GET.get('edc_readonly')
+                or self.request.GET.get('edc_readonly') != '1'):
+            messages.error(self.request, message=message)
 
     @property
     def get_hiv_status(self):
@@ -78,7 +97,7 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
         keysteps_form = django_apps.get_model('potlako_subject.evaluationtimeline')
 
         key_steps = keysteps_form.objects.filter(
-            navigation_plan__subject_identifier = self.kwargs.get('subject_identifier'),
+            navigation_plan__subject_identifier=self.kwargs.get('subject_identifier'),
             key_step_status=NOT_DONE)
         flags = []
 

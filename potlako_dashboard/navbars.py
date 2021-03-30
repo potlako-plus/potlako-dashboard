@@ -37,7 +37,7 @@ potlako_dashboard.append_item(
 potlako_dashboard.append_item(
     NavbarItem(name='synchronization',
                label='Data Synchronization',
-               fa_icon='fa-exchange',
+               fa_icon='fas fa-sync',
                url_name='edc_sync:home_url'))
 
 site_navbars.register(potlako_dashboard)

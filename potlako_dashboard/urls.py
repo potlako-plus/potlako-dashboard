@@ -52,7 +52,6 @@ subject_dashboard_url_config = UrlConfig(
 
 urlpatterns = []
 urlpatterns += subject_listboard_url_config.listboard_urls
-urlpatterns += subject_listboard_url_config.dashboard_urls
 urlpatterns += screening_listboard_url_config.listboard_urls
 urlpatterns += verbal_consent_url_config.listboard_urls
 urlpatterns += endpoint_listboard_url_config.listboard_urls

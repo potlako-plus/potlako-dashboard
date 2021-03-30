@@ -1,13 +1,6 @@
-<a id="navigationsummaryandplan_add_{{ subject_identifier }}" 
- 	title="{{ title }}"
- 	
- 	{% if navigation_plan_summary_model_obj %}
-       	class="btn btn-success btn-sm" 
-    {% else %}
-   		class="btn btn-warning btn-sm"       	
-    {% endif %}
-    
-    data-toggle="tooltip"  data-placement="right" href="{{ add_navigation_plan_summary_href }}">
-    Navigation Summary And Plan
-     	
- </a>
+<a id="navigationsummaryandplan_add_{{ subject_identifier }}" title="{{ title }}"
+{% if navigation_plan_summary_model_obj %}
+class="btn btn-success btn-sm"
+{% else%} class="btn btn-warning btn-sm" {% endif %}
+data-toggle="tooltip"  data-placement="right"
+href="{{ add_navigation_plan_summary_href }}">Navigation Summary And Plan </a>

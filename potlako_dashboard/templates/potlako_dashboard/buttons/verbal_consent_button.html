@@ -1,4 +1,10 @@
 {% if subject_screening_obj %}
+{% if verbal_consent_obj %}
+	<a id="verbal_script_add_{{ screening_identifier }}"
+ 	 title="{{ title }}" class="btn btn-success btn-sm" data-toggle="tooltip"  data-placement="right"
+            href="{% url 'potlako_dashboard:verbal_consent_url' screening_identifier%}?language={{verbal_consent_obj.language}}"> Verbal Consent</a>
+
+{% else %}
  			
 <a id="verbal_script_add_{{ screening_identifier }}" title="{{ title }}" 
    class="btn btn-warning btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
@@ -11,6 +17,4 @@
   <div class="dropdown-divider"></div>
   <a class="dropdown-item" href="{% url 'potlako_dashboard:verbal_consent_url'  screening_identifier %}?language=en">English</a>
 </div>
-  
- 
-{% endif %}
+{% endif %}{% endif %}

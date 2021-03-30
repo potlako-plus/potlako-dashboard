@@ -1,6 +1,7 @@
 from django.apps import apps as django_apps
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+
 from edc_model_wrapper import ModelWrapper
 from .subject_locator_model_wrapper_mixin import SubjectLocatorModelWrapperMixin
 from .baseline_summary_model_wrapper_mixin import BaselineClinicalSummaryModelWrapperMixin
@@ -18,8 +19,8 @@ class SubjectConsentModelWrapper(
         ModelWrapper):
 
     model = 'potlako_subject.subjectconsent'
-    next_url_name = settings.DASHBOARD_URL_NAMES.get('screening_listboard_url')
-    next_url_attrs = ['screening_identifier']
+    next_url_name = settings.DASHBOARD_URL_NAMES.get('subject_listboard_url')
+    next_url_attrs = ['subject_identifier']
     querystring_attrs = ['screening_identifier', 'subject_identifier',
                          'first_name', 'last_name', 'language']
 
@@ -32,6 +33,11 @@ class SubjectConsentModelWrapper(
                 version='1')
         except ObjectDoesNotExist:
             return None
+
+    @property
+    def language(self):
+        if self.verbal_consent_obj:
+            return self.verbal_consent_obj.language
 
     @property
     def verbal_consent_pdf_url(self):

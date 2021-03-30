@@ -2,12 +2,18 @@
 {% load admin_urls %}
 {% load edc_base_extras %}
 {% load potlako_dashboard_extras %}
-             
+
+{% if not perms.potlako_subject.delete_cancerdxandtxendpoint %} 
+	{% block main %}
+	{% endblock main %}
+
+{% else %}
 {% block listboard_panel %}
     
 {% endblock listboard_panel %}
 
 {% block listboard_table_header %}
+
     <!-- begin results header -->
     <th>#</th>
     <th></th>
@@ -19,16 +25,18 @@
     <!-- end results header -->
 {% endblock listboard_table_header %}
 
-
+{% block listboard_table_body %}
+	
 {% block listboard_table_button_column %}
     <td style="white-space: nowrap;">
     <div class="btn-group">
-    {% cancer_dx_endpoint_button result%}
     
+    {% cancer_dx_endpoint_button result%}
+        
     </div>
     
     <div class="btn-group">
-    
+
      {% care_seeking_endpoint_button result%}
     
     </div>
@@ -45,3 +53,8 @@
     <td nowrap></td>
 
 {% endblock listboard_table_columns %}
+
+{% endblock listboard_table_body %}
+
+{% endif %}
+

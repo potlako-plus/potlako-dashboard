@@ -16,7 +16,7 @@ class UnsupportedMediaPathException(Exception):
     pass
 
 
-class PdfResponseMixin(object, ):
+class PdfResponseMixin(object,):
 
     pdf_name = None
     pdf_template = None
@@ -47,7 +47,7 @@ class PdfResponseMixin(object, ):
             model_obj.file = f'{self.upload_to}{self.get_pdf_name()}.pdf'
             model_obj.save()
 
-    def view_pdf(self, context,  **kwargs):
+    def view_pdf(self, context, **kwargs):
         template = self.pdf_template
         resp = HttpResponse(content_type='application/pdf')
         resp['Content-Disposition'] = 'attachment; filename="{0}.pdf"'.format(
@@ -116,7 +116,6 @@ class PdfResponseMixin(object, ):
         password = context_dict.get('national_identity')
         # encrypt pdf file
         self.encrypt_pdf(file_path=output_filename, password=password)
-
         return pisa_status.err
 
     def encrypt_pdf(self, file_path=None, password=None):
