@@ -34,6 +34,7 @@ def clinician_call_enrollment_button(model_wrapper):
     return dict(
         screening_identifier=model_wrapper.object.screening_identifier,
         href=model_wrapper.href,
+        is_edit=model_wrapper.model == 'potlako_subject.cliniciancallenrollment',
         title=' '.join(title))
 
 

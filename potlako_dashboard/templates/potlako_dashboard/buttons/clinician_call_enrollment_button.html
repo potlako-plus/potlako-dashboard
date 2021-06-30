@@ -1,5 +1,16 @@
-    <a id="cliniciancallenrollment_change_{{ record_id }}" title="{{ title }}" role="button" 
-       class="btn btn-default btn-sm"
-           href="{{ href }}">
-        <i class="fa fa-pencil-alt fa-sm"></i>
+{% if is_edit %}
+  <a id="cliniciancallenrollment_change_{{ record_id }}" title="{{ title }}" role="button" 
+       class="btn btn-default btn-sm"  data-toggle="tooltip"  data-placement="right"
+           href="{{ href }}"> 
+         <i class="fa fa-pencil-alt fa-sm"></i>
+
     </a>
+
+{% else %}
+ <a id="cliniciancallenrollment_change_{{ record_id }}" title="{{ title }}" role="button" 
+       class="btn btn-success btn-sm"  data-toggle="tooltip"  data-placement="right"
+           href="{{ href }}"> 
+    Clinician Call Enrollment
+   </a>
+    
+{% endif %}
