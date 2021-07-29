@@ -17,15 +17,3 @@ class ListboardViewFilters(ListboardViewFilters):
         label='Not Eligible',
         position=11,
         lookup={'is_eligible': False})
-
-    consented = ListboardFilter(
-        label='Consented',
-        position=20,
-        lookup={'is_eligible': True,
-                'is_consented': True})
-
-    not_consented = ListboardFilter(
-        label='Not consented',
-        position=21,
-        lookup={'is_eligible': True,
-                'is_consented': False})
