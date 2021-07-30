@@ -35,8 +35,7 @@
 
     {% if result.eligible_at_enrol %}
 		{% screening_button result %}
-		{{subject_screening_model_obj }}
-		{% if subject_screening_model_obj and subject_screening_model_obj.is_eligible == False %}
+		{% if result.subject_screening_model_obj and result.subject_screening_model_obj.is_eligible == False %}
 	       {% eligibility_button result %}
 	    {% else %}
 
