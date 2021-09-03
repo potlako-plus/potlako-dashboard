@@ -29,12 +29,12 @@ def verbal_consent_pdf_button(model_wrapper):
 
 
 @register.inclusion_tag('potlako_dashboard/buttons/clinician_call_enrollment_button.html')
-def clinician_call_enrollment_button(model_wrapper):
+def clinician_call_enrollment_button(model_wrapper, wrapped_consent=None):
     title = ['Edit Clinician Call Enrollment form.']
     return dict(
         screening_identifier=model_wrapper.object.screening_identifier,
         href=model_wrapper.href,
-        is_edit=model_wrapper.model == 'potlako_subject.cliniciancallenrollment',
+        is_edit=wrapped_consent is None,
         title=' '.join(title))
 
 

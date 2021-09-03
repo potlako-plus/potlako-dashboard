@@ -13,7 +13,8 @@ from potlako_subject.action_items import SUBJECT_LOCATOR_ACTION
 
 from ....model_wrappers import (
     AppointmentModelWrapper, SubjectConsentModelWrapper,
-    SpecialFormsModelWrapper, SubjectVisitModelWrapper,)
+    SpecialFormsModelWrapper, SubjectVisitModelWrapper,
+    ClinicianCallEnrollmentModelWrapper)
 from edc_constants.constants import NOT_DONE
 from edc_base.utils import get_utcnow
 
@@ -62,6 +63,8 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
             locator_obj=locator_obj,
             community_arm=self.community_arm,
             subject_consent=self.consent_wrapped,
+            clinician_call_enrol=ClinicianCallEnrollmentModelWrapper(
+                self.clinician_call_enrol_obj()),
             groups=[g.name for g in self.request.user.groups.all()],
             nav_flag=self.get_navigation_status,
             edc_readonly=edc_readonly,
@@ -81,16 +84,21 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
             patient_initial_obj = patient_initial.objects.get(
                 subject_visit__subject_identifier=self.kwargs.get('subject_identifier'))
         except patient_initial.DoesNotExist:
-            enrolmment_model = django_apps.get_model('potlako_subject.cliniciancallenrollment')
-            try:
-                enrolmment_model_obj = enrolmment_model.objects.get(
-                    screening_identifier=self.consent_wrapped.screening_identifier)
-            except enrolmment_model.DoesNotExist:
-                return None
-            else:
-                return enrolmment_model_obj.last_hiv_result
+            if self.clinician_call_enrol_obj():
+                return self.clinician_call_enrol_obj().last_hiv_result
         else:
             return patient_initial_obj.hiv_status
+
+    def clinician_call_enrol_obj(self):
+
+        enrolmment_model = django_apps.get_model('potlako_subject.cliniciancallenrollment')
+        try:
+            enrolmment_model_obj = enrolmment_model.objects.get(
+                screening_identifier=self.consent_wrapped.screening_identifier)
+        except enrolmment_model.DoesNotExist:
+            return None
+        else:
+            return enrolmment_model_obj
 
     @property
     def get_navigation_status(self):
