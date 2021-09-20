@@ -134,6 +134,16 @@ def consent_button(model_wrapper):
         title=' '.join(title))
 
 
+@register.inclusion_tag('potlako_dashboard/buttons/subject_death_button.html')
+def death_report_button(model_wrapper):
+    title = ['Edit Death Report.']
+    return dict(
+        subject_identifier=model_wrapper.object.subject_identifier,
+        add_death_report_href=model_wrapper.death_report.href,
+        death_report_model_obj=model_wrapper.death_report_model_obj,
+        title=' '.join(title))
+
+
 @register.inclusion_tag('potlako_dashboard/buttons/dashboard_button.html')
 def dashboard_button(model_wrapper):
     subject_dashboard_url = settings.DASHBOARD_URL_NAMES.get(
