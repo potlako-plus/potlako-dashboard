@@ -6,6 +6,7 @@ from edc_model_wrapper import ModelWrapper
 from .baseline_summary_model_wrapper_mixin import BaselineClinicalSummaryModelWrapperMixin
 from .cancer_dx_endpoint_model_wrapper_mixin import CancerDxEndpointModelWrapperMixin
 from .care_seeking_endpoint_model_wrapper_mixin import CareSeekingEndpointModelWrapperMixin
+from .coordinator_exit_wrapper_mixin import CoordinatorExitModelWrapperMixin
 from .death_report_wrapper_mixin import DeathReportModelWrapperMixin
 from .navigation_plan_summary_model_wrapper_mixin import NavigationPlanSummaryModelWrapperMixin
 from .subject_locator_model_wrapper_mixin import SubjectLocatorModelWrapperMixin
@@ -18,6 +19,7 @@ class SubjectConsentModelWrapper(
         CancerDxEndpointModelWrapperMixin,
         CareSeekingEndpointModelWrapperMixin,
         DeathReportModelWrapperMixin,
+        CoordinatorExitModelWrapperMixin,
         ModelWrapper):
 
     model = 'potlako_subject.subjectconsent'
