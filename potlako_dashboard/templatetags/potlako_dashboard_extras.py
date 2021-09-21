@@ -29,12 +29,12 @@ def verbal_consent_pdf_button(model_wrapper):
 
 
 @register.inclusion_tag('potlako_dashboard/buttons/clinician_call_enrollment_button.html')
-def clinician_call_enrollment_button(model_wrapper):
+def clinician_call_enrollment_button(model_wrapper, wrapped_consent=None):
     title = ['Edit Clinician Call Enrollment form.']
     return dict(
         screening_identifier=model_wrapper.object.screening_identifier,
         href=model_wrapper.href,
-        is_edit=model_wrapper.model == 'potlako_subject.cliniciancallenrollment',
+        is_edit=wrapped_consent is None,
         title=' '.join(title))
 
 
@@ -131,6 +131,28 @@ def consent_button(model_wrapper):
         subject_screening_obj=model_wrapper.subject_screening_model_obj,
         add_consent_href=model_wrapper.consent.href,
         consent_version=model_wrapper.consent_version,
+        title=' '.join(title))
+
+
+@register.inclusion_tag('potlako_dashboard/buttons/subject_death_button.html')
+def death_report_button(model_wrapper):
+    title = ['Edit Death Report.']
+
+    return dict(
+        subject_identifier=model_wrapper.object.subject_identifier,
+        add_death_report_href=model_wrapper.death_report.href,
+        death_report_model_obj=model_wrapper.death_report_model_obj,
+        title=' '.join(title))
+
+
+@register.inclusion_tag('potlako_dashboard/buttons/coordinator_exit_button.html')
+def coordinator_exit_button(model_wrapper):
+    title = ['Coordinator Exit Report.']
+
+    return dict(
+        subject_identifier=model_wrapper.object.subject_identifier,
+        add_coordinator_exit_href=model_wrapper.coordinator_exit.href,
+        coordinator_exit_model_obj=model_wrapper.coordinator_exit_model_obj,
         title=' '.join(title))
 
 

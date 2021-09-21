@@ -9,7 +9,7 @@
 		</tr>
 		<tr>
 		<td>
-			{% clinician_call_enrollment_button subject_consent %}
+			{% clinician_call_enrollment_button clinician_call_enrol subject_consent%}
 		</td>
 		</tr>
 		
@@ -25,5 +25,18 @@
 		    </td>
       	  </tr>
       	{% endif %}
+      	</tr>
+		
+		  <tr>
+		    <td>
+			  {% death_report_button subject_consent%}
+		    </td> 
+		  </tr>
+		    
+		 <tr>
+		    <td>
+			  {% coordinator_exit_button subject_consent%}
+		    </td>
+      	  </tr>
     </tbody>
 </table>

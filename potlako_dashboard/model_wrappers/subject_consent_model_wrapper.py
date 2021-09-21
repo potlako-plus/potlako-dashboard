@@ -1,13 +1,15 @@
 from django.apps import apps as django_apps
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-
 from edc_model_wrapper import ModelWrapper
-from .subject_locator_model_wrapper_mixin import SubjectLocatorModelWrapperMixin
+
 from .baseline_summary_model_wrapper_mixin import BaselineClinicalSummaryModelWrapperMixin
-from .navigation_plan_summary_model_wrapper_mixin import NavigationPlanSummaryModelWrapperMixin
 from .cancer_dx_endpoint_model_wrapper_mixin import CancerDxEndpointModelWrapperMixin
 from .care_seeking_endpoint_model_wrapper_mixin import CareSeekingEndpointModelWrapperMixin
+from .coordinator_exit_wrapper_mixin import CoordinatorExitModelWrapperMixin
+from .death_report_wrapper_mixin import DeathReportModelWrapperMixin
+from .navigation_plan_summary_model_wrapper_mixin import NavigationPlanSummaryModelWrapperMixin
+from .subject_locator_model_wrapper_mixin import SubjectLocatorModelWrapperMixin
 
 
 class SubjectConsentModelWrapper(
@@ -16,6 +18,8 @@ class SubjectConsentModelWrapper(
         NavigationPlanSummaryModelWrapperMixin,
         CancerDxEndpointModelWrapperMixin,
         CareSeekingEndpointModelWrapperMixin,
+        DeathReportModelWrapperMixin,
+        CoordinatorExitModelWrapperMixin,
         ModelWrapper):
 
     model = 'potlako_subject.subjectconsent'
