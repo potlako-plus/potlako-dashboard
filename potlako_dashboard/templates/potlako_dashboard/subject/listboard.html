@@ -1,6 +1,12 @@
 {% extends "edc_dashboard/listboard.html" %}
 {% load edc_base_extras %}
 {% load potlako_dashboard_extras %}
+{% load static %}
+
+{% block extra-css %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{% static 'potlako_dashboard/css/potlako_dashboard.css' %}">
+{% endblock extra-css %}
 
 {% block listboard_table_header %}
 
@@ -37,9 +43,9 @@
     {% verbal_consent_pdf_button result %}
     {% if result.id and result.subject_locator %}
 
-         <a id="btn-subject-dashboard-{{result.subject_identifier}}" class="btn btn-primary btn-sm" role="button"   
+         <a id="btn-subject-dashboard-{{result.subject_identifier}}" class="btn btn-sm {{result.navigation_status}} dash-btn" role="button"   
         title="Go to subject's dashboard" href="{% url subject_dashboard_url result.subject_identifier %}">
-        <i class="far fa-user-circle fa-sm"></i> Dashboard  <i class="fa fa-share"></i></a>
+        <i class="far fa-user-circle fa-sm"></i> Dashboard <i class="fa fa-share"></i></a>
       {% else %}
       {% subject_locator_button result %}
     {% endif %}
