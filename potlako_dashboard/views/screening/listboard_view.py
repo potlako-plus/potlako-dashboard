@@ -1,11 +1,13 @@
 import re
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from edc_base.view_mixins import EdcBaseViewMixin
+from edc_navbar import NavbarViewMixin
+
 from edc_dashboard.view_mixins import ListboardFilterViewMixin, SearchFormViewMixin
 from edc_dashboard.views import ListboardView
-from edc_navbar import NavbarViewMixin
 
 from ...model_wrappers import ClinicianCallEnrollmentModelWrapper
 from .filters import ListboardViewFilters
@@ -48,6 +50,6 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
 
     def extra_search_options(self, search_term):
         q = Q()
-        if re.match('^[A-Z]+$', search_term):
-            q = Q(first_name__exact=search_term)
+        if re.match('^[A-Za-z]+$', search_term):
+            q = Q(user_created__icontains=search_term)
         return q

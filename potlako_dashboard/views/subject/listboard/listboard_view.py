@@ -1,13 +1,15 @@
 import re
+
 from django.apps import apps as django_apps
 from django.db.models import Q
 from edc_base.view_mixins import EdcBaseViewMixin
+from edc_navbar import NavbarViewMixin
+
 from edc_dashboard.view_mixins import (
     ListboardFilterViewMixin, SearchFormViewMixin)
 from edc_dashboard.views import ListboardView as BaseListBoardView
-from edc_navbar import NavbarViewMixin
-
 from potlako_dashboard.model_wrappers import SubjectConsentModelWrapper
+
 from .filters import ListboardViewFilters
 
 
@@ -64,17 +66,17 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
         return queryset
 
     def get_queryset_filter_options(self, request, *args, **kwargs):
-        """Returns filter options applied to every
-        queryset.
+        """Returns filter options applied to every queryset.
         """
         return {}
 
     def get_community_queryset(self, community_name):
         onschedule_cls = django_apps.get_model('potlako_subject.onschedule')
-        return onschedule_cls.objects.filter(community_arm=community_name).values_list('subject_identifier')
+        return onschedule_cls.objects.filter(
+            community_arm=community_name).values_list('subject_identifier')
 
     def extra_search_options(self, search_term):
         q = Q()
-        if re.match('^[A-Z]+$', search_term):
-            q = Q(first_name__exact=search_term)
+        if re.match('^[A-Za-z]+$', search_term):
+            q = Q(user_created__icontains=search_term)
         return q
