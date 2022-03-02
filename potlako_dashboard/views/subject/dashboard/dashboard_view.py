@@ -1,22 +1,22 @@
-from django.apps import apps as django_apps
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.messages import get_messages
-from django.contrib import messages
-
-from edc_action_item.site_action_items import site_action_items
-from edc_base.view_mixins import EdcBaseViewMixin
-from edc_dashboard.views import DashboardView as BaseDashboardView
-from edc_navbar import NavbarViewMixin
-from edc_subject_dashboard.view_mixins import SubjectDashboardViewMixin
-
 from potlako_subject.action_items import SUBJECT_LOCATOR_ACTION
+
+from django.apps import apps as django_apps
+from django.contrib import messages
+from django.contrib.messages import get_messages
+from django.core.exceptions import ObjectDoesNotExist
+from edc_action_item.site_action_items import site_action_items
+from edc_base.utils import get_utcnow
+from edc_base.view_mixins import EdcBaseViewMixin
+from edc_constants.constants import NOT_DONE
+from edc_navbar import NavbarViewMixin
+
+from edc_dashboard.views import DashboardView as BaseDashboardView
+from edc_subject_dashboard.view_mixins import SubjectDashboardViewMixin
 
 from ....model_wrappers import (
     AppointmentModelWrapper, SubjectConsentModelWrapper,
     SpecialFormsModelWrapper, SubjectVisitModelWrapper,
     ClinicianCallEnrollmentModelWrapper)
-from edc_constants.constants import NOT_DONE
-from edc_base.utils import get_utcnow
 
 
 class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
