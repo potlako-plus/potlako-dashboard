@@ -1,13 +1,15 @@
 import re
+
 from django.apps import apps as django_apps
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from edc_base.view_mixins import EdcBaseViewMixin
+from edc_navbar import NavbarViewMixin
+
 from edc_dashboard.view_mixins import ListboardFilterViewMixin, SearchFormViewMixin
 from edc_dashboard.views import ListboardView as BaseListboardView
-from edc_navbar import NavbarViewMixin
 
 from ...model_wrappers import SubjectConsentModelWrapper
 from .filters import ListboardViewFilters
@@ -20,7 +22,7 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
     listboard_url = 'endpoint_listboard_url'
     listboard_panel_style = 'info'
     listboard_fa_icon = "fa-user-plus"
-#     permission_required = 'potlako_subject.delete_cancerdxandtxendpoint'
+    # permission_required = 'potlako_subject.add_cancerdxandtxendpoint'
 
     listboard_view_filters = ListboardViewFilters()
     model = 'potlako_subject.subjectconsent'
