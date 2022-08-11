@@ -37,7 +37,6 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
 
         queryset = super().get_queryset().order_by('-target_date')
         
-        # queryset = sorted(queryset, key=lambda q: q.navigation_status)
         
         self.request.GET.get('p_role')
         usr_groups = [g.name for g in self.request.user.groups.all()]
