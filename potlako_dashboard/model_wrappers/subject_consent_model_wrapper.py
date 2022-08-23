@@ -11,6 +11,7 @@ from .care_seeking_endpoint_model_wrapper_mixin import CareSeekingEndpointModelW
 from .coordinator_exit_wrapper_mixin import CoordinatorExitModelWrapperMixin
 from .death_report_wrapper_mixin import DeathReportModelWrapperMixin
 from .navigation_plan_summary_model_wrapper_mixin import NavigationPlanSummaryModelWrapperMixin
+from .offstudy_wrapper_mixin import OffstudyModelWrapperMixin
 from .subject_locator_model_wrapper_mixin import SubjectLocatorModelWrapperMixin
 
 
@@ -21,6 +22,7 @@ class SubjectConsentModelWrapper(
         CancerDxEndpointModelWrapperMixin,
         CareSeekingEndpointModelWrapperMixin,
         DeathReportModelWrapperMixin,
+        OffstudyModelWrapperMixin,
         CoordinatorExitModelWrapperMixin,
         ModelWrapper):
 
