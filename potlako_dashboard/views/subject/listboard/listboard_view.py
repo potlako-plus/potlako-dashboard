@@ -35,7 +35,9 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
         navigation_identifiers = navigation_cls.objects.values_list('subject_identifier')
         intervention_identifiers = self.get_community_queryset('Intervention')
 
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().order_by('-target_date')
+        
+        
         self.request.GET.get('p_role')
         usr_groups = [g.name for g in self.request.user.groups.all()]
         if (any(map((lambda value: value in usr_groups), ['Supervisor', 'HR']))
