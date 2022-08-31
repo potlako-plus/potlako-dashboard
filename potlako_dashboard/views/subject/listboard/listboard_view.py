@@ -35,35 +35,49 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
         navigation_identifiers = navigation_cls.objects.values_list('subject_identifier')
         intervention_identifiers = self.get_community_queryset('Intervention')
 
-        queryset = super().get_queryset()  # .order_by('-target_date')
-
-        self.request.GET.get('p_role')
-        usr_groups = [g.name for g in self.request.user.groups.all()]
-        if (any(map((lambda value: value in usr_groups), ['Supervisor', 'HR']))
-                and self.request.GET.get('p_role') in ['Supervisor', 'HR']):
-            queryset = queryset.filter(status__in=['approved', 'verified', 'submitted'])
-
-        if self.request.GET.get('dept'):
-            usr_groups = [g.name for g in self.request.user.groups.all()]
-
-            if 'HR' in usr_groups and self.request.GET.get('p_role') == 'HR':
-                queryset = queryset.filter(
-                    employee__department__dept_name=self.request.GET.get('dept'))
+        queryset = super().get_queryset()
+        to_order = False
 
         if self.request.GET.get('f') == 'navigation':
             queryset = queryset.filter(
                 Q(subject_identifier__in=navigation_identifiers) & Q(
                     subject_identifier__in=intervention_identifiers))
+            to_order = True
         elif self.request.GET.get('f') == 'no_navigation':
             queryset = queryset.exclude(
                 Q(subject_identifier__in=navigation_identifiers) & Q(
                     subject_identifier__in=intervention_identifiers))
         elif self.request.GET.get('f') == 'intervention':
             queryset = queryset.filter(subject_identifier__in=intervention_identifiers)
+            to_order = True
         elif self.request.GET.get('f') == 'soc':
             queryset = queryset.exclude(
                 Q(subject_identifier__in=navigation_identifiers) | Q(
                     subject_identifier__in=intervention_identifiers))
+
+        queryset = self.get_ordered_queryset(queryset, to_order)
+
+        return queryset
+
+    def get_ordered_queryset(self, queryset, to_order=False):
+
+        ordering = ['past', 'on_time', 'early', 'default']
+
+        wrapped_qs = []
+
+        for obj in queryset:
+            wrapped_qs.append(self.model_wrapper_cls(obj))
+
+        ordered_qs = []
+
+        if to_order:
+            for order in ordering:
+                ordered_qs += [item for item in wrapped_qs if
+                               item.navigation_status == order]
+
+        return ordered_qs or wrapped_qs
+
+    def get_wrapped_queryset(self, queryset):
         return queryset
 
     def get_queryset_filter_options(self, request, *args, **kwargs):
