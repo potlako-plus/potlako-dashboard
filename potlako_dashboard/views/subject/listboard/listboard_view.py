@@ -2,6 +2,7 @@ import re
 
 from django.apps import apps as django_apps
 from django.db.models import Q
+from django.utils.html import escape
 from edc_base.view_mixins import EdcBaseViewMixin
 from edc_navbar import NavbarViewMixin
 
@@ -36,17 +37,17 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
         intervention_identifiers = self.get_community_queryset('Intervention')
 
         queryset = super().get_queryset()
-        to_order = False
+
+        to_order = True
 
         if self.request.GET.get('f') == 'navigation':
             queryset = queryset.filter(
                 Q(subject_identifier__in=navigation_identifiers) & Q(
                     subject_identifier__in=intervention_identifiers))
-            to_order = True
         elif self.request.GET.get('f') == 'no_navigation':
-            queryset = queryset.exclude(
-                Q(subject_identifier__in=navigation_identifiers) & Q(
-                    subject_identifier__in=intervention_identifiers))
+            queryset = queryset.filter(
+                    subject_identifier__in=intervention_identifiers).exclude(
+                        subject_identifier__in=navigation_identifiers)
         elif self.request.GET.get('f') == 'intervention':
             queryset = queryset.filter(subject_identifier__in=intervention_identifiers)
             to_order = True
@@ -55,11 +56,20 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
                 Q(subject_identifier__in=navigation_identifiers) | Q(
                     subject_identifier__in=intervention_identifiers))
 
-        queryset = self.get_ordered_queryset(queryset, to_order)
+            to_order = False
+
+        if self.request.GET.get('q'):
+            search_term = self.request.GET.get('q')
+
+            if search_term[:2] == 'c:':
+
+                queryset = self.get_ordered_queryset(queryset, to_order, search_term[2:])
+        else:
+            queryset = self.get_ordered_queryset(queryset, to_order)
 
         return queryset
 
-    def get_ordered_queryset(self, queryset, to_order=False):
+    def get_ordered_queryset(self, queryset, to_order=False, search_term=None):
 
         ordering = ['past', 'on_time', 'early', 'default']
 
@@ -68,12 +78,16 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
         for obj in queryset:
             wrapped_qs.append(self.model_wrapper_cls(obj))
 
+        if search_term:
+            wrapped_qs = [item for item in wrapped_qs if
+                          search_term in item.subject_community]
+
         ordered_qs = []
 
         if to_order:
             for order in ordering:
-                ordered_qs += [item for item in wrapped_qs if
-                               item.navigation_status == order]
+                ordered_qs = [item for item in wrapped_qs if
+                              item.navigation_status == order]
 
         return ordered_qs or wrapped_qs
 
@@ -90,8 +104,21 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
         return onschedule_cls.objects.filter(
             community_arm=community_name).values_list('subject_identifier')
 
+    @property
+    def search_term(self):
+        if not self._search_term:
+            search_term = self.request.GET.get('q')
+            if search_term and search_term[:2] != 'c:':
+                if search_term:
+                    search_term = escape(search_term).strip()
+                search_term = self.clean_search_term(search_term)
+                self._search_term = search_term
+            else:
+                self._search_term = None
+        return self._search_term
+
     def extra_search_options(self, search_term):
         q = Q()
-        if re.match('^[A-Za-z]+$', search_term):
-            q = Q(user_created__icontains=search_term)
+        if re.match('^u:[A-Za-z]+$', search_term):
+            q = Q(user_created__icontains=search_term[2:])
         return q
