@@ -31,6 +31,8 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
     listboard_view_filters = ListboardViewFilters()
 
     def get_queryset(self):
+        ''' Method to filter queryset by a filter or community search, returns a wrapped
+         queryset because of the community search which is a model wrapper property.'''
 
         navigation_cls = django_apps.get_model('potlako_subject.navigationsummaryandplan')
         navigation_identifiers = navigation_cls.objects.values_list('subject_identifier')
@@ -58,18 +60,20 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
 
             to_order = False
 
-        if self.request.GET.get('q'):
-            search_term = self.request.GET.get('q')
+        search_term = self.request.GET.get('q')
 
-            if search_term[:2] == 'c:':
+        if search_term and search_term[:2] == 'c:':
 
-                queryset = self.get_ordered_queryset(queryset, to_order, search_term[2:])
+            queryset = self.get_ordered_queryset(queryset, to_order, search_term[2:])
+
         else:
             queryset = self.get_ordered_queryset(queryset, to_order)
 
         return queryset
 
     def get_ordered_queryset(self, queryset, to_order=False, search_term=None):
+        ''' Order queryset according to navigation status, includes optional argument to
+         filter by a particular search term.'''
 
         ordering = ['past', 'on_time', 'early', 'default']
 
@@ -118,6 +122,8 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
         return self._search_term
 
     def extra_search_options(self, search_term):
+        ''' Method to search queryset by a username with a prefix of c: , which will be sliced
+         off for the serach.'''
         q = Q()
         if re.match('^u:[A-Za-z]+$', search_term):
             q = Q(user_created__icontains=search_term[2:])
