@@ -52,7 +52,6 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
                         subject_identifier__in=navigation_identifiers)
         elif self.request.GET.get('f') == 'intervention':
             queryset = queryset.filter(subject_identifier__in=intervention_identifiers)
-            to_order = True
         elif self.request.GET.get('f') == 'soc':
             queryset = queryset.exclude(
                 Q(subject_identifier__in=navigation_identifiers) | Q(
@@ -90,8 +89,8 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
 
         if to_order:
             for order in ordering:
-                ordered_qs = [item for item in wrapped_qs if
-                              item.navigation_status == order]
+                ordered_qs += [item for item in wrapped_qs if
+                               item.navigation_status == order]
 
         return ordered_qs or wrapped_qs
 
