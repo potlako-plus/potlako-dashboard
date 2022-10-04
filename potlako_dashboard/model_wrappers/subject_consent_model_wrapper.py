@@ -1,6 +1,6 @@
 from django.apps import apps as django_apps
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from edc_base.utils import get_utcnow
 from edc_constants.constants import NOT_DONE
 from edc_model_wrapper import ModelWrapper
@@ -75,3 +75,18 @@ class SubjectConsentModelWrapper(
 
         flags = list(set(flags))
         return max(flags) if flags else 'default'
+
+    @property
+    def subject_community(self):
+
+        clinician_call_enrol_cls = django_apps.get_model(
+            'potlako_subject.cliniciancallenrollment')
+
+        try:
+            clinician_enrollment_obj = clinician_call_enrol_cls.objects.get(
+                screening_identifier=self.screening_identifier)
+        except clinician_call_enrol_cls.DoesNotExist:
+            raise ValidationError('Clinician Call Enrollment object '
+                                  'does not exist.')
+        else:
+            return clinician_enrollment_obj.facility
