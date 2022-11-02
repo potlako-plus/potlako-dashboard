@@ -2,7 +2,6 @@ import re
 
 from django.apps import apps as django_apps
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from edc_base.view_mixins import EdcBaseViewMixin
@@ -37,12 +36,11 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
-
     def get_context_data(self, **kwargs):
-        print()
         context = super().get_context_data(**kwargs)
         context.update(
             cancer_diagnoses_and_treatment_add_url=self.model_cls().get_absolute_url())
+
         return context
 
     def get_queryset_filter_options(self, request, *args, **kwargs):
