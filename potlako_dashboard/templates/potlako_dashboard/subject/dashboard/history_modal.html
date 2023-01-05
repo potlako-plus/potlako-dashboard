@@ -1,0 +1,44 @@
+<button type="button"
+        class="btn btn-primary"
+        data-toggle="modal"
+        data-target="#largeShoes">Navigation History</button>
+<!-- The modal -->
+<div class="modal fade"
+     id="largeShoes"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="modalLabelLarge"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width: 90%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="modalLabelLarge">Navigation History Objects</h4>
+            </div>
+            <div class="modal-body">
+                <table border="1 | 0" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center; width: 10%;">Created</th>
+                            <th style="text-align: center; width: 10%;">Modified</th>
+                            <th style="text-align: center; width: 40%;">Diagnostic Plan</th>
+                            <th style="text-align: center; width: 40%;">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for plan in navigation_plans %}
+                            <tr>
+                                <td style="padding: 5px;">{{ plan.created }}</td>
+                                <td style="padding: 5px">{{ plan.modified }}</td>
+                                <td style="padding: 5px">{{ plan.diagnostic_plan }}</td>
+                                <td style="padding: 5px">{{ plan.notes }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
