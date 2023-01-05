@@ -18,9 +18,10 @@ from ....model_wrappers import (
     SpecialFormsModelWrapper, SubjectVisitModelWrapper,
     ClinicianCallEnrollmentModelWrapper)
 
+from .navigation_history_mixin import NavigationHistoryMixin
 
 class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
-                    NavbarViewMixin, BaseDashboardView):
+                    NavbarViewMixin, BaseDashboardView, NavigationHistoryMixin):
 
     dashboard_url = 'subject_dashboard_url'
     dashboard_template = 'subject_dashboard_template'
@@ -68,7 +69,8 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
             groups=[g.name for g in self.request.user.groups.all()],
             nav_flag=self.get_navigation_status,
             edc_readonly=edc_readonly,
-            hiv_status=self.get_hiv_status)
+            hiv_status=self.get_hiv_status,
+            navigation_plans = self.navigation_plan_history_objs)
         return context
 
     def message_user(self, message=None):
