@@ -50,3 +50,54 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade"
+     id="evaluation_timeline"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="modalLabelLarge"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width: 90%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="modalLabelLarge">Navigation History Objects</h4>
+            </div>
+            <div class="modal-body">
+                <table border="1 | 0" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center; width: 10%;">Created</th>
+                            <th style="text-align: center; width: 10%;">Modified</th>
+                            <th style="text-align: center;">key_step</th>
+                            <th style="text-align: center;">target_date</th>
+                            <th style="text-align: center;">adjusted_target_date</th>
+                            <th style="text-align: center;">key_step_status</th>
+                            <th style="text-align: center;">completion_date</th>
+                            <th style="text-align: center;">review_required</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for plan in navigation_plan_inlines %}
+                            <tr>
+                                <td style="padding: 5px;">{{ plan.created }}</td>
+                                <td style="padding: 5px">{{ plan.modified }}</td>
+                                <td style="padding: 5px">{{ plan.key_step }}</td>
+                                <td style="padding: 5px">{{ plan.target_date }}</td>
+                                <td style="padding: 5px">{{ plan.adjusted_target_date }}</td>
+                                <td style="padding: 5px">{{ plan.key_step_status }}</td>
+                                <td style="padding: 5px">{{ plan.completion_date }}</td>
+                                <td style="padding: 5px">{{ plan.review_required }}</td>
+                                
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

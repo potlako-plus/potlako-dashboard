@@ -5,11 +5,17 @@ class NavigationHistoryMixin:
     
     navigation_plan_model = 'potlako_subject.navigationsummaryandplan'
     
+    evaluation_timeline_model = 'potlako_subject.evaluationtimeline'
+    
     
     
     @property
     def navigation_plan_cls(self):
         return django_apps.get_model(self.navigation_plan_model)
+    
+    @property
+    def evaluation_timeline_cls(self):
+        return django_apps.get_model(self.evaluation_timeline_model)
     
     @property
     def navigation_plan_history_objs(self):
@@ -22,10 +28,8 @@ class NavigationHistoryMixin:
     @property
     def navigation_plan_inlines(self):
         
-        inlines = [];
+        subject_identifier = self.consent.subject_identifier
+    
+        objs = self.evaluation_timeline_cls.history.filter(navigation_plan__subject_identifier = subject_identifier)[:10]
         
-        for plan in self.navigation_plan_history_objs:
-            
-            inlines.append(list(plan.evaluationtimeline_set.all()))
-            
-        return inlines
+        return objs
