@@ -1,15 +1,15 @@
 <button type="button"
         class="btn btn-primary"
         data-toggle="modal"
-        data-target="#navigation_plan">Navigation History</button>
-
-
+        data-target="#navigation_plan">
+    Navigation History
+</button>
 <button type="button"
         class="btn btn-primary"
         data-toggle="modal"
-        data-target="#evaluation_timeline">Evaluation Timelines History</button>
-
-
+        data-target="#evaluation_timeline">
+    Evaluation Timelines History
+</button>
 <!-- The modal -->
 <div class="modal fade"
      id="navigation_plan"
@@ -44,14 +44,18 @@
                                 <td style="padding: 5px">{{ plan.notes }}</td>
                             </tr>
                         {% endfor %}
+                        <tr style="background-color: lightgreen;">
+                            <td style="padding: 5px;">{{ current_navigation_plan.created }}</td>
+                            <td style="padding: 5px;">{{ current_navigation_plan.modified }}</td>
+                            <td style="padding: 5px;">{{ current_navigation_plan.diagnostic_plan }}</td>
+                            <td style="padding: 5px;">{{ current_navigation_plan.notes }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
-
-
 <div class="modal fade"
      id="evaluation_timeline"
      tabindex="-1"
@@ -81,23 +85,55 @@
                         </tr>
                     </thead>
                     <tbody>
+                        
                         {% for plan in navigation_plan_inlines %}
                             <tr>
-                                <td style="padding: 5px;">{{ plan.created }}</td>
-                                <td style="padding: 5px">{{ plan.modified }}</td>
-                                <td style="padding: 5px">{{ plan.key_step }}</td>
-                                <td style="padding: 5px">{{ plan.target_date }}</td>
-                                <td style="padding: 5px">{{ plan.adjusted_target_date }}</td>
-                                <td style="padding: 5px">{{ plan.key_step_status }}</td>
-                                <td style="padding: 5px">{{ plan.completion_date }}</td>
-                                <td style="padding: 5px">{{ plan.review_required }}</td>
-                                
+                                <td style="padding: 5px;">
+                                    {{ plan.created }}
+                                </td>
+                                <td style="padding: 5px">
+                                    {{ plan.modified }}
+                                </td>
+                                <td style="padding: 5px">
+                                    {{ plan.key_step }}
+                                </td>
+                                <td style="padding: 5px">
+                                    {{ plan.target_date }}
+                                </td>
+                                <td style="padding: 5px">
+                                    {{ plan.adjusted_target_date }}
+                                </td>
+                                <td style="padding: 5px">
+                                    {{ plan.key_step_status }}
+                                </td>
+                                <td style="padding: 5px">
+                                    {{ plan.completion_date }}
+                                </td>
+                                <td style="padding: 5px">
+                                    {{ plan.review_required }}
+                                </td>
                             </tr>
                         {% endfor %}
+
+                        {% if  current_navigation_plan_inlines %}
+                            <tr>
+                                <td style="padding: 5px; backgournd-color: lightgreen;"> {{ current_navigation_plan_inlines.created }}</td>
+                                <td style="padding: 5px; backgournd-color: lightgreen;"> {{ current_navigation_plan_inlines.modified }}</td>
+                                <td style="padding: 5px; backgournd-color: lightgreen;"> {{ current_navigation_plan_inlines.key_step }}</td>
+                                <td style="padding: 5px; backgournd-color: lightgreen;"> {{ current_navigation_plan_inlines.key_step }}</td>
+
+                            </tr>
+
+                        {% else %}
+
+                            <tr>
+                                <td>Currently there are no inlines</td>
+                            </tr>
+
+                        {% endif %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
-
