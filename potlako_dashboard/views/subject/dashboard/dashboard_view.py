@@ -73,7 +73,8 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
             navigation_plans = self.navigation_plan_history_objs,
             navigation_plan_inlines = self.navigation_plan_inlines,
             current_navigation_plan= self.current_navigation_plan, 
-            current_navigation_plan_inlines = self.current_navigation_plan_inlines)
+            current_navigation_plan_inlines = self.current_navigation_plan_inlines,
+            evaluation_timeline_history = self.evaluation_timelines_history_objs)
         return context
 
     def message_user(self, message=None):

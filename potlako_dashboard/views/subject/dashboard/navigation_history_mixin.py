@@ -48,6 +48,15 @@ class NavigationHistoryMixin:
         return self.current_navigation_plan.evaluationtimeline_set.all()
     
     @property
+    def evaluation_timelines_history_objs(self):
+        inline = []
+        
+        for obj in self.current_navigation_plan_inlines:
+            inline.append(obj.history.order_by('modified'))
+
+        return inline
+        
+    @property
     def navigation_plan_inlines(self):
         
         subject_identifier = self.consent.subject_identifier

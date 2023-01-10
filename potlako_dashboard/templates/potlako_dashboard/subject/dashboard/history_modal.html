@@ -26,7 +26,7 @@
                 <h4 class="modal-title" id="modalLabelLarge">Navigation History Objects</h4>
             </div>
             <div class="modal-body">
-                <table border="1 | 0" style="width: 100%;">
+                <table style="width: 100%;" id="navigation_plan_table" class="display">
                     <thead>
                         <tr>
                             <th style="text-align: center; width: 10%;">Created</th>
@@ -68,10 +68,10 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="modalLabelLarge">Navigation History Objects</h4>
+                <h4 class="modal-title" id="modalLabelLarge">Current Evaluation Timeline Objects</h4>
             </div>
             <div class="modal-body">
-                <table border="1 | 0" style="width: 100%;">
+                <table style="width: 100%;" class="display" id="navigation_plan_inlines_table">
                     <thead>
                         <tr>
                             <th style="text-align: center; width: 10%;">Created</th>
@@ -82,58 +82,112 @@
                             <th style="text-align: center;">key_step_status</th>
                             <th style="text-align: center;">completion_date</th>
                             <th style="text-align: center;">review_required</th>
+                            <th style="text-align: center">History</th>
                         </tr>
                     </thead>
                     <tbody>
                         
-                        {% for plan in navigation_plan_inlines %}
-                            <tr>
-                                <td style="padding: 5px;">
-                                    {{ plan.created }}
-                                </td>
-                                <td style="padding: 5px">
-                                    {{ plan.modified }}
-                                </td>
-                                <td style="padding: 5px">
-                                    {{ plan.key_step }}
-                                </td>
-                                <td style="padding: 5px">
-                                    {{ plan.target_date }}
-                                </td>
-                                <td style="padding: 5px">
-                                    {{ plan.adjusted_target_date }}
-                                </td>
-                                <td style="padding: 5px">
-                                    {{ plan.key_step_status }}
-                                </td>
-                                <td style="padding: 5px">
-                                    {{ plan.completion_date }}
-                                </td>
-                                <td style="padding: 5px">
-                                    {{ plan.review_required }}
-                                </td>
-                            </tr>
+
+                        {% for inline in current_navigation_plan_inlines %}
+
+                        <tr style="text-align: center;"">
+                            <td>{{ inline.created }}</td>
+                            <td>{{ inline.modified }}</td>
+                            <td>{{ inline.key_step }}</td>
+                            <td>{{ inline.target_date }}</td>
+                            <td>{{ inline.adjusted_target_date }}</td>
+                            <td>{{ inline.key_step_status }}</td>
+                            <td>{{ inline.completion_date }}</td>
+                            <td>{{ inline.review_required }}</td>
+                            <td>
+                                <button type="button"
+                                    class="btn btn-primary"
+                                    data-toggle="modal"
+                                    data-target="#{{ forloop.counter0 }}">
+                               History
+                            </button>
+                            </td>
+                        </tr>
                         {% endfor %}
-
-                        {% if  current_navigation_plan_inlines %}
-                            <tr>
-                                <td style="padding: 5px; backgournd-color: lightgreen;"> {{ current_navigation_plan_inlines.created }}</td>
-                                <td style="padding: 5px; backgournd-color: lightgreen;"> {{ current_navigation_plan_inlines.modified }}</td>
-                                <td style="padding: 5px; backgournd-color: lightgreen;"> {{ current_navigation_plan_inlines.key_step }}</td>
-                                <td style="padding: 5px; backgournd-color: lightgreen;"> {{ current_navigation_plan_inlines.key_step }}</td>
-
-                            </tr>
-
-                        {% else %}
-
-                            <tr>
-                                <td>Currently there are no inlines</td>
-                            </tr>
-
-                        {% endif %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+
+
+{% for history in evaluation_timeline_history %}
+    <div class="modal fade"
+        id="{{ forloop.counter0 }}"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="modalLabelLarge"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" style="width: 90%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="modalLabelLarge">Evaluation Timelines History Objects</h4>
+                </div>
+                <div class="modal-body">
+                    <table style="width: 100%;" border="1 | 0">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center; width: 10%;">Created</th>
+                                <th style="text-align: center; width: 10%;">Modified</th>
+                                <th style="text-align: center;">key_step</th>
+                                <th style="text-align: center;">target_date</th>
+                                <th style="text-align: center;">adjusted_target_date</th>
+                                <th style="text-align: center;">key_step_status</th>
+                                <th style="text-align: center;">completion_date</th>
+                                <th style="text-align: center;">review_required</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+
+                            {% for inline in history %}
+
+                            <tr style="text-align: center;"">
+                                <td>{{ inline.created }}</td>
+                                <td>{{ inline.modified }}</td>
+                                <td>{{ inline.key_step }}</td>
+                                <td>{{ inline.target_date }}</td>
+                                <td>{{ inline.adjusted_target_date }}</td>
+                                <td>{{ inline.key_step_status }}</td>
+                                <td>{{ inline.completion_date }}</td>
+                                <td>{{ inline.review_required }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endfor %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+
+<script>
+
+  $(document).ready(function () {
+    $('#navigation_plan_table').DataTable();
+  });
+
+  $(document).ready(function () {
+    $('#navigation_plan_inlines_table').DataTable();
+  });
+
+  $(document).ready(function () {
+    $('#evaluation-history-objs').DataTable();
+  });
+  
+</script>
