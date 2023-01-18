@@ -1,15 +1,26 @@
-<button type="button"
-        class="btn btn-primary"
-        data-toggle="modal"
-        data-target="#navigation_plan">
-    Navigation History
-</button>
-<button type="button"
+
+{% if navigation_plans %}
+    <button type="button"
+            class="btn btn-primary"
+            data-toggle="modal"
+            data-target="#navigation_plan">
+        Navigation History
+    </button>
+{% endif %}
+
+
+{% if current_navigation_plan_inlines %}
+
+    <button type="button"
         class="btn btn-primary"
         data-toggle="modal"
         data-target="#evaluation_timeline">
     Evaluation Timelines History
 </button>
+{% endif %}
+
+
+
 <!-- The modal -->
 <div class="modal fade"
      id="navigation_plan"

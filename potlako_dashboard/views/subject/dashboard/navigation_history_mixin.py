@@ -38,21 +38,28 @@ class NavigationHistoryMixin:
     def current_navigation_plan(self):
         
         subject_identifier = self.consent.subject_identifier
-    
-        plan = self.navigation_plan_cls.objects.filter(subject_identifier = subject_identifier).first()
         
-        return plan
+        try:
+            plan = self.navigation_plan_cls.objects.filter(subject_identifier = subject_identifier).first()
+        except self.navigation_plan_cls.DoesNotExist:
+            pass
+        else:
+            return plan
     
     @property
     def current_navigation_plan_inlines(self):
-        return self.current_navigation_plan.evaluationtimeline_set.all()
+        if self.current_navigation_plan:
+            return self.current_navigation_plan.evaluationtimeline_set.all()
+        
     
     @property
     def evaluation_timelines_history_objs(self):
         inline = []
         
-        for obj in self.current_navigation_plan_inlines:
-            inline.append(obj.history.order_by('modified'))
+        if self.current_navigation_plan_inlines:
+            
+            for obj in self.current_navigation_plan_inlines:
+                inline.append(obj.history.order_by('modified'))
 
         return inline
         
