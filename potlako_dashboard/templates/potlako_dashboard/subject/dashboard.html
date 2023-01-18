@@ -2,12 +2,43 @@
 
 {% load static %}
 
+
+
+{% block main %}
+
+{% comment %} 
+
+
+    https://code.jquery.com/jquery-3.5.1.js
+    https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js
+ {% endcomment %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          {% include "potlako_dashboard/subject/dashboard/history_modal.html" %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ block.super }}
+
+{% endblock main %}
+
+
 {% block extra-css %}
 
   <!-- <link rel="stylesheet" type="text/css" href="{% static 'potlako_dashboard/css/fontawesome_5.15.1/css/fontawesome.min.css' %}"> -->
   <link rel="stylesheet" type="text/css" href="{% static 'potlako_dashboard/css/potlako_dashboard.css' %}">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
 
 {% endblock extra-css %}
+
+
 
 {% block locator_information %}{% endblock locator_information %}
 
