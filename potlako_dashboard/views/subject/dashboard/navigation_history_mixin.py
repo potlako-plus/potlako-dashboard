@@ -1,6 +1,6 @@
 
 from django.apps import apps as django_apps
-
+from django.db.models import Q
 class NavigationHistoryMixin:
     
     navigation_plan_model = 'potlako_subject.navigationsummaryandplan'
@@ -21,16 +21,8 @@ class NavigationHistoryMixin:
     def navigation_plan_history_objs(self):
         subject_identifier = self.consent.subject_identifier
     
-        objs = self.navigation_plan_cls.history.filter(subject_identifier = subject_identifier)
-        
-        return objs
-    
-    @property
-    def navigation_plan_history_objs(self):
-        subject_identifier = self.consent.subject_identifier
-    
         objs = self.navigation_plan_cls.history.filter(
-            subject_identifier = subject_identifier).order_by('modified')
+            Q(subject_identifier = subject_identifier) & ~Q(user_created='potlako')).order_by('modified')
         
         return objs
     
@@ -40,7 +32,7 @@ class NavigationHistoryMixin:
         subject_identifier = self.consent.subject_identifier
         
         try:
-            plan = self.navigation_plan_cls.objects.filter(subject_identifier = subject_identifier).first()
+            plan = self.navigation_plan_cls.objects.get(subject_identifier = subject_identifier)
         except self.navigation_plan_cls.DoesNotExist:
             pass
         else:
@@ -49,7 +41,7 @@ class NavigationHistoryMixin:
     @property
     def current_navigation_plan_inlines(self):
         if self.current_navigation_plan:
-            return self.current_navigation_plan.evaluationtimeline_set.all()
+            return self.current_navigation_plan.evaluationtimeline_set.order_by('created', 'modified')
         
     
     @property
@@ -59,7 +51,7 @@ class NavigationHistoryMixin:
         if self.current_navigation_plan_inlines:
             
             for obj in self.current_navigation_plan_inlines:
-                inline.append(obj.history.order_by('modified'))
+                inline.append(obj.history.order_by('created','modified'))
 
         return inline
         

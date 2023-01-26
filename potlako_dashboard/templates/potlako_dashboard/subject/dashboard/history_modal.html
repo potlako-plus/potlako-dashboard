@@ -49,8 +49,8 @@
                     <tbody>
                         {% for plan in navigation_plans %}
                             <tr>
-                                <td style="padding: 5px;">{{ plan.created }}</td>
-                                <td style="padding: 5px">{{ plan.modified }}</td>
+                                <td style="padding: 5px;">{{ plan.created| date:"Y-m-d" }}</td>
+                                <td style="padding: 5px">{{ plan.modified| date:"Y-m-d" }}</td>
                                 <td style="padding: 5px">{{ plan.diagnostic_plan }}</td>
                                 <td style="padding: 5px">{{ plan.notes }}</td>
                             </tr>
@@ -190,7 +190,14 @@
 <script>
 
   $(document).ready(function () {
-    $('#navigation_plan_table').DataTable();
+    $('#navigation_plan_table').DataTable({
+        columnDefs: [
+            {
+                targets: 2,
+                render: DataTable.render.date(),
+            },
+        ],
+    });
   });
 
   $(document).ready(function () {
