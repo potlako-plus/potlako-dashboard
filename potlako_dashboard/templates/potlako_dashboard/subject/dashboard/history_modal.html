@@ -56,8 +56,8 @@
                             </tr>
                         {% endfor %}
                         <tr style="background-color: lightgreen;">
-                            <td style="padding: 5px;">{{ current_navigation_plan.created }}</td>
-                            <td style="padding: 5px;">{{ current_navigation_plan.modified }}</td>
+                            <td style="padding: 5px;">{{ current_navigation_plan.created| date:"Y-m-d"  }}</td>
+                            <td style="padding: 5px;">{{ current_navigation_plan.modified| date:"Y-m-d"  }}</td>
                             <td style="padding: 5px;">{{ current_navigation_plan.diagnostic_plan }}</td>
                             <td style="padding: 5px;">{{ current_navigation_plan.notes }}</td>
                         </tr>
@@ -102,13 +102,13 @@
                         {% for inline in current_navigation_plan_inlines %}
 
                         <tr style="text-align: center;"">
-                            <td>{{ inline.created }}</td>
-                            <td>{{ inline.modified }}</td>
+                            <td>{{ inline.created| date:"Y-m-d"  }}</td>
+                            <td>{{ inline.modified| date:"Y-m-d"  }}</td>
                             <td>{{ inline.key_step }}</td>
-                            <td>{{ inline.target_date }}</td>
-                            <td>{{ inline.adjusted_target_date }}</td>
+                            <td>{{ inline.target_date| date:"Y-m-d"  }}</td>
+                            <td>{{ inline.adjusted_target_date| date:"Y-m-d"  }}</td>
                             <td>{{ inline.key_step_status }}</td>
-                            <td>{{ inline.completion_date }}</td>
+                            <td>{{ inline.completion_date| date:"Y-m-d"  }}</td>
                             <td>{{ inline.review_required }}</td>
                             <td>
                                 <button type="button"
