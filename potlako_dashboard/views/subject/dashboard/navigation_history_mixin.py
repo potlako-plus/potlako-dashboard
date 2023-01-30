@@ -22,7 +22,7 @@ class NavigationHistoryMixin:
         subject_identifier = self.consent.subject_identifier
     
         objs = self.navigation_plan_cls.history.filter(
-            Q(subject_identifier = subject_identifier) & ~Q(user_created='potlako')).order_by('modified')
+            Q(subject_identifier = subject_identifier)).order_by('modified')
         
         return objs
     
@@ -41,7 +41,7 @@ class NavigationHistoryMixin:
     @property
     def current_navigation_plan_inlines(self):
         if self.current_navigation_plan:
-            return self.current_navigation_plan.evaluationtimeline_set.order_by('created', 'modified')
+            return self.current_navigation_plan.evaluationtimeline_set.order_by('modified')
         
     
     @property
@@ -51,7 +51,7 @@ class NavigationHistoryMixin:
         if self.current_navigation_plan_inlines:
             
             for obj in self.current_navigation_plan_inlines:
-                inline.append(obj.history.order_by('created','modified'))
+                inline.append(obj.history.order_by('modified'))
 
         return inline
         
