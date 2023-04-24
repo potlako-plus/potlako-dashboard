@@ -81,6 +81,8 @@ class SubjectConsentModelWrapper(
 
         clinician_call_enrol_cls = django_apps.get_model(
             'potlako_subject.cliniciancallenrollment')
+        enhanced_care_communities = settings.COMMUNITIES.get('enhanced_care')
+        intervention_communities = settings.COMMUNITIES.get('intervention')
 
         try:
             clinician_enrollment_obj = clinician_call_enrol_cls.objects.get(
@@ -89,4 +91,9 @@ class SubjectConsentModelWrapper(
             raise ValidationError('Clinician Call Enrollment object '
                                   'does not exist.')
         else:
-            return clinician_enrollment_obj.facility
+            if clinician_enrollment_obj.facility in enhanced_care_communities:
+                return "Standard of Care"
+            elif clinician_enrollment_obj.facility in intervention_communities:
+                return "Intervention"
+            else:
+                return "Unknown"
