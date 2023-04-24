@@ -18,8 +18,7 @@
     <th>Subject Identifier</th>
     <th>Age</th>
     <th>User</th>
-    <th>Modified</th>
-    <th>Host</th>
+    <th>Community</th>
     <!-- end results header -->
 {% endblock listboard_table_header %}
 
@@ -70,7 +69,6 @@
     <td nowrap>{{ result.subject_identifier }}</td>
     <td nowrap>{{ result.age_in_years }} yrs</td>
     <td nowrap>{{ result.user_created }}</td>
-    <td nowrap>{{ result.object.modified|date:"SHORT_DATETIME_FORMAT" }}</td>  
-    <td nowrap>{{ result.hostname_created }}</td>
+    <td nowrap>{{ result.subject_community }}</td>
 
 {% endblock listboard_table_columns %}
