@@ -52,7 +52,7 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
     def extra_search_options(self, search_term):
         q = Q()
         if re.match('^[A-Za-z]+$', search_term):
-            q = Q(user_created__icontains=search_term)
+            q = Q(user_created__icontains=search_term) | Q(facility__icontains=search_term)
         return q
 
     def get_queryset(self):
