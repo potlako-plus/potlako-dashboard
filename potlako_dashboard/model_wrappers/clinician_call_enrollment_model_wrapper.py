@@ -110,14 +110,11 @@ class ClinicianCallEnrollmentModelWrapper(SubjectScreeningModelWrapperMixin,
 
     def eligible_at_enrol(self):
         return self.object.is_eligible
+
     @property
     def subject_community(self):
-        enhanced_care_communities = settings.COMMUNITIES.get('enhanced_care')
-        intervention_communities = settings.COMMUNITIES.get('intervention')
-
-        if self.object.facility in enhanced_care_communities:
-            return "Standard of Care"
-        elif self.object.facility in intervention_communities:
-            return "Intervention"
-        else:
-            return "Unknown"
+        facility_name = self.object.facility
+        facility_name = facility_name.replace("_", " ")
+        facility_name = facility_name.replace("hospital", "")
+        facility_name = facility_name.replace("clinic", "")
+        return facility_name.strip().title()
