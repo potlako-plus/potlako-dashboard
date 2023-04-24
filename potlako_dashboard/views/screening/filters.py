@@ -21,9 +21,9 @@ class ListboardViewFilters(ListboardViewFilters):
     intervention = ListboardFilter(
         label='Intervention Community',
         position=12,
-        lookup={'subject_community': 'Intervention'})
+        )
 
-    soc = ListboardFilter(
+    enhanced_care = ListboardFilter(
         label='Standard of Care Community',
         position=13,
-        lookup={'subject_community': 'Standard of Care'})
+        )
