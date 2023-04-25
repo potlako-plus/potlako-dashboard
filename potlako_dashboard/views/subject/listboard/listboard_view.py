@@ -61,9 +61,8 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
 
         search_term = self.request.GET.get('q')
 
-        if search_term and search_term[:2] == 'c:':
-
-            queryset = self.get_ordered_queryset(queryset, to_order, search_term[:2])
+        if search_term and search_term.startswith('c:'):
+            queryset = self.get_ordered_queryset(queryset, to_order, search_term)
 
         else:
             queryset = self.get_ordered_queryset(queryset, to_order)
@@ -81,9 +80,11 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
         for obj in queryset:
             wrapped_qs.append(self.model_wrapper_cls(obj))
 
-        if search_term:
-            wrapped_qs = [item for item in wrapped_qs if
-                          search_term in item.subject_community]
+        if search_term and search_term.startswith('c:'):
+            search_term_filtered = search_term[2:].lower()
+            filtered_wrapped_qs = [item for item in wrapped_qs if
+                                   search_term_filtered in item.subject_community.lower()]
+            return filtered_wrapped_qs
 
         ordered_qs = []
 
