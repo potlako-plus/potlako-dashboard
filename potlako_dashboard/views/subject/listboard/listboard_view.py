@@ -63,7 +63,7 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
 
         if search_term and search_term[:2] == 'c:':
 
-            queryset = self.get_ordered_queryset(queryset, to_order, search_term[2:])
+            queryset = self.get_ordered_queryset(queryset, to_order, search_term[:2])
 
         else:
             queryset = self.get_ordered_queryset(queryset, to_order)
@@ -121,9 +121,7 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
         return self._search_term
 
     def extra_search_options(self, search_term):
-        ''' Method to search queryset by a username with a prefix of c: , which will be sliced
-         off for the serach.'''
         q = Q()
-        if re.match('^u:[A-Za-z]+$', search_term):
-            q = Q(user_created__icontains=search_term[2:])
+        if re.match('^[A-Za-z]+$', search_term):
+            q = Q(user_created__icontains=search_term)
         return q
