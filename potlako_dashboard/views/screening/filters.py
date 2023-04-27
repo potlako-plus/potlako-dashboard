@@ -17,3 +17,13 @@ class ListboardViewFilters(ListboardViewFilters):
         label='Not Eligible',
         position=11,
         lookup={'is_eligible': False})
+
+    intervention = ListboardFilter(
+        label='Intervention Community',
+        position=12,
+        )
+
+    enhanced_care = ListboardFilter(
+        label='Standard of Care Community',
+        position=13,
+        )

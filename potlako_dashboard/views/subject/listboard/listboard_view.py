@@ -61,8 +61,7 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
 
         search_term = self.request.GET.get('q')
 
-        if search_term and search_term[:2] == 'c:':
-
+        if search_term and search_term.startswith('c:'):
             queryset = self.get_ordered_queryset(queryset, to_order, search_term[2:])
 
         else:
@@ -82,8 +81,9 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
             wrapped_qs.append(self.model_wrapper_cls(obj))
 
         if search_term:
-            wrapped_qs = [item for item in wrapped_qs if
-                          search_term in item.subject_community]
+            filtered_wrapped_qs = [item for item in wrapped_qs if
+                                   search_term.lower() in item.subject_community.lower()]
+            return filtered_wrapped_qs
 
         ordered_qs = []
 
@@ -121,9 +121,7 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
         return self._search_term
 
     def extra_search_options(self, search_term):
-        ''' Method to search queryset by a username with a prefix of c: , which will be sliced
-         off for the serach.'''
         q = Q()
-        if re.match('^u:[A-Za-z]+$', search_term):
-            q = Q(user_created__icontains=search_term[2:])
+        if re.match('^[A-Za-z]+$', search_term):
+            q = Q(user_created__icontains=search_term)
         return q

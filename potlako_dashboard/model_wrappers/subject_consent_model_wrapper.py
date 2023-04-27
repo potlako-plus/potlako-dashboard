@@ -89,4 +89,8 @@ class SubjectConsentModelWrapper(
             raise ValidationError('Clinician Call Enrollment object '
                                   'does not exist.')
         else:
-            return clinician_enrollment_obj.facility
+            facility_name = clinician_enrollment_obj.facility
+            facility_name = facility_name.replace("_", " ")
+            facility_name = facility_name.replace("hospital", "")
+            facility_name = facility_name.replace("clinic", "").strip().title()
+            return facility_name

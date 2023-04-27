@@ -1,10 +1,12 @@
 import re
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from edc_base.view_mixins import EdcBaseViewMixin
 from edc_navbar import NavbarViewMixin
+import ast
 
 from edc_dashboard.view_mixins import ListboardFilterViewMixin, SearchFormViewMixin
 from edc_dashboard.views import ListboardView
@@ -15,7 +17,6 @@ from .filters import ListboardViewFilters
 
 class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
                     ListboardFilterViewMixin, SearchFormViewMixin, ListboardView):
-
     listboard_template = 'screening_listboard_template'
     listboard_url = 'screening_listboard_url'
     listboard_panel_style = 'info'
@@ -51,5 +52,17 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
     def extra_search_options(self, search_term):
         q = Q()
         if re.match('^[A-Za-z]+$', search_term):
-            q = Q(user_created__icontains=search_term)
+            q = Q(user_created__icontains=search_term) | Q(facility__icontains=search_term)
         return q
+
+    def get_queryset(self):
+        communities = settings.COMMUNITIES
+        facility_filter = self.request.GET.get('f')
+
+        if facility_filter in ['intervention', 'enhanced_care']:
+            community_list = ast.literal_eval(communities.get(facility_filter))
+            queryset = super().get_queryset().filter(facility__in=community_list)
+        else:
+            queryset = super().get_queryset()
+
+        return queryset
