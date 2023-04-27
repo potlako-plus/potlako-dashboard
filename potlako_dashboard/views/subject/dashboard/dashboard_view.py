@@ -20,8 +20,8 @@ from ....model_wrappers import (
 
 from .navigation_history_mixin import NavigationHistoryMixin
 
-class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
-                    NavbarViewMixin, BaseDashboardView, NavigationHistoryMixin):
+class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin,
+                    BaseDashboardView, NavigationHistoryMixin):
 
     dashboard_url = 'subject_dashboard_url'
     dashboard_template = 'subject_dashboard_template'
@@ -44,7 +44,7 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin,
         if not self._appointments:
             self._appointments = self.appointment_model_cls.objects.filter(
                 subject_identifier=self.subject_identifier).order_by(
-                    'visit_code')
+                    'visit_code', 'visit_code_sequence')
         return self._appointments
 
     def get_context_data(self, **kwargs):
