@@ -46,7 +46,7 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
         options = super().get_queryset_filter_options(request, *args, **kwargs)
         if kwargs.get('screening_identifier'):
             options.update(
-                {'screening_identifier': kwargs.get('screening_identifier')},)
+                {'screening_identifier': kwargs.get('screening_identifier')}, )
         return options
 
     def extra_search_options(self, search_term):
@@ -66,3 +66,6 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
             queryset = super().get_queryset()
 
         return queryset
+
+    def get_ordering(self):
+        return ['subject_identifier', 'ineligibility']
