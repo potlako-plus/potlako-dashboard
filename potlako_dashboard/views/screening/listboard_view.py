@@ -68,4 +68,4 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
         return queryset
 
     def get_ordering(self):
-        return ['subject_identifier', 'ineligibility']
+        return ['ineligibility', 'subject_identifier']
