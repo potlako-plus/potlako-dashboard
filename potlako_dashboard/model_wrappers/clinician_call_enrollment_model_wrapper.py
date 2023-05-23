@@ -17,7 +17,6 @@ class ClinicianCallEnrollmentModelWrapper(SubjectScreeningModelWrapperMixin,
                                           ConsentModelWrapperMixin,
                                           SubjectLocatorModelWrapperMixin,
                                           ModelWrapper):
-
     consent_model_wrapper_cls = SubjectConsentModelWrapper
     model = 'potlako_subject.cliniciancallenrollment'
     next_url_attrs = ['screening_identifier']
@@ -111,3 +110,11 @@ class ClinicianCallEnrollmentModelWrapper(SubjectScreeningModelWrapperMixin,
 
     def eligible_at_enrol(self):
         return self.object.is_eligible
+
+    @property
+    def subject_community(self):
+        facility_name = self.object.facility
+        facility_name = facility_name.replace("_", " ")
+        facility_name = facility_name.replace("hospital", "")
+        facility_name = facility_name.replace("clinic", "")
+        return facility_name.strip().title()
