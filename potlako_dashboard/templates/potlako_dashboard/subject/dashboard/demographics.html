@@ -31,4 +31,12 @@
 		 <span data-toggle="tooltip" data-placement="right" title="Community Arm" class="text text-default"> {{ community_arm|title }} </span>
 	{% endif %}
 </a>
+
+{% if participant_exit %}
+<a class="list-group-item">
+	
+		<i class="fa fa-times-circle exit" ></i>
+		 <span data-toggle="tooltip" data-placement="right" title="Coordinator Exit Status" class="text text-default"> {{ participant_exit|title }} </span>
+</a>
+{% endif %}
 </div>

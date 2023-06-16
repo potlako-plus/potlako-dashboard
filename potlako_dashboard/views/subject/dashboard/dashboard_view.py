@@ -63,6 +63,7 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
         context.update(
             locator_obj=locator_obj,
             community_arm=self.community_arm,
+            participant_exit=self.participant_exit,
             subject_consent=self.consent_wrapped,
             clinician_call_enrol=ClinicianCallEnrollmentModelWrapper(
                 self.clinician_call_enrol_obj()),
@@ -181,3 +182,20 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
             return None
         else:
             return onschedule_obj.community_arm
+        
+    
+    @property
+    def participant_exit(self):
+        exit_model_cls = django_apps.get_model(
+            'edc_action_item.actionitem')
+        subject_identifier = self.kwargs.get('subject_identifier')
+        reference_model = 'potlako_prn.coordinatorexit'
+        parent_reference_model='potlako_prn.subjectoffstudy'
+        status = 'Closed'
+        try:
+            exit_obj = exit_model_cls.objects.get(
+                subject_identifier=subject_identifier,reference_model=reference_model,parent_reference_model=parent_reference_model,status=status)
+        except ObjectDoesNotExist:
+            return None
+        else:
+            return "Exited"
