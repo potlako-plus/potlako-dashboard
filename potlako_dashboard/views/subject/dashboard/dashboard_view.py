@@ -186,6 +186,7 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
     
     @property
     def participant_exit(self):
+        
         exit_model_cls = django_apps.get_model(
             'edc_action_item.actionitem')
         subject_identifier = self.kwargs.get('subject_identifier')
