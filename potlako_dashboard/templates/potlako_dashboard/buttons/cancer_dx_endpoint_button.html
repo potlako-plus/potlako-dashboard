@@ -1,13 +1,13 @@
-<a id="cancerdxandtxendpoint_add_{{ subject_identifier }}" 
- 	title="{{ title }}"
- 	
- 	{% if cancer_dx_endpoint_model_obj %}
-       	class="btn btn-success btn-sm" 
-    {% else %}
-   		class="btn btn-warning btn-sm"       	
-    {% endif %}
-    
-    data-toggle="tooltip"  data-placement="right" href="{{ add_cancer_dx_endpoint_href }}">
+<a id="cancerdxandtxendpoint_add_{{ subject_identifier }}"
+   title="{{ title }}"
+
+        {% if is_exit %}
+   class="btn btn-success btn-sm"
+        {% else %}
+   class="btn btn-warning btn-sm"
+        {% endif %}
+
+   data-toggle="tooltip" data-placement="right" href="{{ add_cancer_dx_endpoint_href }}">
     Cancer Treatment Endpoint
-     	
- </a>
+
+</a>
