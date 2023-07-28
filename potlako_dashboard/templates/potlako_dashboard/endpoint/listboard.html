@@ -21,20 +21,21 @@
 {% endblock listboard_table_header %}
 
 {% block listboard_table_button_column %}
-    <td style="white-space: nowrap;">
-    <div class="btn-group">
-    
-    {% cancer_dx_endpoint_button result %}
-        
-    </div>
-    
-    <div class="btn-group">
+    {% if results.coordinator_exit_model_obj %}
+        <td style="white-space: nowrap;">
+            <div class="btn-group">
 
-     {% care_seeking_endpoint_button result %}
-    
-    </div>
-    </td>
-{% endblock listboard_table_button_column %}		
+                {% care_seeking_endpoint_button result %}
+
+            </div>
+            <div class="btn-group">
+
+                {% cancer_dx_endpoint_button result %}
+
+            </div>
+        </td>
+    {% endif %}
+{% endblock listboard_table_button_column %}
 
 
 {% block listboard_table_columns %}
@@ -42,7 +43,7 @@
     <td>{{ result.subject_identifier }}</td>
     <td nowrap></td>
     <td nowrap></td>
-    <td nowrap></td>  
+    <td nowrap></td>
     <td nowrap></td>
 
 {% endblock listboard_table_columns %}
