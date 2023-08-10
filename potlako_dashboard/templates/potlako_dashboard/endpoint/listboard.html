@@ -21,20 +21,18 @@
 {% endblock listboard_table_header %}
 
 {% block listboard_table_button_column %}
-    {% if results.coordinator_exit_model_obj %}
-        <td style="white-space: nowrap;">
-            <div class="btn-group">
+    <td style="white-space: nowrap;">
+        <div class="btn-group">
 
-                {% care_seeking_endpoint_button result %}
+            {% care_seeking_endpoint_button result %}
 
-            </div>
-            <div class="btn-group">
+        </div>
+        <div class="btn-group">
 
-                {% cancer_dx_endpoint_button result %}
+            {% cancer_dx_endpoint_button result %}
 
-            </div>
-        </td>
-    {% endif %}
+        </div>
+    </td>
 {% endblock listboard_table_button_column %}
 
 
