@@ -20,6 +20,7 @@ from ....model_wrappers import (
 
 from .navigation_history_mixin import NavigationHistoryMixin
 
+
 class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin,
                     BaseDashboardView, NavigationHistoryMixin):
 
@@ -71,11 +72,11 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
             nav_flag=self.get_navigation_status,
             edc_readonly=edc_readonly,
             hiv_status=self.get_hiv_status,
-            navigation_plans = self.navigation_plan_history_objs,
-            navigation_plan_inlines = self.navigation_plan_inlines,
-            current_navigation_plan= self.current_navigation_plan, 
-            current_navigation_plan_inlines = self.current_navigation_plan_inlines,
-            evaluation_timeline_history = self.evaluation_timelines_history_objs)
+            navigation_plans=self.navigation_plan_history_objs,
+            navigation_plan_inlines=self.navigation_plan_inlines,
+            current_navigation_plan=self.current_navigation_plan,
+            current_navigation_plan_inlines=self.current_navigation_plan_inlines,
+            evaluation_timeline_history=self.evaluation_timelines_history_objs)
         return context
 
     def message_user(self, message=None):
@@ -85,7 +86,8 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
 
     @property
     def get_hiv_status(self):
-        patient_initial = django_apps.get_model('potlako_subject.patientcallinitial')
+        patient_initial = django_apps.get_model(
+            'potlako_subject.patientcallinitial')
 
         try:
             patient_initial_obj = patient_initial.objects.get(
@@ -98,7 +100,8 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
 
     def clinician_call_enrol_obj(self):
 
-        enrolmment_model = django_apps.get_model('potlako_subject.cliniciancallenrollment')
+        enrolmment_model = django_apps.get_model(
+            'potlako_subject.cliniciancallenrollment')
         try:
             enrolmment_model_obj = enrolmment_model.objects.get(
                 screening_identifier=self.consent_wrapped.screening_identifier)
@@ -109,10 +112,12 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
 
     @property
     def get_navigation_status(self):
-        keysteps_form = django_apps.get_model('potlako_subject.evaluationtimeline')
+        keysteps_form = django_apps.get_model(
+            'potlako_subject.evaluationtimeline')
 
         key_steps = keysteps_form.objects.filter(
-            navigation_plan__subject_identifier=self.kwargs.get('subject_identifier'),
+            navigation_plan__subject_identifier=self.kwargs.get(
+                'subject_identifier'),
             key_step_status=NOT_DONE)
         flags = []
 
@@ -120,7 +125,7 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
             today = get_utcnow().date()
             target_date = key_step.target_date
 
-            if(today - target_date).days > 7:
+            if (today - target_date).days > 7:
                 flags.append('past')
             elif (target_date - today).days > 7:
                 flags.append('early')
@@ -182,21 +187,18 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
             return None
         else:
             return onschedule_obj.community_arm
-        
-    
+
     @property
     def participant_exit(self):
-        
+
         exit_model_cls = django_apps.get_model(
-            'edc_action_item.actionitem')
+            'potlako_subject.cancerdxandtxendpoint')
         subject_identifier = self.kwargs.get('subject_identifier')
-        reference_model = 'potlako_prn.coordinatorexit'
-        parent_reference_model='potlako_prn.subjectoffstudy'
-        status = 'Closed'
+        final_deposition = 'exit'
         try:
             exit_obj = exit_model_cls.objects.get(
-                subject_identifier=subject_identifier,reference_model=reference_model,parent_reference_model=parent_reference_model,status=status)
+                subject_identifier=subject_identifier, final_deposition=final_deposition)
         except ObjectDoesNotExist:
             return None
         else:
-            return "Exited"
+            return exit_obj.final_deposition
