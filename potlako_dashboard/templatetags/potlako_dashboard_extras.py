@@ -18,7 +18,7 @@ def verbal_consent_button(model_wrapper):
         add_screening_href=model_wrapper.subject_screening.href,
         screening_identifier=model_wrapper.object.screening_identifier,
         subject_screening_obj=model_wrapper.subject_screening_model_obj,
-        verbal_consent_obj=model_wrapper.verbal_consent_obj,)
+        verbal_consent_obj=model_wrapper.verbal_consent_obj, )
 
 
 @register.inclusion_tag('potlako_dashboard/buttons/verbal_consent_pdf_button.html')
@@ -104,12 +104,16 @@ def navigation_plan_summary_btn(model_wrapper):
 
 @register.inclusion_tag('potlako_dashboard/buttons/cancer_dx_endpoint_button.html')
 def cancer_dx_endpoint_button(model_wrapper):
-    title = ['Add cancer diagnosis and treatment endpoint recording.']
-    return dict(
-        subject_identifier=model_wrapper.subject_identifier,
-        add_cancer_dx_endpoint_href=model_wrapper.cancer_dx_endpoint.href,
-        cancer_dx_endpoint_model_obj=model_wrapper.cancer_dx_endpoint_model_obj,
-        title=' '.join(title))
+    title = 'Add cancer diagnosis and treatment endpoint recording.'
+    cancer_dx_endpoint_model_obj = model_wrapper.cancer_dx_endpoint_model_obj
+    is_exit = getattr(cancer_dx_endpoint_model_obj, 'exit', None) == 'exit'
+
+    return {
+        'subject_identifier': model_wrapper.subject_identifier,
+        'add_cancer_dx_endpoint_href': model_wrapper.cancer_dx_endpoint.href,
+        'is_exit': is_exit,
+        'title': title
+    }
 
 
 @register.inclusion_tag('potlako_dashboard/buttons/care_seeking_endpoint_button.html')
