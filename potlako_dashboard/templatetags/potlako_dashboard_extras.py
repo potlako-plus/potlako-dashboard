@@ -111,6 +111,7 @@ def cancer_dx_endpoint_button(model_wrapper):
     return {
         'subject_identifier': model_wrapper.subject_identifier,
         'add_cancer_dx_endpoint_href': model_wrapper.cancer_dx_endpoint.href,
+        'cancer_dx_endpoint_model_obj': cancer_dx_endpoint_model_obj,
         'is_exit': is_exit,
         'title': title
     }
