@@ -1,29 +1,24 @@
-from potlako_subject.action_items import SUBJECT_LOCATOR_ACTION
-
 from django.apps import apps as django_apps
 from django.contrib import messages
 from django.contrib.messages import get_messages
 from django.core.exceptions import ObjectDoesNotExist
 from edc_action_item.site_action_items import site_action_items
-from edc_base.utils import get_utcnow
 from edc_base.view_mixins import EdcBaseViewMixin
-from edc_constants.constants import NOT_DONE
-from edc_navbar import NavbarViewMixin
-
 from edc_dashboard.views import DashboardView as BaseDashboardView
+from edc_navbar import NavbarViewMixin
 from edc_subject_dashboard.view_mixins import SubjectDashboardViewMixin
 
-from ....model_wrappers import (
-    AppointmentModelWrapper, SubjectConsentModelWrapper,
-    SpecialFormsModelWrapper, SubjectVisitModelWrapper,
-    ClinicianCallEnrollmentModelWrapper)
-
+from potlako_subject.action_items import SUBJECT_LOCATOR_ACTION
 from .navigation_history_mixin import NavigationHistoryMixin
+from ....model_wrappers import (AppointmentModelWrapper,
+                                ClinicianCallEnrollmentModelWrapper,
+                                SpecialFormsModelWrapper, SubjectConsentModelWrapper,
+                                SubjectVisitModelWrapper)
+from ....utils import community_arm, determine_flag
 
 
 class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin,
                     BaseDashboardView, NavigationHistoryMixin):
-
     dashboard_url = 'subject_dashboard_url'
     dashboard_template = 'subject_dashboard_template'
     appointment_model = 'edc_appointment.appointment'
@@ -45,7 +40,7 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
         if not self._appointments:
             self._appointments = self.appointment_model_cls.objects.filter(
                 subject_identifier=self.subject_identifier).order_by(
-                    'visit_code', 'visit_code_sequence')
+                'visit_code', 'visit_code_sequence')
         return self._appointments
 
     def get_context_data(self, **kwargs):
@@ -63,13 +58,13 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
 
         context.update(
             locator_obj=locator_obj,
-            community_arm=self.community_arm,
+            community_arm=community_arm(self.subject_identifier),
             participant_exit=self.participant_exit,
             subject_consent=self.consent_wrapped,
             clinician_call_enrol=ClinicianCallEnrollmentModelWrapper(
                 self.clinician_call_enrol_obj()),
             groups=[g.name for g in self.request.user.groups.all()],
-            nav_flag=self.get_navigation_status,
+            nav_flag=determine_flag(self.subject_identifier),
             edc_readonly=edc_readonly,
             hiv_status=self.get_hiv_status,
             navigation_plans=self.navigation_plan_history_objs,
@@ -110,31 +105,6 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
         else:
             return enrolmment_model_obj
 
-    @property
-    def get_navigation_status(self):
-        keysteps_form = django_apps.get_model(
-            'potlako_subject.evaluationtimeline')
-
-        key_steps = keysteps_form.objects.filter(
-            navigation_plan__subject_identifier=self.kwargs.get(
-                'subject_identifier'),
-            key_step_status=NOT_DONE)
-        flags = []
-
-        for key_step in key_steps:
-            today = get_utcnow().date()
-            target_date = key_step.target_date
-
-            if (today - target_date).days > 7:
-                flags.append('past')
-            elif (target_date - today).days > 7:
-                flags.append('early')
-            else:
-                flags.append('on_time')
-
-        flags = list(set(flags))
-        return max(flags) if flags else 'default'
-
     def get_locator_info(self):
 
         subject_identifier = self.kwargs.get('subject_identifier')
@@ -174,19 +144,6 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
         except ObjectDoesNotExist:
             action_cls(
                 subject_identifier=subject_identifier)
-
-    @property
-    def community_arm(self):
-        onschedule_model_cls = django_apps.get_model(
-            'potlako_subject.onschedule')
-        subject_identifier = self.kwargs.get('subject_identifier')
-        try:
-            onschedule_obj = onschedule_model_cls.objects.get(
-                subject_identifier=subject_identifier)
-        except ObjectDoesNotExist:
-            return None
-        else:
-            return onschedule_obj.community_arm
 
     @property
     def participant_exit(self):
