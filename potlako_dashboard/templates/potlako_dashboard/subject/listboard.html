@@ -4,8 +4,9 @@
 {% load static %}
 
 {% block extra-css %}
-	{{ block.super }}
-	<link rel="stylesheet" type="text/css" href="{% static 'potlako_dashboard/css/potlako_dashboard.css' %}">
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'potlako_dashboard/css/potlako_dashboard.css' %}">
 {% endblock extra-css %}
 
 
@@ -23,35 +24,39 @@
     <!-- end results header -->
 
 {% endblock listboard_table_header %}
-	
+
 {% block listboard_table_button_column %}
-	{% comment %}
+    {% comment %}
 
-    result: model_wrapper, usually the SubjectConsentModelWrapper
+        result: model_wrapper, usually the SubjectConsentModelWrapper
         Required attributes:
-            subject_identifier
-            version: (consent version)
-            href: (model_wrapper.href)
+        subject_identifier
+        version: (consent version)
+        href: (model_wrapper.href)
 
-	{% endcomment %}
-	<td style="white-space: nowrap">
-    <div class="btn-group">
-    <a title="Edit subject's consent form" role="button" 
-       class="btn btn-default btn-sm"
-           href="{{ result.href }}">
-        <i class="fa fa-pencil-alt fa-sm"></i>
-    </a>
-    {% verbal_consent_pdf_button result %}
-    {% if result.id and result.subject_locator %}
+    {% endcomment %}
+    <td style="white-space: nowrap">
+        <div class="btn-group">
+            <a title="Edit subject's consent form" role="button"
+               class="btn btn-default btn-sm"
+               href="{{ result.href }}">
+                <i class="fa fa-pencil-alt fa-sm"></i>
+            </a>
+            {% verbal_consent_pdf_button result %}
+            {% if result.id and result.subject_locator %}
 
-         <a id="btn-subject-dashboard-{{result.subject_identifier}}" class="btn btn-sm {{result.navigation_status}} dash-btn" role="button"   
-        title="Go to subject's dashboard" href="{% url subject_dashboard_url result.subject_identifier %}">
-        <i class="far fa-user-circle fa-sm"></i> Dashboard <i class="fa fa-share"></i></a>
-      {% else %}
-      {% subject_locator_button result %}
-    {% endif %}
-    </div>
-	</td>
+                <a id="btn-subject-dashboard-{{ result.subject_identifier }}"
+                   class="btn btn-sm {{ result.navigation_status }} dash-btn"
+                   role="button"
+                   title="Go to subject's dashboard"
+                   href="{% url subject_dashboard_url result.subject_identifier %}">
+                    <i class="far fa-user-circle fa-sm"></i> Dashboard <i
+                        class="fa fa-share"></i></a>
+            {% else %}
+                {% subject_locator_button result %}
+            {% endif %}
+        </div>
+    </td>
 
 {% endblock listboard_table_button_column %}
 
@@ -59,14 +64,15 @@
     <td>{{ result.subject_identifier }}
     </td>
     <td>
-       {% if result.gender == 'M' %}
-           <i class="fa fa-male fa-lg"></i>
-       {% else %}
-           <i class="fa fa-female fa-lg"></i>
-       {% endif %}
-       {{ result.first_name }} {{ result.initials }}
+        {% if result.gender == 'M' %}
+            <i class="fa fa-male fa-lg"></i>
+        {% else %}
+            <i class="fa fa-female fa-lg"></i>
+        {% endif %}
+        {{ result.first_name }} {{ result.initials }}
     </td>
-    <td>{% age_in_years result.object.dob %}yrs {{ result.object.dob|date:"SHORT_DATE_FORMAT" }}</td>
+    <td>{% age_in_years result.object.dob %}yrs
+        {{ result.object.dob|date:"SHORT_DATE_FORMAT" }}</td>
     <td>{{ result.object.consent_datetime|date:"SHORT_DATE_FORMAT" }}</td>
     <td nowrap>{{ result.user_created }}</td>
     <td nowrap>{{ result.subject_community }}</td>
