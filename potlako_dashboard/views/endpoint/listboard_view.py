@@ -5,18 +5,16 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from edc_base.view_mixins import EdcBaseViewMixin
-from edc_navbar import NavbarViewMixin
-
 from edc_dashboard.view_mixins import ListboardFilterViewMixin, SearchFormViewMixin
 from edc_dashboard.views import ListboardView as BaseListboardView
+from edc_navbar import NavbarViewMixin
 
-from ...model_wrappers import SubjectConsentModelWrapper
 from .filters import ListboardViewFilters
+from ...model_wrappers import SubjectConsentModelWrapper
 
 
 class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
                     ListboardFilterViewMixin, SearchFormViewMixin, BaseListboardView):
-
     listboard_template = 'endpoint_listboard_template'
     listboard_url = 'endpoint_listboard_url'
     listboard_panel_style = 'info'
@@ -66,6 +64,18 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
                     subject_identifier__in=queryset)
                 return query
         return super().get_queryset()
+
+    def get_wrapped_queryset(self, queryset):
+        """Returns a list of wrapped model instances.
+        """
+        object_list = []
+        for obj in queryset:
+            wrapped_obj = self.model_wrapper_cls(obj)
+            if (wrapped_obj.cancer_dx_endpoint_model_obj and
+                    wrapped_obj.cancer_dx_endpoint_model_obj):
+                continue
+            object_list.append(wrapped_obj)
+        return object_list
 
     def extra_search_options(self, search_term):
         q = Q()

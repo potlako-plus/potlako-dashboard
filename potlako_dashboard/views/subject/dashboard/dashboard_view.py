@@ -4,6 +4,7 @@ from django.contrib.messages import get_messages
 from django.core.exceptions import ObjectDoesNotExist
 from edc_action_item.site_action_items import site_action_items
 from edc_base.view_mixins import EdcBaseViewMixin
+from edc_constants.constants import DONE, NEW, OPEN
 from edc_dashboard.views import DashboardView as BaseDashboardView
 from edc_navbar import NavbarViewMixin
 from edc_subject_dashboard.view_mixins import SubjectDashboardViewMixin
@@ -45,6 +46,7 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        self.create_nav_plan_actions()
         locator_obj = self.get_locator_info()
         edc_readonly = None
 
@@ -65,6 +67,7 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
                 self.clinician_call_enrol_obj()),
             groups=[g.name for g in self.request.user.groups.all()],
             nav_flag=determine_flag(self.subject_identifier),
+            open_action_items=self.open_action_items,
             edc_readonly=edc_readonly,
             hiv_status=self.get_hiv_status,
             navigation_plans=self.navigation_plan_history_objs,
@@ -132,6 +135,27 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
                     subject_identifier=subject_identifier)
         return obj
 
+    def create_nav_plan_actions(self):
+        """Create navigation plan actions.
+        """
+        subject_identifier = self.kwargs.get('subject_identifier')
+        nav_plan_model_cls = django_apps.get_model(
+            'potlako_subject.navigationsummaryandplan')
+        action_cls = site_action_items.get(nav_plan_model_cls.action_name)
+        action_item_model_cls = action_cls.action_item_model_cls()
+
+        complete_apps = self.appointments.filter(
+            appt_status=DONE, visit_code__in=['2000', '3000']).count()
+
+        nav_plan_actions = action_item_model_cls.objects.filter(
+            subject_identifier=subject_identifier).exclude(
+            status__in=[NEW, OPEN]).count()
+
+        if complete_apps > nav_plan_actions < 1 and 'Standard' in community_arm(
+                subject_identifier):
+            action_cls(
+                subject_identifier=subject_identifier)
+
     def action_cls_item_creator(
             self, subject_identifier=None, action_cls=None, action_type=None):
         action_cls = site_action_items.get(
@@ -147,7 +171,6 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
 
     @property
     def participant_exit(self):
-
         exit_model_cls = django_apps.get_model(
             'potlako_subject.cancerdxandtxendpoint')
         subject_identifier = self.kwargs.get('subject_identifier')
