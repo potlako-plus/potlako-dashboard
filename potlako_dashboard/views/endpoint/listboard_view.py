@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from edc_base.view_mixins import EdcBaseViewMixin
+from edc_constants.constants import DONE
 from edc_dashboard.view_mixins import ListboardFilterViewMixin, SearchFormViewMixin
 from edc_dashboard.views import ListboardView as BaseListboardView
 from edc_navbar import NavbarViewMixin
@@ -46,6 +47,7 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
         if kwargs.get('subject_identifier'):
             options.update(
                 {'subject_identifier': kwargs.get('subject_identifier')})
+        options.update({'subject_identifier__in': self.is_offstudy})
         return options
 
     def get_queryset(self):
@@ -68,13 +70,13 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
     def get_wrapped_queryset(self, queryset):
         """Returns a list of wrapped model instances.
         """
+        wrapped_queryset = super().get_wrapped_queryset(queryset)
         object_list = []
-        for obj in queryset:
-            wrapped_obj = self.model_wrapper_cls(obj)
-            if (wrapped_obj.cancer_dx_endpoint_model_obj and
-                    wrapped_obj.cancer_dx_endpoint_model_obj):
+        for obj in wrapped_queryset:
+            if (obj.cancer_dx_endpoint_model_obj and
+                    obj.cancer_dx_endpoint_model_obj):
                 continue
-            object_list.append(wrapped_obj)
+            object_list.append(obj)
         return object_list
 
     def extra_search_options(self, search_term):
@@ -82,3 +84,18 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
         if re.match('^[A-Z]+$', search_term):
             q = Q(first_name__exact=search_term)
         return q
+
+    @property
+    def is_offstudy(self):
+        offstudy_model_cls = django_apps.get_model('potlako_prn.subjectoffstudy')
+        subject_visit_model_cls = django_apps.get_model('potlako_subject.subjectvisit')
+        death_report_model_cls = django_apps.get_model('potlako_subject.deathreport')
+        offstudy = offstudy_model_cls.objects.values_list(
+            'subject_identifier', flat=True)
+        study_complete = subject_visit_model_cls.objects.filter(
+            appointment__appt_status=DONE,
+            visit_code='3000').values_list('subject_identifier', flat=True)
+        death_report = death_report_model_cls.objects.values_list(
+            'subject_identifier', flat=True)
+        combined_queryset = list(offstudy) + list(study_complete) + list(death_report)
+        return set(list(combined_queryset))
