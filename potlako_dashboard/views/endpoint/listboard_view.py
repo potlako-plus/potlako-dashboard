@@ -90,12 +90,12 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
         offstudy_model_cls = django_apps.get_model('potlako_prn.subjectoffstudy')
         subject_visit_model_cls = django_apps.get_model('potlako_subject.subjectvisit')
         death_report_model_cls = django_apps.get_model('potlako_subject.deathreport')
-        offstudy = offstudy_model_cls.objects.all().values_list(
+        offstudy = offstudy_model_cls.objects.values_list(
             'subject_identifier', flat=True)
         study_complete = subject_visit_model_cls.objects.filter(
             appointment__appt_status=DONE,
             visit_code='3000').values_list('subject_identifier', flat=True)
-        death_report = death_report_model_cls.objects.all().values_list(
+        death_report = death_report_model_cls.objects.values_list(
             'subject_identifier', flat=True)
         combined_queryset = list(offstudy) + list(study_complete) + list(death_report)
         return set(list(combined_queryset))
