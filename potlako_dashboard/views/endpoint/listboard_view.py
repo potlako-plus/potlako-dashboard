@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from edc_base.view_mixins import EdcBaseViewMixin
-from edc_constants.constants import DONE
 from edc_dashboard.view_mixins import ListboardFilterViewMixin, SearchFormViewMixin
 from edc_dashboard.views import ListboardView as BaseListboardView
 from edc_navbar import NavbarViewMixin
@@ -87,15 +86,7 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
 
     @property
     def is_offstudy(self):
-        offstudy_model_cls = django_apps.get_model('potlako_prn.subjectoffstudy')
-        subject_visit_model_cls = django_apps.get_model('potlako_subject.subjectvisit')
-        death_report_model_cls = django_apps.get_model('potlako_subject.deathreport')
-        offstudy = offstudy_model_cls.objects.values_list(
-            'subject_identifier', flat=True)
-        study_complete = subject_visit_model_cls.objects.filter(
-            appointment__appt_status=DONE,
-            visit_code='3000').values_list('subject_identifier', flat=True)
-        death_report = death_report_model_cls.objects.values_list(
-            'subject_identifier', flat=True)
-        combined_queryset = list(offstudy) + list(study_complete) + list(death_report)
-        return set(list(combined_queryset))
+        coordinator_exit_model_cls = django_apps.get_model('potlako_prn.coordinatorexit')
+        coordinator_exit_objs = coordinator_exit_model_cls.objects.order_by(
+            '-report_datetime').values_list('subject_identifier', flat=True)
+        return set(list(coordinator_exit_objs))
