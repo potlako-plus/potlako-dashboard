@@ -46,6 +46,7 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
         if kwargs.get('subject_identifier'):
             options.update(
                 {'subject_identifier': kwargs.get('subject_identifier')})
+        options.update({'subject_identifier__in': self.is_offstudy})
         return options
 
     def get_queryset(self):
@@ -68,13 +69,13 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
     def get_wrapped_queryset(self, queryset):
         """Returns a list of wrapped model instances.
         """
+        wrapped_queryset = super().get_wrapped_queryset(queryset)
         object_list = []
-        for obj in queryset:
-            wrapped_obj = self.model_wrapper_cls(obj)
-            if (wrapped_obj.cancer_dx_endpoint_model_obj and
-                    wrapped_obj.cancer_dx_endpoint_model_obj):
+        for obj in wrapped_queryset:
+            if (obj.cancer_dx_endpoint_model_obj and
+                    obj.cancer_dx_endpoint_model_obj):
                 continue
-            object_list.append(wrapped_obj)
+            object_list.append(obj)
         return object_list
 
     def extra_search_options(self, search_term):
@@ -82,3 +83,10 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
         if re.match('^[A-Z]+$', search_term):
             q = Q(first_name__exact=search_term)
         return q
+
+    @property
+    def is_offstudy(self):
+        coordinator_exit_model_cls = django_apps.get_model('potlako_prn.coordinatorexit')
+        coordinator_exit_objs = coordinator_exit_model_cls.objects.order_by(
+            '-report_datetime').values_list('subject_identifier', flat=True)
+        return set(list(coordinator_exit_objs))
