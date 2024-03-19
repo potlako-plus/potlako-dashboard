@@ -6,3 +6,4 @@ class SpecialFormsModelWrapper(ModelWrapper):
 
     next_url_name = settings.DASHBOARD_URL_NAMES.get('subject_dashboard_url')
     next_url_attrs = ['subject_identifier']
+    querystring_attrs = ['symptoms_discussion','discussion_date', 'discussion_date_estimated','discussion_date_estimation']
