@@ -50,13 +50,19 @@ class CareSeekingEndpointModelWrapperMixin:
         """Returns a dictionary of options to create a new
         unpersisted symptom and care seeking endpoint model instance.
         """
+
         options = dict(
             subject_identifier=self.subject_identifier,
             symptoms_discussion=self.symptom_cx_assessment_model_obj.symptoms_discussion,
             discussion_date=self.symptom_cx_assessment_model_obj.discussion_date.strftime("%d-%m-%Y") \
             if self.symptom_cx_assessment_model_obj.discussion_date else None,
             discussion_date_estimated=self.symptom_cx_assessment_model_obj.discussion_date_estimated,
-            discussion_date_estimation=self.symptom_cx_assessment_model_obj.discussion_date_estimation)
+            discussion_date_estimation=self.symptom_cx_assessment_model_obj.discussion_date_estimation,
+            seek_help_date=self.symptom_cx_assessment_model_obj.clinic_visit_date.strftime("%d-%m-%Y") \
+            if self.symptom_cx_assessment_model_obj.clinic_visit_date else None,
+            seek_help_date_estimated=self.symptom_cx_assessment_model_obj.clinic_visit_date_estimated,
+            seek_help_date_estimation=self.symptom_cx_assessment_model_obj.clinic_visit_date_estimation
+            )
         return options
 
     @property
