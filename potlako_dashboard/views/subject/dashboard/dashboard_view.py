@@ -4,7 +4,7 @@ from django.contrib.messages import get_messages
 from django.core.exceptions import ObjectDoesNotExist
 from edc_action_item.site_action_items import site_action_items
 from edc_base.view_mixins import EdcBaseViewMixin
-from edc_constants.constants import DONE, NEW, OPEN
+from edc_constants.constants import DONE, NEW, OPEN, CLOSED
 from edc_dashboard.views import DashboardView as BaseDashboardView
 from edc_navbar import NavbarViewMixin
 from edc_subject_dashboard.view_mixins import SubjectDashboardViewMixin
@@ -47,7 +47,7 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.create_nav_plan_actions()
-        locator_obj = self.get_locator_info()
+        locator_obj = self.get_subject_locator_or_message()
         edc_readonly = None
 
         if self.request.GET.get('edc_readonly'):
@@ -122,17 +122,33 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
         obj = self.get_locator_info()
         subject_identifier = self.kwargs.get('subject_identifier')
 
-        if not obj:
-            action_cls = site_action_items.get(
-                self.subject_locator_model_cls.action_name)
-            action_item_model_cls = action_cls.action_item_model_cls()
-            try:
-                action_item_model_cls.objects.get(
-                    subject_identifier=subject_identifier,
-                    action_type__name=SUBJECT_LOCATOR_ACTION)
-            except ObjectDoesNotExist:
-                action_cls(
-                    subject_identifier=subject_identifier)
+        query_options = {
+            'subject_identifier': subject_identifier,
+            'action_type__name': SUBJECT_LOCATOR_ACTION}
+        if obj:
+            query_options.update(
+                {'action_identifier': obj.action_identifier})
+
+        action_cls = site_action_items.get(
+            self.subject_locator_model_cls.action_name)
+        action_item_model_cls = action_cls.action_item_model_cls()
+        try:
+            locator_item = action_item_model_cls.objects.get(
+                **query_options)
+        except action_item_model_cls.DoesNotExist:
+            locator_item = action_cls(
+                subject_identifier=subject_identifier).action_item_obj
+
+        if obj:
+            if obj.action_identifier != locator_item.action_identifier:
+                # Update locator obj action_identifier if action item queried
+                # does not match locator action.
+                obj.action_identifier = locator_item.action_identifier
+                obj.save()
+            if locator_item.status in [OPEN, NEW]:
+                # Update action item status to close the action item if OPEN.
+                locator_item.status = CLOSED
+                locator_item.save()
         return obj
 
     def create_nav_plan_actions(self):
