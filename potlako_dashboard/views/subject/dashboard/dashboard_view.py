@@ -46,7 +46,6 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        self.create_nav_plan_actions()
         locator_obj = self.get_subject_locator_or_message()
         edc_readonly = None
 
@@ -150,27 +149,6 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
                 locator_item.status = CLOSED
                 locator_item.save()
         return obj
-
-    def create_nav_plan_actions(self):
-        """Create navigation plan actions.
-        """
-        subject_identifier = self.kwargs.get('subject_identifier')
-        nav_plan_model_cls = django_apps.get_model(
-            'potlako_subject.navigationsummaryandplan')
-        action_cls = site_action_items.get(nav_plan_model_cls.action_name)
-        action_item_model_cls = action_cls.action_item_model_cls()
-
-        complete_apps = self.appointments.filter(
-            appt_status=DONE, visit_code__in=['2000', '3000']).count()
-
-        nav_plan_actions = action_item_model_cls.objects.filter(
-            subject_identifier=subject_identifier).exclude(
-            status__in=[NEW, OPEN]).count()
-
-        if complete_apps > nav_plan_actions < 1 and 'Standard' in community_arm(
-                subject_identifier):
-            action_cls(
-                subject_identifier=subject_identifier)
 
     def action_cls_item_creator(
             self, subject_identifier=None, action_cls=None, action_type=None):
