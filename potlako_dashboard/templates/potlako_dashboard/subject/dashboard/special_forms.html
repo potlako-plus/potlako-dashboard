@@ -12,34 +12,31 @@
 			{% clinician_call_enrollment_button clinician_call_enrol subject_consent%}
 		</td>
 		</tr>
-		
 		  <tr>
 		    <td>
 			  {% baseline_clinical_summary_button subject_consent groups%}
 		    </td>
       	  </tr>
-      	  {%  if community_arm == 'Intervention' %}
       	  <tr>
 		    <td>
 			  {% navigation_plan_summary_button subject_consent  groups%}
 		    </td>
       	  </tr>
-      	{% endif %}
       	</tr>
-		
+
 		  <tr>
 		    <td>
 			  {% death_report_button subject_consent%}
-		    </td> 
+		    </td>
 		    </tr>
-		    
+
 		  <tr>
 		    <td>
 			  {% offstudy_button subject_consent%}
-		    </td> 
+		    </td>
 
 		  </tr>
-		    
+
 		 <tr>
 		    <td>
 			  {% coordinator_exit_button subject_consent%}
