@@ -56,7 +56,11 @@ def determine_flag(subject_identifier):
         else:
             flags.append('on_time')
 
-    next((flags.append('past') for obj in open_data_action_items(subject_identifier) if
+    open_nav_actions = open_action_items(subject_identifier).filter(
+        reference_model__icontains='navigationsummaryandplan')
+    open_actions = list(open_data_action_items(subject_identifier)) + list(open_nav_actions)
+
+    next((flags.append('past') for obj in open_actions if
           'Standard' in community_arm(subject_identifier)), None)
 
     flags = list(set(flags))
