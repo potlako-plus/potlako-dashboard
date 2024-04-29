@@ -1,11 +1,13 @@
 from django.apps import apps as django_apps
 from django.core.exceptions import ObjectDoesNotExist
 from edc_base import get_utcnow
-from edc_constants.constants import CANCELLED, CLOSED, NOT_DONE
+from edc_constants.constants import CANCELLED, CLOSED, NOT_DONE, OPEN
 
 action_item_model = 'edc_action_item.actionitem'
+data_action_item_model = 'edc_data_manager.dataactionitem'
 
 action_item_model_cls = django_apps.get_model(action_item_model)
+data_action_item_model_cls = django_apps.get_model(data_action_item_model)
 
 
 def open_action_items(subject_identifier):
@@ -13,6 +15,13 @@ def open_action_items(subject_identifier):
         subject_identifier=subject_identifier,
         action_type__show_on_dashboard=True).exclude(
         status__in=[CLOSED, CANCELLED]).order_by('-report_datetime')
+
+
+def open_data_action_items(subject_identifier):
+    return data_action_item_model_cls.objects.filter(
+        subject_identifier=subject_identifier,
+        subject='*Update the navigation plan summary*',
+        status__in=[OPEN, 'stalled']).order_by('-action_date')
 
 
 def community_arm(subject_identifier):
@@ -47,9 +56,12 @@ def determine_flag(subject_identifier):
         else:
             flags.append('on_time')
 
-    next((flags.append('past') for obj in open_action_items(subject_identifier) if
-          'Standard' in community_arm(subject_identifier) and 'navigationsummaryandplan'
-          in obj.reference_model), None)
+    open_nav_actions = open_action_items(subject_identifier).filter(
+        reference_model__icontains='navigationsummaryandplan')
+    open_actions = list(open_data_action_items(subject_identifier)) + list(open_nav_actions)
+
+    next((flags.append('past') for obj in open_actions if
+          'Standard' in community_arm(subject_identifier)), None)
 
     flags = list(set(flags))
     return max(flags) if flags else 'default'
