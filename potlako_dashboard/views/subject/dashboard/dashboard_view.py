@@ -65,7 +65,7 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
             clinician_call_enrol=ClinicianCallEnrollmentModelWrapper(
                 self.clinician_call_enrol_obj()),
             groups=[g.name for g in self.request.user.groups.all()],
-            nav_flag=determine_flag(self.subject_identifier),
+            nav_flag=determine_flag(self.subject_identifier, self.appointments),
             open_action_items=self.open_action_items,
             edc_readonly=edc_readonly,
             hiv_status=self.get_hiv_status,

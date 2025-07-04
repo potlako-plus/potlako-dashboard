@@ -24,6 +24,11 @@ def open_data_action_items(subject_identifier):
         status__in=[OPEN, 'stalled']).order_by('-action_date')
 
 
+def open_appointments(appts_qs):
+    return appts_qs.filter(
+        appt_status='new', appt_datetime__lt=get_utcnow())
+
+
 def community_arm(subject_identifier):
     onschedule_model_cls = django_apps.get_model(
         'potlako_subject.onschedule')
@@ -36,7 +41,7 @@ def community_arm(subject_identifier):
         return onschedule_obj.community_arm
 
 
-def determine_flag(subject_identifier):
+def determine_flag(subject_identifier, appointments=None):
     keysteps_form = django_apps.get_model(
         'potlako_subject.evaluationtimeline')
 
@@ -58,7 +63,11 @@ def determine_flag(subject_identifier):
 
     open_nav_actions = open_action_items(subject_identifier).filter(
         reference_model__icontains='navigationsummaryandplan')
-    open_actions = list(open_data_action_items(subject_identifier)) + list(open_nav_actions)
+    open_actions = list(
+        open_data_action_items(subject_identifier)) + list(open_nav_actions)
+
+    if appointments:
+        open_actions = list(open_appointments(appointments))
 
     next((flags.append('past') for obj in open_actions if
           'Standard' in community_arm(subject_identifier)), None)

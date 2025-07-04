@@ -35,7 +35,8 @@ class SubjectConsentModelWrapper(
 
     @property
     def verbal_consent_obj(self):
-        verbal_consent_cls = django_apps.get_model('potlako_subject.verbalconsent')
+        verbal_consent_cls = django_apps.get_model(
+            'potlako_subject.verbalconsent')
         try:
             return verbal_consent_cls.objects.get(
                 screening_identifier=self.screening_identifier,
@@ -56,7 +57,8 @@ class SubjectConsentModelWrapper(
 
     @property
     def navigation_status(self):
-        return determine_flag(self.subject_identifier)
+        return determine_flag(
+            self.subject_identifier, self.appointments)
 
     @property
     def subject_community(self):
@@ -76,3 +78,9 @@ class SubjectConsentModelWrapper(
             facility_name = facility_name.replace("hospital", "")
             facility_name = facility_name.replace("clinic", "").strip().title()
             return facility_name
+
+    @property
+    def appointments(self):
+        appt_cls = django_apps.get_model('edc_appointment.appointment')
+        return appt_cls.objects.filter(
+            subject_identifier=self.subject_identifier)
