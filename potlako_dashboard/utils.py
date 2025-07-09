@@ -26,7 +26,8 @@ def open_data_action_items(subject_identifier):
 
 def open_appointments(appts_qs):
     return appts_qs.filter(
-        appt_status='new', appt_datetime__lt=get_utcnow())
+        appt_status='new',
+        appt_datetime__date__lte=get_utcnow().date())
 
 
 def community_arm(subject_identifier):

@@ -31,11 +31,15 @@ class ListboardView(EdcBaseViewMixin, NavbarViewMixin,
     listboard_view_filters = ListboardViewFilters()
 
     def get_queryset(self):
-        ''' Method to filter queryset by a filter or community search, returns a wrapped
-         queryset because of the community search which is a model wrapper property.'''
+        ''' Method to filter queryset by a filter or community search,
+            returns a wrapped queryset because of the community search
+            which is a model wrapper property.
+        '''
 
-        navigation_cls = django_apps.get_model('potlako_subject.navigationsummaryandplan')
-        navigation_identifiers = navigation_cls.objects.values_list('subject_identifier')
+        navigation_cls = django_apps.get_model(
+            'potlako_subject.navigationsummaryandplan')
+        navigation_identifiers = navigation_cls.objects.values_list(
+            'subject_identifier')
         intervention_identifiers = self.get_community_queryset('Intervention')
 
         queryset = super().get_queryset()
