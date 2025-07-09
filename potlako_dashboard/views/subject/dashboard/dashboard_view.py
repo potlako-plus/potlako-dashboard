@@ -88,7 +88,8 @@ class DashboardView(EdcBaseViewMixin, SubjectDashboardViewMixin, NavbarViewMixin
 
         try:
             patient_initial_obj = patient_initial.objects.get(
-                subject_visit__subject_identifier=self.kwargs.get('subject_identifier'))
+                subject_visit__subject_identifier=self.kwargs.get(
+                    'subject_identifier'))
         except patient_initial.DoesNotExist:
             if self.clinician_call_enrol_obj():
                 return self.clinician_call_enrol_obj().last_hiv_result

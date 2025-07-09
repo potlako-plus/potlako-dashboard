@@ -42,6 +42,13 @@ def community_arm(subject_identifier):
         return onschedule_obj.community_arm
 
 
+def is_offstudy(subject_identifier):
+    offstudy_cls = django_apps.get_model(
+        'potlako_prn.subjectoffstudy')
+    return offstudy_cls.objects.filter(
+        subject_identifier=subject_identifier).exists()
+
+
 def determine_flag(subject_identifier, appointments=None):
     keysteps_form = django_apps.get_model(
         'potlako_subject.evaluationtimeline')
@@ -67,7 +74,7 @@ def determine_flag(subject_identifier, appointments=None):
     open_actions = list(
         open_data_action_items(subject_identifier)) + list(open_nav_actions)
 
-    if appointments:
+    if appointments and not is_offstudy(subject_identifier):
         open_actions = list(open_appointments(appointments))
 
     next((flags.append('past') for obj in open_actions if
