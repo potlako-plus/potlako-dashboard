@@ -36,8 +36,9 @@ class CareSeekingEndpointModelWrapperMixin:
         """Returns a symptoms assessment object fields
         """
         try:
-            return self.symptom_cx_assessment_cls.objects.get(subject_visit__subject_identifier=self.subject_identifier,
-                                                              subject_visit__visit_code=1000)
+            return self.symptom_cx_assessment_cls.objects.get(
+                subject_visit__subject_identifier=self.subject_identifier,
+                subject_visit__visit_code=1000)
         except ObjectDoesNotExist:
             return None
 
@@ -50,18 +51,29 @@ class CareSeekingEndpointModelWrapperMixin:
         """Returns a dictionary of options to create a new
         unpersisted symptom and care seeking endpoint model instance.
         """
-
+        symptoms_discussion = getattr(
+            self.symptom_cx_assessment_model_obj, 'symptoms_discussion', None)
+        discussion_date = getattr(
+            self.symptom_cx_assessment_model_obj, 'discussion_date', None)
+        discussion_date_estimated = getattr(
+            self.symptom_cx_assessment_model_obj, 'discussion_date_estimated', None)
+        discussion_date_estimation = getattr(
+            self.symptom_cx_assessment_model_obj, 'discussion_date_estimation', None)
+        clinic_visit_date = getattr(
+            self.symptom_cx_assessment_model_obj, 'clinic_visit_date', None)
+        clinic_visit_date_estimated = getattr(
+            self.symptom_cx_assessment_model_obj, 'clinic_visit_date_estimated', None)
+        clinic_visit_date_estimation = getattr(
+            self.symptom_cx_assessment_model_obj, 'clinic_visit_date_estimation', None)
         options = dict(
             subject_identifier=self.subject_identifier,
-            symptoms_discussion=self.symptom_cx_assessment_model_obj.symptoms_discussion,
-            discussion_date=self.symptom_cx_assessment_model_obj.discussion_date.strftime("%d-%m-%Y") \
-            if self.symptom_cx_assessment_model_obj.discussion_date else None,
-            discussion_date_estimated=self.symptom_cx_assessment_model_obj.discussion_date_estimated,
-            discussion_date_estimation=self.symptom_cx_assessment_model_obj.discussion_date_estimation,
-            seek_help_date=self.symptom_cx_assessment_model_obj.clinic_visit_date.strftime("%d-%m-%Y") \
-            if self.symptom_cx_assessment_model_obj.clinic_visit_date else None,
-            seek_help_date_estimated=self.symptom_cx_assessment_model_obj.clinic_visit_date_estimated,
-            seek_help_date_estimation=self.symptom_cx_assessment_model_obj.clinic_visit_date_estimation
+            symptoms_discussion=symptoms_discussion,
+            discussion_date=discussion_date.strftime("%d-%m-%Y") if discussion_date else None,
+            discussion_date_estimated=discussion_date_estimated,
+            discussion_date_estimation=discussion_date_estimation,
+            seek_help_date=clinic_visit_date.strftime("%d-%m-%Y") if clinic_visit_date else None,
+            seek_help_date_estimated=clinic_visit_date_estimated,
+            seek_help_date_estimation=clinic_visit_date_estimation
             )
         return options
 
