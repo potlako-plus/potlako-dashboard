@@ -64,7 +64,6 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
             queryset = super().get_queryset().filter(facility__in=community_list)
         else:
             queryset = super().get_queryset()
-
         return queryset
 
     def get_ordering(self):

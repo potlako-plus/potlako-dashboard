@@ -13,7 +13,7 @@
     <th>#</th>
     <th></th>
     <th>Subject Identifier</th>
-    <th>Age</th>
+    <th>Consent Age</th>
     <th>User</th>
     <th>Modified</th>
     <th>Host</th>
@@ -39,9 +39,9 @@
 {% block listboard_table_columns %}
 
     <td>{{ result.subject_identifier }}</td>
-    <td nowrap></td>
-    <td nowrap></td>
-    <td nowrap></td>
-    <td nowrap></td>
+    <td nowrap>{{result.object.formatted_age_at_consent}}</td>
+    <td nowrap>{{result.user_created}}</td>
+    <td nowrap>{{result.user_modified}}</td>
+    <td nowrap>{{result.hostname_created}}</td>
 
 {% endblock listboard_table_columns %}

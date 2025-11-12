@@ -49,6 +49,13 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
         options.update({'subject_identifier__in': self.is_offstudy})
         return options
 
+    def get_queryset_exclude_options(self, request, *args, **kwargs):
+        options = super().get_queryset_exclude_options(request, *args, **kwargs)
+
+        options.update(
+            {'subject_identifier__in': self.cancer_dx_endpoint_completed})
+        return options
+
     def get_queryset(self):
         filter_options = self.get_queryset_filter_options(
             self.request, *self.args, **self.kwargs)
@@ -66,18 +73,6 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
                 return query
         return super().get_queryset()
 
-    def get_wrapped_queryset(self, queryset):
-        """Returns a list of wrapped model instances.
-        """
-        wrapped_queryset = super().get_wrapped_queryset(queryset)
-        object_list = []
-        for obj in wrapped_queryset:
-            if (obj.cancer_dx_endpoint_model_obj and
-                    obj.cancer_dx_endpoint_model_obj):
-                continue
-            object_list.append(obj)
-        return object_list
-
     def extra_search_options(self, search_term):
         q = Q()
         if re.match('^[A-Z]+$', search_term):
@@ -86,7 +81,16 @@ class ListBoardView(NavbarViewMixin, EdcBaseViewMixin,
 
     @property
     def is_offstudy(self):
-        coordinator_exit_model_cls = django_apps.get_model('potlako_prn.coordinatorexit')
+        coordinator_exit_model_cls = django_apps.get_model(
+            'potlako_prn.coordinatorexit')
         coordinator_exit_objs = coordinator_exit_model_cls.objects.order_by(
-            '-report_datetime').values_list('subject_identifier', flat=True)
+            '-report_datetime').values_list(
+                'subject_identifier', flat=True)
         return set(list(coordinator_exit_objs))
+
+    @property
+    def cancer_dx_endpoint_completed(self):
+        cancer_dx_enpoint_model_cls = django_apps.get_model(
+            'potlako_subject.cancerdxandtxendpoint')
+        return cancer_dx_enpoint_model_cls.objects.values_list(
+            'subject_identifier', flat=True)
